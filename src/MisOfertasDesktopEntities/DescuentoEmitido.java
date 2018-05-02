@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package misofertasdesktop;
+package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -22,22 +22,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author David
  */
 @Entity
-@Table(name = "VALORACION")
+@Table(name = "DESCUENTO_EMITIDO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Valoracion.findAll", query = "SELECT v FROM Valoracion v")
-    , @NamedQuery(name = "Valoracion.findByCalificacion", query = "SELECT v FROM Valoracion v WHERE v.calificacion = :calificacion")
-    , @NamedQuery(name = "Valoracion.findByValoracionId", query = "SELECT v FROM Valoracion v WHERE v.valoracionId = :valoracionId")})
-public class Valoracion implements Serializable {
+    @NamedQuery(name = "DescuentoEmitido.findAll", query = "SELECT d FROM DescuentoEmitido d")
+    , @NamedQuery(name = "DescuentoEmitido.findByDescuentoId", query = "SELECT d FROM DescuentoEmitido d WHERE d.descuentoId = :descuentoId")})
+public class DescuentoEmitido implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @Column(name = "CALIFICACION")
-    private long calificacion;
     @Id
     @Basic(optional = false)
-    @Column(name = "VALORACION_ID")
-    private Long valoracionId;
+    @Column(name = "DESCUENTO_ID")
+    private Long descuentoId;
     @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "PRODUCTO_ID")
     @ManyToOne(optional = false)
     private Producto productoId;
@@ -45,32 +41,19 @@ public class Valoracion implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 
-    public Valoracion() {
+    public DescuentoEmitido() {
     }
 
-    public Valoracion(Long valoracionId) {
-        this.valoracionId = valoracionId;
+    public DescuentoEmitido(Long descuentoId) {
+        this.descuentoId = descuentoId;
     }
 
-    public Valoracion(Long valoracionId, long calificacion) {
-        this.valoracionId = valoracionId;
-        this.calificacion = calificacion;
+    public Long getDescuentoId() {
+        return descuentoId;
     }
 
-    public long getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(long calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public Long getValoracionId() {
-        return valoracionId;
-    }
-
-    public void setValoracionId(Long valoracionId) {
-        this.valoracionId = valoracionId;
+    public void setDescuentoId(Long descuentoId) {
+        this.descuentoId = descuentoId;
     }
 
     public Producto getProductoId() {
@@ -92,18 +75,18 @@ public class Valoracion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (valoracionId != null ? valoracionId.hashCode() : 0);
+        hash += (descuentoId != null ? descuentoId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Valoracion)) {
+        if (!(object instanceof DescuentoEmitido)) {
             return false;
         }
-        Valoracion other = (Valoracion) object;
-        if ((this.valoracionId == null && other.valoracionId != null) || (this.valoracionId != null && !this.valoracionId.equals(other.valoracionId))) {
+        DescuentoEmitido other = (DescuentoEmitido) object;
+        if ((this.descuentoId == null && other.descuentoId != null) || (this.descuentoId != null && !this.descuentoId.equals(other.descuentoId))) {
             return false;
         }
         return true;
@@ -111,7 +94,7 @@ public class Valoracion implements Serializable {
 
     @Override
     public String toString() {
-        return "misofertasdesktop.Valoracion[ valoracionId=" + valoracionId + " ]";
+        return "MisOfertasDesktopEntities.DescuentoEmitido[ descuentoId=" + descuentoId + " ]";
     }
     
 }

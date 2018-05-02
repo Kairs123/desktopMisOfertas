@@ -15,7 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import misOfertasDesktopService.*;
+//import misOfertasDesktopService.*;
 
 /**
  *
@@ -28,13 +28,13 @@ public class NewFXMain extends Application {
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
         btn.setOnAction((ActionEvent event) -> {
-            ProductoServices ps = new ProductoServices();
+           /* ProductoServices ps = new ProductoServices();
             ps.init();
             try {
                 ps.crearProductoService();
             } catch (ParseException ex) {
                 Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         });
         
         StackPane root = new StackPane();

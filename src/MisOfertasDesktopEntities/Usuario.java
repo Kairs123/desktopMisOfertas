@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package misofertasdesktop;
+package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -71,7 +71,11 @@ public class Usuario implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<Valoracion> valoracionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<UsuarioTienda> usuarioTiendaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<DescuentoEmitido> descuentoEmitidoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioList;
 
     public Usuario() {
     }
@@ -181,12 +185,30 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
+    public List<UsuarioTienda> getUsuarioTiendaList() {
+        return usuarioTiendaList;
+    }
+
+    public void setUsuarioTiendaList(List<UsuarioTienda> usuarioTiendaList) {
+        this.usuarioTiendaList = usuarioTiendaList;
+    }
+
+    @XmlTransient
     public List<DescuentoEmitido> getDescuentoEmitidoList() {
         return descuentoEmitidoList;
     }
 
     public void setDescuentoEmitidoList(List<DescuentoEmitido> descuentoEmitidoList) {
         this.descuentoEmitidoList = descuentoEmitidoList;
+    }
+
+    @XmlTransient
+    public List<OfertaConsultadaUsuario> getOfertaConsultadaUsuarioList() {
+        return ofertaConsultadaUsuarioList;
+    }
+
+    public void setOfertaConsultadaUsuarioList(List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioList) {
+        this.ofertaConsultadaUsuarioList = ofertaConsultadaUsuarioList;
     }
 
     @Override
@@ -211,7 +233,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "misofertasdesktop.Usuario[ usuarioId=" + usuarioId + " ]";
+        return "MisOfertasDesktopEntities.Usuario[ usuarioId=" + usuarioId + " ]";
     }
     
 }

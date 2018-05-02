@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package misofertasdesktop;
+package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,8 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -59,6 +63,8 @@ public class Oferta implements Serializable {
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
     @ManyToOne(optional = false)
     private Tienda tiendaId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ofertaId")
+    private List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioList;
 
     public Oferta() {
     }
@@ -139,6 +145,15 @@ public class Oferta implements Serializable {
         this.tiendaId = tiendaId;
     }
 
+    @XmlTransient
+    public List<OfertaConsultadaUsuario> getOfertaConsultadaUsuarioList() {
+        return ofertaConsultadaUsuarioList;
+    }
+
+    public void setOfertaConsultadaUsuarioList(List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioList) {
+        this.ofertaConsultadaUsuarioList = ofertaConsultadaUsuarioList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -161,7 +176,7 @@ public class Oferta implements Serializable {
 
     @Override
     public String toString() {
-        return "misofertasdesktop.Oferta[ ofertaId=" + ofertaId + " ]";
+        return "MisOfertasDesktopEntities.Oferta[ ofertaId=" + ofertaId + " ]";
     }
     
 }

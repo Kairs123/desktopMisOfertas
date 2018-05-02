@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package misofertasdesktop;
+package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -113,7 +113,7 @@ public class WsVentasRealizadas implements Serializable {
 
     @Override
     public String toString() {
-        return "misofertasdesktop.WsVentasRealizadas[ ventasWsId=" + ventasWsId + " ]";
+        return "MisOfertasDesktopEntities.WsVentasRealizadas[ ventasWsId=" + ventasWsId + " ]";
     }
     
 }

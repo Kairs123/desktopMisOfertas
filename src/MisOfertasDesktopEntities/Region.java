@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package misofertasdesktop;
+package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -128,7 +128,7 @@ public class Region implements Serializable {
 
     @Override
     public String toString() {
-        return "misofertasdesktop.Region[ idRegion=" + idRegion + " ]";
+        return "MisOfertasDesktopEntities.Region[ idRegion=" + idRegion + " ]";
     }
     
 }

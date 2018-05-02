@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package misofertasdesktop;
+package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -53,6 +53,8 @@ public class Tienda implements Serializable {
     @JoinColumn(name = "COMUNA", referencedColumnName = "ID_COMUNA")
     @ManyToOne(optional = false)
     private Comuna comuna;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiendaId")
+    private List<UsuarioTienda> usuarioTiendaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiendaId")
     private List<Rubro> rubroList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiendaId")
@@ -113,6 +115,15 @@ public class Tienda implements Serializable {
     }
 
     @XmlTransient
+    public List<UsuarioTienda> getUsuarioTiendaList() {
+        return usuarioTiendaList;
+    }
+
+    public void setUsuarioTiendaList(List<UsuarioTienda> usuarioTiendaList) {
+        this.usuarioTiendaList = usuarioTiendaList;
+    }
+
+    @XmlTransient
     public List<Rubro> getRubroList() {
         return rubroList;
     }
@@ -152,7 +163,7 @@ public class Tienda implements Serializable {
 
     @Override
     public String toString() {
-        return "misofertasdesktop.Tienda[ idTienda=" + idTienda + " ]";
+        return "MisOfertasDesktopEntities.Tienda[ idTienda=" + idTienda + " ]";
     }
     
 }
