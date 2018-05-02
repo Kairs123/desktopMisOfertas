@@ -20,25 +20,25 @@
     <class>misofertasdesktop.Menu</class>
     <class>misofertasdesktop.Producto</class>
     <class>misofertasdesktop.DescuentoEmitido</class>
-    <class>MisOfertasDesktopEntities.Valoracion</class>
-    <class>MisOfertasDesktopEntities.Persona</class>
-    <class>MisOfertasDesktopEntities.TipoUsuario</class>
-    <class>MisOfertasDesktopEntities.Region</class>
-    <class>MisOfertasDesktopEntities.UsuarioTienda</class>
-    <class>MisOfertasDesktopEntities.Usuario</class>
-    <class>MisOfertasDesktopEntities.OfertaConsultadaUsuario</class>
-    <class>MisOfertasDesktopEntities.Tienda</class>
-    <class>MisOfertasDesktopEntities.Preferencias</class>
-    <class>MisOfertasDesktopEntities.Comuna</class>
-    <class>MisOfertasDesktopEntities.Rubro</class>
-    <class>MisOfertasDesktopEntities.WsDetalleVentas</class>
-    <class>MisOfertasDesktopEntities.WsVentasRealizadas</class>
-    <class>MisOfertasDesktopEntities.Menu</class>
-    <class>MisOfertasDesktopEntities.Oferta</class>
-    <class>MisOfertasDesktopEntities.Pais</class>
-    <class>MisOfertasDesktopEntities.DescuentoEmitido</class>
-    <class>MisOfertasDesktopEntities.ImagenProducto</class>
-    <class>MisOfertasDesktopEntities.Producto</class>
+    <class>cl.duoc.misofertas.domain.Comuna</class>
+    <class>cl.duoc.misofertas.domain.Pais</class>
+    <class>cl.duoc.misofertas.domain.Tienda</class>
+    <class>cl.duoc.misofertas.domain.Region</class>
+    <class>cl.duoc.misofertas.domain.DescuentoEmitido</class>
+    <class>cl.duoc.misofertas.domain.ImagenProducto</class>
+    <class>cl.duoc.misofertas.domain.Persona</class>
+    <class>cl.duoc.misofertas.domain.Rubro</class>
+    <class>cl.duoc.misofertas.domain.OfertaConsultadaUsuario</class>
+    <class>cl.duoc.misofertas.domain.TipoUsuario</class>
+    <class>cl.duoc.misofertas.domain.Menu</class>
+    <class>cl.duoc.misofertas.domain.Preferencias</class>
+    <class>cl.duoc.misofertas.domain.WsVentasRealizadas</class>
+    <class>cl.duoc.misofertas.domain.Usuario</class>
+    <class>cl.duoc.misofertas.domain.Producto</class>
+    <class>cl.duoc.misofertas.domain.Oferta</class>
+    <class>cl.duoc.misofertas.domain.UsuarioTienda</class>
+    <class>cl.duoc.misofertas.domain.WsDetalleVentas</class>
+    <class>cl.duoc.misofertas.domain.Valoracion</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@knowix.southcentralus.cloudapp.azure.com:1521:orcl"/>
       <property name="javax.persistence.jdbc.user" value="USR_OFERTAS_DEV"/>
