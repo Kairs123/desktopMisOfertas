@@ -16,7 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,6 +38,39 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Producto.findByEsPerecible", query = "SELECT p FROM Producto p WHERE p.esPerecible = :esPerecible")
     , @NamedQuery(name = "Producto.findByFechaVencimiento", query = "SELECT p FROM Producto p WHERE p.fechaVencimiento = :fechaVencimiento")
     , @NamedQuery(name = "Producto.findByIsActive", query = "SELECT p FROM Producto p WHERE p.isActive = :isActive")})
+@NamedStoredProcedureQueries ({
+    @NamedStoredProcedureQuery(
+            name = "createProducto",
+            procedureName = "PKG_CRUD_PRODUCTO.PRC_CREATE_PRODUCTO",
+            parameters = {
+                @javax.persistence.StoredProcedureParameter(
+                        name = "p_nombre_producto",
+                        type = String.class,
+                        mode = ParameterMode.IN
+                        ),
+                @javax.persistence.StoredProcedureParameter(
+                        name = "p_rubro_id",
+                        type = Long.class,
+                        mode = ParameterMode.IN
+                        ),
+                @javax.persistence.StoredProcedureParameter(
+                        name = "p_es_perecible",
+                        type = Integer.class,
+                        mode = ParameterMode.IN
+                        ),
+                @javax.persistence.StoredProcedureParameter(
+                        name = "p_fecha_venc",
+                        type = String.class,
+                        mode = ParameterMode.IN
+                        ),
+                @javax.persistence.StoredProcedureParameter(
+                        name = "p_activo",
+                        type = String.class,
+                        mode = ParameterMode.IN
+                        )           
+            }    
+    )
+})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;

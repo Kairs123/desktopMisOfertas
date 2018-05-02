@@ -5,6 +5,8 @@
  */
 package misOfertasDesktopUI;
 
+import MisOfertasDesktopEntities.Producto;
+import MisOfertasDesktopEntities.Rubro;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
+import misOfertasDesktopController.RubroJpaController;
+import misOfertasDesktopDAO.ProductoDAO;
+import misOfertasDesktopDAO.RubroDAO;
 //import misOfertasDesktopService.*;
 
 /**
@@ -28,13 +34,21 @@ public class NewFXMain extends Application {
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
         btn.setOnAction((ActionEvent event) -> {
-           /* ProductoServices ps = new ProductoServices();
-            ps.init();
+            ProductoDAO pDAO = new ProductoDAO();
+            RubroDAO rDAO = new RubroDAO();
+            Producto p = new Producto();
+            Rubro r = new Rubro();
+            r = rDAO.getRubroById(1L);
+            p.setEsPerecible(1);
+            p.setFechaVencimiento("30/04/2018");
+            p.setIsActive("1");
+            p.setNombreProducto("TestJPAasdasd");
+            p.setRubro(r);
             try {
-                ps.crearProductoService();
-            } catch (ParseException ex) {
+                pDAO.addProducto(p);
+            } catch (Exception ex) {
                 Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
         });
         
         StackPane root = new StackPane();

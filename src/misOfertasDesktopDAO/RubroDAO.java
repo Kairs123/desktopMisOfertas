@@ -5,30 +5,27 @@
  */
 package misOfertasDesktopDAO;
 
-import MisOfertasDesktopEntities.Producto;
-import javax.persistence.EntityManager;
+import MisOfertasDesktopEntities.Rubro;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import misOfertasDesktopController.ProductoJpaController;
+import misOfertasDesktopController.RubroJpaController;
 
 /**
  *
  * @author David
  */
-public class ProductoDAO {
-    private final ProductoJpaController productoController;
+public class RubroDAO {
+    private final RubroJpaController rubroController;
     private final EntityManagerFactory emf;
     
-    public ProductoDAO()
+    public RubroDAO()
     {
         emf = Persistence.createEntityManagerFactory("misOfertasDesktopPU");
-        productoController = new ProductoJpaController(emf);
+        rubroController = new RubroJpaController(emf);
     }
-    public void addProducto(Producto producto) throws Exception
+    public Rubro getRubroById(Long rubroId)
     {
-        productoController.create(producto);
+        return rubroController.findRubro(rubroId);
     }
-   
     
-
 }

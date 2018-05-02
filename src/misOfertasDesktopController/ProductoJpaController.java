@@ -20,6 +20,7 @@ import MisOfertasDesktopEntities.DescuentoEmitido;
 import MisOfertasDesktopEntities.Producto;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.StoredProcedureQuery;
 import misOfertasDesktopController.exceptions.IllegalOrphanException;
 import misOfertasDesktopController.exceptions.NonexistentEntityException;
 import misOfertasDesktopController.exceptions.PreexistingEntityException;
@@ -85,7 +86,14 @@ public class ProductoJpaController implements Serializable {
                 attachedDescuentoEmitidoList.add(descuentoEmitidoListDescuentoEmitidoToAttach);
             }
             producto.setDescuentoEmitidoList(attachedDescuentoEmitidoList);
-            em.persist(producto);
+            StoredProcedureQuery createProducto = em.createNamedStoredProcedureQuery("createProducto");
+            createProducto.setParameter("p_nombre_producto", producto.getNombreProducto());
+            createProducto.setParameter("p_rubro_id", producto.getRubro().getIdRubro());
+            createProducto.setParameter("p_es_perecible", producto.getEsPerecible());
+            createProducto.setParameter("p_fecha_venc", producto.getFechaVencimiento());
+            createProducto.setParameter("p_activo", producto.getIsActive());
+            createProducto.execute();
+            /*em.persist(producto);*/
             if (rubro != null) {
                 rubro.getProductoList().add(producto);
                 rubro = em.merge(rubro);
