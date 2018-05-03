@@ -28,6 +28,11 @@ public class ProductoDAO {
     {
         productoController.create(producto);
     }
+    public Long getMaxId()            
+    {        
+        Long maxId = productoController.getEntityManager().createNamedQuery("Producto.getMaxId",Long.class).getSingleResult();
+        return maxId;
+    }
    
     
 

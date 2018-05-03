@@ -37,7 +37,7 @@ public class UsuarioTienda implements Serializable {
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
     @ManyToOne(optional = false)
     private Tienda tiendaId;
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID")
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 

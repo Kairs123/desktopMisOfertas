@@ -28,18 +28,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TipoUsuario.findAll", query = "SELECT t FROM TipoUsuario t")
-    , @NamedQuery(name = "TipoUsuario.findByTipoUserId", query = "SELECT t FROM TipoUsuario t WHERE t.tipoUserId = :tipoUserId")
+    , @NamedQuery(name = "TipoUsuario.findByIdTipoUsuario", query = "SELECT t FROM TipoUsuario t WHERE t.idTipoUsuario = :idTipoUsuario")
     , @NamedQuery(name = "TipoUsuario.findByDescripcion", query = "SELECT t FROM TipoUsuario t WHERE t.descripcion = :descripcion")})
 public class TipoUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "TIPO_USER_ID")
-    private Long tipoUserId;
+    @Column(name = "ID_TIPO_USUARIO")
+    private Long idTipoUsuario;
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoUser")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoUsuarioId")
     private List<Usuario> usuarioList;
     @OneToMany(mappedBy = "tipoUsuarioId")
     private List<Menu> menuList;
@@ -47,16 +47,16 @@ public class TipoUsuario implements Serializable {
     public TipoUsuario() {
     }
 
-    public TipoUsuario(Long tipoUserId) {
-        this.tipoUserId = tipoUserId;
+    public TipoUsuario(Long idTipoUsuario) {
+        this.idTipoUsuario = idTipoUsuario;
     }
 
-    public Long getTipoUserId() {
-        return tipoUserId;
+    public Long getIdTipoUsuario() {
+        return idTipoUsuario;
     }
 
-    public void setTipoUserId(Long tipoUserId) {
-        this.tipoUserId = tipoUserId;
+    public void setIdTipoUsuario(Long idTipoUsuario) {
+        this.idTipoUsuario = idTipoUsuario;
     }
 
     public String getDescripcion() {
@@ -88,7 +88,7 @@ public class TipoUsuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tipoUserId != null ? tipoUserId.hashCode() : 0);
+        hash += (idTipoUsuario != null ? idTipoUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -99,7 +99,7 @@ public class TipoUsuario implements Serializable {
             return false;
         }
         TipoUsuario other = (TipoUsuario) object;
-        if ((this.tipoUserId == null && other.tipoUserId != null) || (this.tipoUserId != null && !this.tipoUserId.equals(other.tipoUserId))) {
+        if ((this.idTipoUsuario == null && other.idTipoUsuario != null) || (this.idTipoUsuario != null && !this.idTipoUsuario.equals(other.idTipoUsuario))) {
             return false;
         }
         return true;
@@ -107,7 +107,7 @@ public class TipoUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.TipoUsuario[ tipoUserId=" + tipoUserId + " ]";
+        return "MisOfertasDesktopEntities.TipoUsuario[ idTipoUsuario=" + idTipoUsuario + " ]";
     }
     
 }

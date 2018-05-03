@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findByUsuarioId", query = "SELECT u FROM Usuario u WHERE u.usuarioId = :usuarioId")
+    , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByPassw", query = "SELECT u FROM Usuario u WHERE u.passw = :passw")
     , @NamedQuery(name = "Usuario.findByPuntosAcumulados", query = "SELECT u FROM Usuario u WHERE u.puntosAcumulados = :puntosAcumulados")
@@ -41,8 +41,8 @@ public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "USUARIO_ID")
-    private Long usuarioId;
+    @Column(name = "ID_USUARIO")
+    private Long idUsuario;
     @Basic(optional = false)
     @Column(name = "USERNAME")
     private String username;
@@ -62,12 +62,12 @@ public class Usuario implements Serializable {
     private List<ImagenProducto> imagenProductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<Preferencias> preferenciasList;
-    @JoinColumn(name = "PERSONA_ID", referencedColumnName = "PERSONA_ID")
+    @JoinColumn(name = "PERSONA_ID", referencedColumnName = "ID_PERSONA")
     @ManyToOne(optional = false)
     private Persona personaId;
-    @JoinColumn(name = "TIPO_USER", referencedColumnName = "TIPO_USER_ID")
+    @JoinColumn(name = "TIPO_USUARIO_ID", referencedColumnName = "ID_TIPO_USUARIO")
     @ManyToOne(optional = false)
-    private TipoUsuario tipoUser;
+    private TipoUsuario tipoUsuarioId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<Valoracion> valoracionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
@@ -80,12 +80,12 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Long usuarioId) {
-        this.usuarioId = usuarioId;
+    public Usuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Usuario(Long usuarioId, String username, String passw, long puntosAcumulados, long tiendaId, String userIsActive) {
-        this.usuarioId = usuarioId;
+    public Usuario(Long idUsuario, String username, String passw, long puntosAcumulados, long tiendaId, String userIsActive) {
+        this.idUsuario = idUsuario;
         this.username = username;
         this.passw = passw;
         this.puntosAcumulados = puntosAcumulados;
@@ -93,12 +93,12 @@ public class Usuario implements Serializable {
         this.userIsActive = userIsActive;
     }
 
-    public Long getUsuarioId() {
-        return usuarioId;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getUsername() {
@@ -167,12 +167,12 @@ public class Usuario implements Serializable {
         this.personaId = personaId;
     }
 
-    public TipoUsuario getTipoUser() {
-        return tipoUser;
+    public TipoUsuario getTipoUsuarioId() {
+        return tipoUsuarioId;
     }
 
-    public void setTipoUser(TipoUsuario tipoUser) {
-        this.tipoUser = tipoUser;
+    public void setTipoUsuarioId(TipoUsuario tipoUsuarioId) {
+        this.tipoUsuarioId = tipoUsuarioId;
     }
 
     @XmlTransient
@@ -214,7 +214,7 @@ public class Usuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usuarioId != null ? usuarioId.hashCode() : 0);
+        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
         return hash;
     }
 
@@ -225,7 +225,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.usuarioId == null && other.usuarioId != null) || (this.usuarioId != null && !this.usuarioId.equals(other.usuarioId))) {
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
             return false;
         }
         return true;
@@ -233,7 +233,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.Usuario[ usuarioId=" + usuarioId + " ]";
+        return "MisOfertasDesktopEntities.Usuario[ idUsuario=" + idUsuario + " ]";
     }
     
 }

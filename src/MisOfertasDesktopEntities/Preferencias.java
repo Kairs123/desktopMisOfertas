@@ -37,7 +37,7 @@ public class Preferencias implements Serializable {
     @JoinColumn(name = "RUBRO_ID", referencedColumnName = "ID_RUBRO")
     @ManyToOne(optional = false)
     private Rubro rubroId;
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID")
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 

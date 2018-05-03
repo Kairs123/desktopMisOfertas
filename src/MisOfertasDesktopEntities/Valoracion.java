@@ -41,7 +41,7 @@ public class Valoracion implements Serializable {
     @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "PRODUCTO_ID")
     @ManyToOne(optional = false)
     private Producto productoId;
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID")
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 

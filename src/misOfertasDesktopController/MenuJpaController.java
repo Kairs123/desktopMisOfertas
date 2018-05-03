@@ -15,8 +15,8 @@ import MisOfertasDesktopEntities.TipoUsuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -40,7 +40,7 @@ public class MenuJpaController implements Serializable {
             em.getTransaction().begin();
             TipoUsuario tipoUsuarioId = menu.getTipoUsuarioId();
             if (tipoUsuarioId != null) {
-                tipoUsuarioId = em.getReference(tipoUsuarioId.getClass(), tipoUsuarioId.getTipoUserId());
+                tipoUsuarioId = em.getReference(tipoUsuarioId.getClass(), tipoUsuarioId.getIdTipoUsuario());
                 menu.setTipoUsuarioId(tipoUsuarioId);
             }
             em.persist(menu);
@@ -70,7 +70,7 @@ public class MenuJpaController implements Serializable {
             TipoUsuario tipoUsuarioIdOld = persistentMenu.getTipoUsuarioId();
             TipoUsuario tipoUsuarioIdNew = menu.getTipoUsuarioId();
             if (tipoUsuarioIdNew != null) {
-                tipoUsuarioIdNew = em.getReference(tipoUsuarioIdNew.getClass(), tipoUsuarioIdNew.getTipoUserId());
+                tipoUsuarioIdNew = em.getReference(tipoUsuarioIdNew.getClass(), tipoUsuarioIdNew.getIdTipoUsuario());
                 menu.setTipoUsuarioId(tipoUsuarioIdNew);
             }
             menu = em.merge(menu);

@@ -23,9 +23,9 @@ import MisOfertasDesktopEntities.OfertaConsultadaUsuario;
 import MisOfertasDesktopEntities.Usuario;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -67,13 +67,13 @@ public class UsuarioJpaController implements Serializable {
             em.getTransaction().begin();
             Persona personaId = usuario.getPersonaId();
             if (personaId != null) {
-                personaId = em.getReference(personaId.getClass(), personaId.getPersonaId());
+                personaId = em.getReference(personaId.getClass(), personaId.getIdPersona());
                 usuario.setPersonaId(personaId);
             }
-            TipoUsuario tipoUser = usuario.getTipoUser();
-            if (tipoUser != null) {
-                tipoUser = em.getReference(tipoUser.getClass(), tipoUser.getTipoUserId());
-                usuario.setTipoUser(tipoUser);
+            TipoUsuario tipoUsuarioId = usuario.getTipoUsuarioId();
+            if (tipoUsuarioId != null) {
+                tipoUsuarioId = em.getReference(tipoUsuarioId.getClass(), tipoUsuarioId.getIdTipoUsuario());
+                usuario.setTipoUsuarioId(tipoUsuarioId);
             }
             List<ImagenProducto> attachedImagenProductoList = new ArrayList<ImagenProducto>();
             for (ImagenProducto imagenProductoListImagenProductoToAttach : usuario.getImagenProductoList()) {
@@ -116,9 +116,9 @@ public class UsuarioJpaController implements Serializable {
                 personaId.getUsuarioList().add(usuario);
                 personaId = em.merge(personaId);
             }
-            if (tipoUser != null) {
-                tipoUser.getUsuarioList().add(usuario);
-                tipoUser = em.merge(tipoUser);
+            if (tipoUsuarioId != null) {
+                tipoUsuarioId.getUsuarioList().add(usuario);
+                tipoUsuarioId = em.merge(tipoUsuarioId);
             }
             for (ImagenProducto imagenProductoListImagenProducto : usuario.getImagenProductoList()) {
                 Usuario oldEncargadoOfImagenProductoListImagenProducto = imagenProductoListImagenProducto.getEncargado();
@@ -176,7 +176,7 @@ public class UsuarioJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findUsuario(usuario.getUsuarioId()) != null) {
+            if (findUsuario(usuario.getIdUsuario()) != null) {
                 throw new PreexistingEntityException("Usuario " + usuario + " already exists.", ex);
             }
             throw ex;
@@ -192,11 +192,11 @@ public class UsuarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario persistentUsuario = em.find(Usuario.class, usuario.getUsuarioId());
+            Usuario persistentUsuario = em.find(Usuario.class, usuario.getIdUsuario());
             Persona personaIdOld = persistentUsuario.getPersonaId();
             Persona personaIdNew = usuario.getPersonaId();
-            TipoUsuario tipoUserOld = persistentUsuario.getTipoUser();
-            TipoUsuario tipoUserNew = usuario.getTipoUser();
+            TipoUsuario tipoUsuarioIdOld = persistentUsuario.getTipoUsuarioId();
+            TipoUsuario tipoUsuarioIdNew = usuario.getTipoUsuarioId();
             List<ImagenProducto> imagenProductoListOld = persistentUsuario.getImagenProductoList();
             List<ImagenProducto> imagenProductoListNew = usuario.getImagenProductoList();
             List<Preferencias> preferenciasListOld = persistentUsuario.getPreferenciasList();
@@ -262,12 +262,12 @@ public class UsuarioJpaController implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             if (personaIdNew != null) {
-                personaIdNew = em.getReference(personaIdNew.getClass(), personaIdNew.getPersonaId());
+                personaIdNew = em.getReference(personaIdNew.getClass(), personaIdNew.getIdPersona());
                 usuario.setPersonaId(personaIdNew);
             }
-            if (tipoUserNew != null) {
-                tipoUserNew = em.getReference(tipoUserNew.getClass(), tipoUserNew.getTipoUserId());
-                usuario.setTipoUser(tipoUserNew);
+            if (tipoUsuarioIdNew != null) {
+                tipoUsuarioIdNew = em.getReference(tipoUsuarioIdNew.getClass(), tipoUsuarioIdNew.getIdTipoUsuario());
+                usuario.setTipoUsuarioId(tipoUsuarioIdNew);
             }
             List<ImagenProducto> attachedImagenProductoListNew = new ArrayList<ImagenProducto>();
             for (ImagenProducto imagenProductoListNewImagenProductoToAttach : imagenProductoListNew) {
@@ -320,13 +320,13 @@ public class UsuarioJpaController implements Serializable {
                 personaIdNew.getUsuarioList().add(usuario);
                 personaIdNew = em.merge(personaIdNew);
             }
-            if (tipoUserOld != null && !tipoUserOld.equals(tipoUserNew)) {
-                tipoUserOld.getUsuarioList().remove(usuario);
-                tipoUserOld = em.merge(tipoUserOld);
+            if (tipoUsuarioIdOld != null && !tipoUsuarioIdOld.equals(tipoUsuarioIdNew)) {
+                tipoUsuarioIdOld.getUsuarioList().remove(usuario);
+                tipoUsuarioIdOld = em.merge(tipoUsuarioIdOld);
             }
-            if (tipoUserNew != null && !tipoUserNew.equals(tipoUserOld)) {
-                tipoUserNew.getUsuarioList().add(usuario);
-                tipoUserNew = em.merge(tipoUserNew);
+            if (tipoUsuarioIdNew != null && !tipoUsuarioIdNew.equals(tipoUsuarioIdOld)) {
+                tipoUsuarioIdNew.getUsuarioList().add(usuario);
+                tipoUsuarioIdNew = em.merge(tipoUsuarioIdNew);
             }
             for (ImagenProducto imagenProductoListNewImagenProducto : imagenProductoListNew) {
                 if (!imagenProductoListOld.contains(imagenProductoListNewImagenProducto)) {
@@ -398,7 +398,7 @@ public class UsuarioJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = usuario.getUsuarioId();
+                Long id = usuario.getIdUsuario();
                 if (findUsuario(id) == null) {
                     throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
                 }
@@ -419,7 +419,7 @@ public class UsuarioJpaController implements Serializable {
             Usuario usuario;
             try {
                 usuario = em.getReference(Usuario.class, id);
-                usuario.getUsuarioId();
+                usuario.getIdUsuario();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
             }
@@ -474,10 +474,10 @@ public class UsuarioJpaController implements Serializable {
                 personaId.getUsuarioList().remove(usuario);
                 personaId = em.merge(personaId);
             }
-            TipoUsuario tipoUser = usuario.getTipoUser();
-            if (tipoUser != null) {
-                tipoUser.getUsuarioList().remove(usuario);
-                tipoUser = em.merge(tipoUser);
+            TipoUsuario tipoUsuarioId = usuario.getTipoUsuarioId();
+            if (tipoUsuarioId != null) {
+                tipoUsuarioId.getUsuarioList().remove(usuario);
+                tipoUsuarioId = em.merge(tipoUsuarioId);
             }
             em.remove(usuario);
             em.getTransaction().commit();

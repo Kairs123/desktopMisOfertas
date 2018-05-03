@@ -50,7 +50,7 @@ public class Menu implements Serializable {
     @Basic(optional = false)
     @Column(name = "RUTA")
     private String ruta;
-    @JoinColumn(name = "TIPO_USUARIO_ID", referencedColumnName = "TIPO_USER_ID")
+    @JoinColumn(name = "TIPO_USUARIO_ID", referencedColumnName = "ID_TIPO_USUARIO")
     @ManyToOne
     private TipoUsuario tipoUsuarioId;
 

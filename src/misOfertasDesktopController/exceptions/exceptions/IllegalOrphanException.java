@@ -1,4 +1,4 @@
-package misOfertasDesktopController.exceptions;
+package misOfertasDesktopController.exceptions.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

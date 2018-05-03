@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p")
-    , @NamedQuery(name = "Persona.findByPersonaId", query = "SELECT p FROM Persona p WHERE p.personaId = :personaId")
+    , @NamedQuery(name = "Persona.findByIdPersona", query = "SELECT p FROM Persona p WHERE p.idPersona = :idPersona")
     , @NamedQuery(name = "Persona.findByRut", query = "SELECT p FROM Persona p WHERE p.rut = :rut")
     , @NamedQuery(name = "Persona.findByDvRut", query = "SELECT p FROM Persona p WHERE p.dvRut = :dvRut")
     , @NamedQuery(name = "Persona.findByPrimerNombre", query = "SELECT p FROM Persona p WHERE p.primerNombre = :primerNombre")
@@ -46,8 +46,8 @@ public class Persona implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "PERSONA_ID")
-    private Long personaId;
+    @Column(name = "ID_PERSONA")
+    private Long idPersona;
     @Basic(optional = false)
     @Column(name = "RUT")
     private long rut;
@@ -85,12 +85,12 @@ public class Persona implements Serializable {
     public Persona() {
     }
 
-    public Persona(Long personaId) {
-        this.personaId = personaId;
+    public Persona(Long idPersona) {
+        this.idPersona = idPersona;
     }
 
-    public Persona(Long personaId, long rut, Character dvRut, String primerNombre, String apellidoPaterno, String apellidoMaterno, String direccion, long telefono, String isActive) {
-        this.personaId = personaId;
+    public Persona(Long idPersona, long rut, Character dvRut, String primerNombre, String apellidoPaterno, String apellidoMaterno, String direccion, long telefono, String isActive) {
+        this.idPersona = idPersona;
         this.rut = rut;
         this.dvRut = dvRut;
         this.primerNombre = primerNombre;
@@ -101,12 +101,12 @@ public class Persona implements Serializable {
         this.isActive = isActive;
     }
 
-    public Long getPersonaId() {
-        return personaId;
+    public Long getIdPersona() {
+        return idPersona;
     }
 
-    public void setPersonaId(Long personaId) {
-        this.personaId = personaId;
+    public void setIdPersona(Long idPersona) {
+        this.idPersona = idPersona;
     }
 
     public long getRut() {
@@ -209,7 +209,7 @@ public class Persona implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (personaId != null ? personaId.hashCode() : 0);
+        hash += (idPersona != null ? idPersona.hashCode() : 0);
         return hash;
     }
 
@@ -220,7 +220,7 @@ public class Persona implements Serializable {
             return false;
         }
         Persona other = (Persona) object;
-        if ((this.personaId == null && other.personaId != null) || (this.personaId != null && !this.personaId.equals(other.personaId))) {
+        if ((this.idPersona == null && other.idPersona != null) || (this.idPersona != null && !this.idPersona.equals(other.idPersona))) {
             return false;
         }
         return true;
@@ -228,7 +228,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.Persona[ personaId=" + personaId + " ]";
+        return "MisOfertasDesktopEntities.Persona[ idPersona=" + idPersona + " ]";
     }
     
 }

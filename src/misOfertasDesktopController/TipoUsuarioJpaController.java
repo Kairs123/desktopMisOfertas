@@ -17,9 +17,9 @@ import MisOfertasDesktopEntities.Menu;
 import MisOfertasDesktopEntities.TipoUsuario;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -49,7 +49,7 @@ public class TipoUsuarioJpaController implements Serializable {
             em.getTransaction().begin();
             List<Usuario> attachedUsuarioList = new ArrayList<Usuario>();
             for (Usuario usuarioListUsuarioToAttach : tipoUsuario.getUsuarioList()) {
-                usuarioListUsuarioToAttach = em.getReference(usuarioListUsuarioToAttach.getClass(), usuarioListUsuarioToAttach.getUsuarioId());
+                usuarioListUsuarioToAttach = em.getReference(usuarioListUsuarioToAttach.getClass(), usuarioListUsuarioToAttach.getIdUsuario());
                 attachedUsuarioList.add(usuarioListUsuarioToAttach);
             }
             tipoUsuario.setUsuarioList(attachedUsuarioList);
@@ -61,12 +61,12 @@ public class TipoUsuarioJpaController implements Serializable {
             tipoUsuario.setMenuList(attachedMenuList);
             em.persist(tipoUsuario);
             for (Usuario usuarioListUsuario : tipoUsuario.getUsuarioList()) {
-                TipoUsuario oldTipoUserOfUsuarioListUsuario = usuarioListUsuario.getTipoUser();
-                usuarioListUsuario.setTipoUser(tipoUsuario);
+                TipoUsuario oldTipoUsuarioIdOfUsuarioListUsuario = usuarioListUsuario.getTipoUsuarioId();
+                usuarioListUsuario.setTipoUsuarioId(tipoUsuario);
                 usuarioListUsuario = em.merge(usuarioListUsuario);
-                if (oldTipoUserOfUsuarioListUsuario != null) {
-                    oldTipoUserOfUsuarioListUsuario.getUsuarioList().remove(usuarioListUsuario);
-                    oldTipoUserOfUsuarioListUsuario = em.merge(oldTipoUserOfUsuarioListUsuario);
+                if (oldTipoUsuarioIdOfUsuarioListUsuario != null) {
+                    oldTipoUsuarioIdOfUsuarioListUsuario.getUsuarioList().remove(usuarioListUsuario);
+                    oldTipoUsuarioIdOfUsuarioListUsuario = em.merge(oldTipoUsuarioIdOfUsuarioListUsuario);
                 }
             }
             for (Menu menuListMenu : tipoUsuario.getMenuList()) {
@@ -80,7 +80,7 @@ public class TipoUsuarioJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findTipoUsuario(tipoUsuario.getTipoUserId()) != null) {
+            if (findTipoUsuario(tipoUsuario.getIdTipoUsuario()) != null) {
                 throw new PreexistingEntityException("TipoUsuario " + tipoUsuario + " already exists.", ex);
             }
             throw ex;
@@ -96,7 +96,7 @@ public class TipoUsuarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            TipoUsuario persistentTipoUsuario = em.find(TipoUsuario.class, tipoUsuario.getTipoUserId());
+            TipoUsuario persistentTipoUsuario = em.find(TipoUsuario.class, tipoUsuario.getIdTipoUsuario());
             List<Usuario> usuarioListOld = persistentTipoUsuario.getUsuarioList();
             List<Usuario> usuarioListNew = tipoUsuario.getUsuarioList();
             List<Menu> menuListOld = persistentTipoUsuario.getMenuList();
@@ -107,7 +107,7 @@ public class TipoUsuarioJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Usuario " + usuarioListOldUsuario + " since its tipoUser field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Usuario " + usuarioListOldUsuario + " since its tipoUsuarioId field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -115,7 +115,7 @@ public class TipoUsuarioJpaController implements Serializable {
             }
             List<Usuario> attachedUsuarioListNew = new ArrayList<Usuario>();
             for (Usuario usuarioListNewUsuarioToAttach : usuarioListNew) {
-                usuarioListNewUsuarioToAttach = em.getReference(usuarioListNewUsuarioToAttach.getClass(), usuarioListNewUsuarioToAttach.getUsuarioId());
+                usuarioListNewUsuarioToAttach = em.getReference(usuarioListNewUsuarioToAttach.getClass(), usuarioListNewUsuarioToAttach.getIdUsuario());
                 attachedUsuarioListNew.add(usuarioListNewUsuarioToAttach);
             }
             usuarioListNew = attachedUsuarioListNew;
@@ -130,12 +130,12 @@ public class TipoUsuarioJpaController implements Serializable {
             tipoUsuario = em.merge(tipoUsuario);
             for (Usuario usuarioListNewUsuario : usuarioListNew) {
                 if (!usuarioListOld.contains(usuarioListNewUsuario)) {
-                    TipoUsuario oldTipoUserOfUsuarioListNewUsuario = usuarioListNewUsuario.getTipoUser();
-                    usuarioListNewUsuario.setTipoUser(tipoUsuario);
+                    TipoUsuario oldTipoUsuarioIdOfUsuarioListNewUsuario = usuarioListNewUsuario.getTipoUsuarioId();
+                    usuarioListNewUsuario.setTipoUsuarioId(tipoUsuario);
                     usuarioListNewUsuario = em.merge(usuarioListNewUsuario);
-                    if (oldTipoUserOfUsuarioListNewUsuario != null && !oldTipoUserOfUsuarioListNewUsuario.equals(tipoUsuario)) {
-                        oldTipoUserOfUsuarioListNewUsuario.getUsuarioList().remove(usuarioListNewUsuario);
-                        oldTipoUserOfUsuarioListNewUsuario = em.merge(oldTipoUserOfUsuarioListNewUsuario);
+                    if (oldTipoUsuarioIdOfUsuarioListNewUsuario != null && !oldTipoUsuarioIdOfUsuarioListNewUsuario.equals(tipoUsuario)) {
+                        oldTipoUsuarioIdOfUsuarioListNewUsuario.getUsuarioList().remove(usuarioListNewUsuario);
+                        oldTipoUsuarioIdOfUsuarioListNewUsuario = em.merge(oldTipoUsuarioIdOfUsuarioListNewUsuario);
                     }
                 }
             }
@@ -160,7 +160,7 @@ public class TipoUsuarioJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = tipoUsuario.getTipoUserId();
+                Long id = tipoUsuario.getIdTipoUsuario();
                 if (findTipoUsuario(id) == null) {
                     throw new NonexistentEntityException("The tipoUsuario with id " + id + " no longer exists.");
                 }
@@ -181,7 +181,7 @@ public class TipoUsuarioJpaController implements Serializable {
             TipoUsuario tipoUsuario;
             try {
                 tipoUsuario = em.getReference(TipoUsuario.class, id);
-                tipoUsuario.getTipoUserId();
+                tipoUsuario.getIdTipoUsuario();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The tipoUsuario with id " + id + " no longer exists.", enfe);
             }
@@ -191,7 +191,7 @@ public class TipoUsuarioJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This TipoUsuario (" + tipoUsuario + ") cannot be destroyed since the Usuario " + usuarioListOrphanCheckUsuario + " in its usuarioList field has a non-nullable tipoUser field.");
+                illegalOrphanMessages.add("This TipoUsuario (" + tipoUsuario + ") cannot be destroyed since the Usuario " + usuarioListOrphanCheckUsuario + " in its usuarioList field has a non-nullable tipoUsuarioId field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

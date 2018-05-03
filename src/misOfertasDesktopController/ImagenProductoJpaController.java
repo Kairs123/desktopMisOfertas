@@ -16,8 +16,8 @@ import MisOfertasDesktopEntities.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -46,7 +46,7 @@ public class ImagenProductoJpaController implements Serializable {
             }
             Usuario encargado = imagenProducto.getEncargado();
             if (encargado != null) {
-                encargado = em.getReference(encargado.getClass(), encargado.getUsuarioId());
+                encargado = em.getReference(encargado.getClass(), encargado.getIdUsuario());
                 imagenProducto.setEncargado(encargado);
             }
             em.persist(imagenProducto);
@@ -86,7 +86,7 @@ public class ImagenProductoJpaController implements Serializable {
                 imagenProducto.setProductoId(productoIdNew);
             }
             if (encargadoNew != null) {
-                encargadoNew = em.getReference(encargadoNew.getClass(), encargadoNew.getUsuarioId());
+                encargadoNew = em.getReference(encargadoNew.getClass(), encargadoNew.getIdUsuario());
                 imagenProducto.setEncargado(encargadoNew);
             }
             imagenProducto = em.merge(imagenProducto);

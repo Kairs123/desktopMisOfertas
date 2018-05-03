@@ -42,7 +42,7 @@ public class ImagenProducto implements Serializable {
     @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "PRODUCTO_ID")
     @ManyToOne(optional = false)
     private Producto productoId;
-    @JoinColumn(name = "ENCARGADO", referencedColumnName = "USUARIO_ID")
+    @JoinColumn(name = "ENCARGADO", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario encargado;
 

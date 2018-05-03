@@ -18,9 +18,9 @@ import java.util.List;
 import MisOfertasDesktopEntities.Persona;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -61,7 +61,7 @@ public class ComunaJpaController implements Serializable {
             comuna.setTiendaList(attachedTiendaList);
             List<Persona> attachedPersonaList = new ArrayList<Persona>();
             for (Persona personaListPersonaToAttach : comuna.getPersonaList()) {
-                personaListPersonaToAttach = em.getReference(personaListPersonaToAttach.getClass(), personaListPersonaToAttach.getPersonaId());
+                personaListPersonaToAttach = em.getReference(personaListPersonaToAttach.getClass(), personaListPersonaToAttach.getIdPersona());
                 attachedPersonaList.add(personaListPersonaToAttach);
             }
             comuna.setPersonaList(attachedPersonaList);
@@ -146,7 +146,7 @@ public class ComunaJpaController implements Serializable {
             comuna.setTiendaList(tiendaListNew);
             List<Persona> attachedPersonaListNew = new ArrayList<Persona>();
             for (Persona personaListNewPersonaToAttach : personaListNew) {
-                personaListNewPersonaToAttach = em.getReference(personaListNewPersonaToAttach.getClass(), personaListNewPersonaToAttach.getPersonaId());
+                personaListNewPersonaToAttach = em.getReference(personaListNewPersonaToAttach.getClass(), personaListNewPersonaToAttach.getIdPersona());
                 attachedPersonaListNew.add(personaListNewPersonaToAttach);
             }
             personaListNew = attachedPersonaListNew;

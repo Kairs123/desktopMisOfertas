@@ -16,8 +16,8 @@ import MisOfertasDesktopEntities.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -46,7 +46,7 @@ public class OfertaConsultadaUsuarioJpaController implements Serializable {
             }
             Usuario usuarioId = ofertaConsultadaUsuario.getUsuarioId();
             if (usuarioId != null) {
-                usuarioId = em.getReference(usuarioId.getClass(), usuarioId.getUsuarioId());
+                usuarioId = em.getReference(usuarioId.getClass(), usuarioId.getIdUsuario());
                 ofertaConsultadaUsuario.setUsuarioId(usuarioId);
             }
             em.persist(ofertaConsultadaUsuario);
@@ -86,7 +86,7 @@ public class OfertaConsultadaUsuarioJpaController implements Serializable {
                 ofertaConsultadaUsuario.setOfertaId(ofertaIdNew);
             }
             if (usuarioIdNew != null) {
-                usuarioIdNew = em.getReference(usuarioIdNew.getClass(), usuarioIdNew.getUsuarioId());
+                usuarioIdNew = em.getReference(usuarioIdNew.getClass(), usuarioIdNew.getIdUsuario());
                 ofertaConsultadaUsuario.setUsuarioId(usuarioIdNew);
             }
             ofertaConsultadaUsuario = em.merge(ofertaConsultadaUsuario);

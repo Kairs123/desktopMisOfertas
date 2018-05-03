@@ -16,8 +16,8 @@ import MisOfertasDesktopEntities.Valoracion;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -46,7 +46,7 @@ public class ValoracionJpaController implements Serializable {
             }
             Usuario usuarioId = valoracion.getUsuarioId();
             if (usuarioId != null) {
-                usuarioId = em.getReference(usuarioId.getClass(), usuarioId.getUsuarioId());
+                usuarioId = em.getReference(usuarioId.getClass(), usuarioId.getIdUsuario());
                 valoracion.setUsuarioId(usuarioId);
             }
             em.persist(valoracion);
@@ -86,7 +86,7 @@ public class ValoracionJpaController implements Serializable {
                 valoracion.setProductoId(productoIdNew);
             }
             if (usuarioIdNew != null) {
-                usuarioIdNew = em.getReference(usuarioIdNew.getClass(), usuarioIdNew.getUsuarioId());
+                usuarioIdNew = em.getReference(usuarioIdNew.getClass(), usuarioIdNew.getIdUsuario());
                 valoracion.setUsuarioId(usuarioIdNew);
             }
             valoracion = em.merge(valoracion);

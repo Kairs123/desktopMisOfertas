@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -51,7 +51,7 @@ public class PersonaJpaController implements Serializable {
             }
             List<Usuario> attachedUsuarioList = new ArrayList<Usuario>();
             for (Usuario usuarioListUsuarioToAttach : persona.getUsuarioList()) {
-                usuarioListUsuarioToAttach = em.getReference(usuarioListUsuarioToAttach.getClass(), usuarioListUsuarioToAttach.getUsuarioId());
+                usuarioListUsuarioToAttach = em.getReference(usuarioListUsuarioToAttach.getClass(), usuarioListUsuarioToAttach.getIdUsuario());
                 attachedUsuarioList.add(usuarioListUsuarioToAttach);
             }
             persona.setUsuarioList(attachedUsuarioList);
@@ -71,7 +71,7 @@ public class PersonaJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findPersona(persona.getPersonaId()) != null) {
+            if (findPersona(persona.getIdPersona()) != null) {
                 throw new PreexistingEntityException("Persona " + persona + " already exists.", ex);
             }
             throw ex;
@@ -87,7 +87,7 @@ public class PersonaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Persona persistentPersona = em.find(Persona.class, persona.getPersonaId());
+            Persona persistentPersona = em.find(Persona.class, persona.getIdPersona());
             Comuna comunaIdOld = persistentPersona.getComunaId();
             Comuna comunaIdNew = persona.getComunaId();
             List<Usuario> usuarioListOld = persistentPersona.getUsuarioList();
@@ -110,7 +110,7 @@ public class PersonaJpaController implements Serializable {
             }
             List<Usuario> attachedUsuarioListNew = new ArrayList<Usuario>();
             for (Usuario usuarioListNewUsuarioToAttach : usuarioListNew) {
-                usuarioListNewUsuarioToAttach = em.getReference(usuarioListNewUsuarioToAttach.getClass(), usuarioListNewUsuarioToAttach.getUsuarioId());
+                usuarioListNewUsuarioToAttach = em.getReference(usuarioListNewUsuarioToAttach.getClass(), usuarioListNewUsuarioToAttach.getIdUsuario());
                 attachedUsuarioListNew.add(usuarioListNewUsuarioToAttach);
             }
             usuarioListNew = attachedUsuarioListNew;
@@ -139,7 +139,7 @@ public class PersonaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = persona.getPersonaId();
+                Long id = persona.getIdPersona();
                 if (findPersona(id) == null) {
                     throw new NonexistentEntityException("The persona with id " + id + " no longer exists.");
                 }
@@ -160,7 +160,7 @@ public class PersonaJpaController implements Serializable {
             Persona persona;
             try {
                 persona = em.getReference(Persona.class, id);
-                persona.getPersonaId();
+                persona.getIdPersona();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The persona with id " + id + " no longer exists.", enfe);
             }
