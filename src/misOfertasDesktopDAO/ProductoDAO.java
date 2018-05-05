@@ -33,6 +33,14 @@ public class ProductoDAO {
         Long maxId = productoController.getEntityManager().createNamedQuery("Producto.getMaxId",Long.class).getSingleResult();
         return maxId;
     }
+    public void editProducto(Producto producto) throws Exception
+    {
+        productoController.edit(producto);
+    }
+    public Producto findById(Long idProducto)
+    {
+        return productoController.findProducto(idProducto);
+    }
    
     
 

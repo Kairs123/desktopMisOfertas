@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Producto.findByEsPerecible", query = "SELECT p FROM Producto p WHERE p.esPerecible = :esPerecible")
     , @NamedQuery(name = "Producto.findByFechaVencimiento", query = "SELECT p FROM Producto p WHERE p.fechaVencimiento = :fechaVencimiento")
     , @NamedQuery(name = "Producto.findByIsActive", query = "SELECT p FROM Producto p WHERE p.isActive = :isActive")})
-@NamedStoredProcedureQueries ({
+@NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery(
             name = "createProducto",
             procedureName = "PKG_CRUD_PRODUCTO.PRC_CREATE_PRODUCTO",
@@ -48,34 +48,64 @@ import javax.xml.bind.annotation.XmlTransient;
                         name = "p_producto_id",
                         type = Long.class,
                         mode = ParameterMode.IN
-                        ),
+                )
+                ,
                 @javax.persistence.StoredProcedureParameter(
                         name = "p_nombre_producto",
                         type = String.class,
                         mode = ParameterMode.IN
-                        ),
+                )
+                ,
                 @javax.persistence.StoredProcedureParameter(
                         name = "p_rubro_id",
                         type = Long.class,
                         mode = ParameterMode.IN
-                        ),
+                )
+                ,
                 @javax.persistence.StoredProcedureParameter(
                         name = "p_es_perecible",
                         type = Integer.class,
                         mode = ParameterMode.IN
-                        ),
+                )
+                ,
                 @javax.persistence.StoredProcedureParameter(
                         name = "p_fecha_venc",
                         type = String.class,
                         mode = ParameterMode.IN
-                        ),
+                )
+                ,
                 @javax.persistence.StoredProcedureParameter(
                         name = "p_activo",
                         type = String.class,
                         mode = ParameterMode.IN
-                        )           
-            }    
+                )
+            }
     )
+    ,
+    @NamedStoredProcedureQuery(
+            name = "editProducto",
+            procedureName = "PKG_CRUD_PRODUCTO.PRC_UPDATE_PRODUCTO",
+            parameters = {
+                @javax.persistence.StoredProcedureParameter(
+                        name = "p_id_prod",
+                        type = Long.class,
+                        mode = ParameterMode.IN
+                )
+                ,
+                 @javax.persistence.StoredProcedureParameter(
+                        name = "p_nombre_producto",
+                        type = String.class,
+                        mode = ParameterMode.IN
+                )
+                ,
+                  @javax.persistence.StoredProcedureParameter(
+                        name = "p_fecha_venc",
+                        type = String.class,
+                        mode = ParameterMode.IN
+                )
+            }
+    )
+
 })
 public class Producto implements Serializable {
 
@@ -218,5 +248,5 @@ public class Producto implements Serializable {
     public String toString() {
         return "MisOfertasDesktopEntities.Producto[ idProducto=" + idProducto + " ]";
     }
-    
+
 }

@@ -195,7 +195,13 @@ public class ProductoJpaController implements Serializable {
             }
             descuentoEmitidoListNew = attachedDescuentoEmitidoListNew;
             producto.setDescuentoEmitidoList(descuentoEmitidoListNew);
-            producto = em.merge(producto);
+            /*producto = em.merge(producto);*/
+            StoredProcedureQuery editProducto = em.createNamedStoredProcedureQuery("editProducto");
+            editProducto.setParameter("p_id_prod", producto.getIdProducto());
+            editProducto.setParameter("p_nombre_producto", producto.getNombreProducto());
+            editProducto.setParameter("p_fecha_venc", producto.getFechaVencimiento());
+            editProducto.executeUpdate();
+            
             if (rubroOld != null && !rubroOld.equals(rubroNew)) {
                 rubroOld.getProductoList().remove(producto);
                 rubroOld = em.merge(rubroOld);

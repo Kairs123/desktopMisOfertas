@@ -32,13 +32,13 @@ public class NewFXMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         Button btn = new Button();
-        btn.setText("Say 'Hello World'");
+        btn.setText("Say 'Crear'");
         btn.setOnAction((ActionEvent event) -> {
             ProductoDAO pDAO = new ProductoDAO();
             RubroDAO rDAO = new RubroDAO();
             Producto p = new Producto();
             Rubro r = new Rubro();
-            r = rDAO.getRubroById(1L);
+            /*r = rDAO.getRubroById(1L);
             Long id = pDAO.getMaxId();
             p.setIdProducto(++id);
             p.setEsPerecible(1);
@@ -48,6 +48,15 @@ public class NewFXMain extends Application {
             p.setRubro(r);
             try {
                 pDAO.addProducto(p);
+            } catch (Exception ex) {
+                Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
+            p = pDAO.findById(50L);
+            p.setNombreProducto("Test JPA EDITADO");
+            p.setFechaVencimiento("30/05/2018");
+            p.setIdProducto(p.getIdProducto());
+            try {
+                pDAO.editProducto(p);
             } catch (Exception ex) {
                 Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
             }
