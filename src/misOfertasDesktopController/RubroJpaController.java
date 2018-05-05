@@ -11,16 +11,16 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import MisOfertasDesktopEntities.Tienda;
-import MisOfertasDesktopEntities.Preferencias;
+import MisOfertasDesktopEntities.Producto;
 import java.util.ArrayList;
 import java.util.List;
-import MisOfertasDesktopEntities.Producto;
+import MisOfertasDesktopEntities.PrefRubroUsuario;
 import MisOfertasDesktopEntities.Rubro;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -38,11 +38,11 @@ public class RubroJpaController implements Serializable {
     }
 
     public void create(Rubro rubro) throws PreexistingEntityException, Exception {
-        if (rubro.getPreferenciasList() == null) {
-            rubro.setPreferenciasList(new ArrayList<Preferencias>());
-        }
         if (rubro.getProductoList() == null) {
             rubro.setProductoList(new ArrayList<Producto>());
+        }
+        if (rubro.getPrefRubroUsuarioList() == null) {
+            rubro.setPrefRubroUsuarioList(new ArrayList<PrefRubroUsuario>());
         }
         EntityManager em = null;
         try {
@@ -53,31 +53,22 @@ public class RubroJpaController implements Serializable {
                 tiendaId = em.getReference(tiendaId.getClass(), tiendaId.getIdTienda());
                 rubro.setTiendaId(tiendaId);
             }
-            List<Preferencias> attachedPreferenciasList = new ArrayList<Preferencias>();
-            for (Preferencias preferenciasListPreferenciasToAttach : rubro.getPreferenciasList()) {
-                preferenciasListPreferenciasToAttach = em.getReference(preferenciasListPreferenciasToAttach.getClass(), preferenciasListPreferenciasToAttach.getPreferenciaId());
-                attachedPreferenciasList.add(preferenciasListPreferenciasToAttach);
-            }
-            rubro.setPreferenciasList(attachedPreferenciasList);
             List<Producto> attachedProductoList = new ArrayList<Producto>();
             for (Producto productoListProductoToAttach : rubro.getProductoList()) {
-                productoListProductoToAttach = em.getReference(productoListProductoToAttach.getClass(), productoListProductoToAttach.getProductoId());
+                productoListProductoToAttach = em.getReference(productoListProductoToAttach.getClass(), productoListProductoToAttach.getIdProducto());
                 attachedProductoList.add(productoListProductoToAttach);
             }
             rubro.setProductoList(attachedProductoList);
+            List<PrefRubroUsuario> attachedPrefRubroUsuarioList = new ArrayList<PrefRubroUsuario>();
+            for (PrefRubroUsuario prefRubroUsuarioListPrefRubroUsuarioToAttach : rubro.getPrefRubroUsuarioList()) {
+                prefRubroUsuarioListPrefRubroUsuarioToAttach = em.getReference(prefRubroUsuarioListPrefRubroUsuarioToAttach.getClass(), prefRubroUsuarioListPrefRubroUsuarioToAttach.getIdPrefRubro());
+                attachedPrefRubroUsuarioList.add(prefRubroUsuarioListPrefRubroUsuarioToAttach);
+            }
+            rubro.setPrefRubroUsuarioList(attachedPrefRubroUsuarioList);
             em.persist(rubro);
             if (tiendaId != null) {
                 tiendaId.getRubroList().add(rubro);
                 tiendaId = em.merge(tiendaId);
-            }
-            for (Preferencias preferenciasListPreferencias : rubro.getPreferenciasList()) {
-                Rubro oldRubroIdOfPreferenciasListPreferencias = preferenciasListPreferencias.getRubroId();
-                preferenciasListPreferencias.setRubroId(rubro);
-                preferenciasListPreferencias = em.merge(preferenciasListPreferencias);
-                if (oldRubroIdOfPreferenciasListPreferencias != null) {
-                    oldRubroIdOfPreferenciasListPreferencias.getPreferenciasList().remove(preferenciasListPreferencias);
-                    oldRubroIdOfPreferenciasListPreferencias = em.merge(oldRubroIdOfPreferenciasListPreferencias);
-                }
             }
             for (Producto productoListProducto : rubro.getProductoList()) {
                 Rubro oldRubroOfProductoListProducto = productoListProducto.getRubro();
@@ -86,6 +77,15 @@ public class RubroJpaController implements Serializable {
                 if (oldRubroOfProductoListProducto != null) {
                     oldRubroOfProductoListProducto.getProductoList().remove(productoListProducto);
                     oldRubroOfProductoListProducto = em.merge(oldRubroOfProductoListProducto);
+                }
+            }
+            for (PrefRubroUsuario prefRubroUsuarioListPrefRubroUsuario : rubro.getPrefRubroUsuarioList()) {
+                Rubro oldRubroIdOfPrefRubroUsuarioListPrefRubroUsuario = prefRubroUsuarioListPrefRubroUsuario.getRubroId();
+                prefRubroUsuarioListPrefRubroUsuario.setRubroId(rubro);
+                prefRubroUsuarioListPrefRubroUsuario = em.merge(prefRubroUsuarioListPrefRubroUsuario);
+                if (oldRubroIdOfPrefRubroUsuarioListPrefRubroUsuario != null) {
+                    oldRubroIdOfPrefRubroUsuarioListPrefRubroUsuario.getPrefRubroUsuarioList().remove(prefRubroUsuarioListPrefRubroUsuario);
+                    oldRubroIdOfPrefRubroUsuarioListPrefRubroUsuario = em.merge(oldRubroIdOfPrefRubroUsuarioListPrefRubroUsuario);
                 }
             }
             em.getTransaction().commit();
@@ -109,25 +109,25 @@ public class RubroJpaController implements Serializable {
             Rubro persistentRubro = em.find(Rubro.class, rubro.getIdRubro());
             Tienda tiendaIdOld = persistentRubro.getTiendaId();
             Tienda tiendaIdNew = rubro.getTiendaId();
-            List<Preferencias> preferenciasListOld = persistentRubro.getPreferenciasList();
-            List<Preferencias> preferenciasListNew = rubro.getPreferenciasList();
             List<Producto> productoListOld = persistentRubro.getProductoList();
             List<Producto> productoListNew = rubro.getProductoList();
+            List<PrefRubroUsuario> prefRubroUsuarioListOld = persistentRubro.getPrefRubroUsuarioList();
+            List<PrefRubroUsuario> prefRubroUsuarioListNew = rubro.getPrefRubroUsuarioList();
             List<String> illegalOrphanMessages = null;
-            for (Preferencias preferenciasListOldPreferencias : preferenciasListOld) {
-                if (!preferenciasListNew.contains(preferenciasListOldPreferencias)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Preferencias " + preferenciasListOldPreferencias + " since its rubroId field is not nullable.");
-                }
-            }
             for (Producto productoListOldProducto : productoListOld) {
                 if (!productoListNew.contains(productoListOldProducto)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Producto " + productoListOldProducto + " since its rubro field is not nullable.");
+                }
+            }
+            for (PrefRubroUsuario prefRubroUsuarioListOldPrefRubroUsuario : prefRubroUsuarioListOld) {
+                if (!prefRubroUsuarioListNew.contains(prefRubroUsuarioListOldPrefRubroUsuario)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PrefRubroUsuario " + prefRubroUsuarioListOldPrefRubroUsuario + " since its rubroId field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -137,20 +137,20 @@ public class RubroJpaController implements Serializable {
                 tiendaIdNew = em.getReference(tiendaIdNew.getClass(), tiendaIdNew.getIdTienda());
                 rubro.setTiendaId(tiendaIdNew);
             }
-            List<Preferencias> attachedPreferenciasListNew = new ArrayList<Preferencias>();
-            for (Preferencias preferenciasListNewPreferenciasToAttach : preferenciasListNew) {
-                preferenciasListNewPreferenciasToAttach = em.getReference(preferenciasListNewPreferenciasToAttach.getClass(), preferenciasListNewPreferenciasToAttach.getPreferenciaId());
-                attachedPreferenciasListNew.add(preferenciasListNewPreferenciasToAttach);
-            }
-            preferenciasListNew = attachedPreferenciasListNew;
-            rubro.setPreferenciasList(preferenciasListNew);
             List<Producto> attachedProductoListNew = new ArrayList<Producto>();
             for (Producto productoListNewProductoToAttach : productoListNew) {
-                productoListNewProductoToAttach = em.getReference(productoListNewProductoToAttach.getClass(), productoListNewProductoToAttach.getProductoId());
+                productoListNewProductoToAttach = em.getReference(productoListNewProductoToAttach.getClass(), productoListNewProductoToAttach.getIdProducto());
                 attachedProductoListNew.add(productoListNewProductoToAttach);
             }
             productoListNew = attachedProductoListNew;
             rubro.setProductoList(productoListNew);
+            List<PrefRubroUsuario> attachedPrefRubroUsuarioListNew = new ArrayList<PrefRubroUsuario>();
+            for (PrefRubroUsuario prefRubroUsuarioListNewPrefRubroUsuarioToAttach : prefRubroUsuarioListNew) {
+                prefRubroUsuarioListNewPrefRubroUsuarioToAttach = em.getReference(prefRubroUsuarioListNewPrefRubroUsuarioToAttach.getClass(), prefRubroUsuarioListNewPrefRubroUsuarioToAttach.getIdPrefRubro());
+                attachedPrefRubroUsuarioListNew.add(prefRubroUsuarioListNewPrefRubroUsuarioToAttach);
+            }
+            prefRubroUsuarioListNew = attachedPrefRubroUsuarioListNew;
+            rubro.setPrefRubroUsuarioList(prefRubroUsuarioListNew);
             rubro = em.merge(rubro);
             if (tiendaIdOld != null && !tiendaIdOld.equals(tiendaIdNew)) {
                 tiendaIdOld.getRubroList().remove(rubro);
@@ -160,17 +160,6 @@ public class RubroJpaController implements Serializable {
                 tiendaIdNew.getRubroList().add(rubro);
                 tiendaIdNew = em.merge(tiendaIdNew);
             }
-            for (Preferencias preferenciasListNewPreferencias : preferenciasListNew) {
-                if (!preferenciasListOld.contains(preferenciasListNewPreferencias)) {
-                    Rubro oldRubroIdOfPreferenciasListNewPreferencias = preferenciasListNewPreferencias.getRubroId();
-                    preferenciasListNewPreferencias.setRubroId(rubro);
-                    preferenciasListNewPreferencias = em.merge(preferenciasListNewPreferencias);
-                    if (oldRubroIdOfPreferenciasListNewPreferencias != null && !oldRubroIdOfPreferenciasListNewPreferencias.equals(rubro)) {
-                        oldRubroIdOfPreferenciasListNewPreferencias.getPreferenciasList().remove(preferenciasListNewPreferencias);
-                        oldRubroIdOfPreferenciasListNewPreferencias = em.merge(oldRubroIdOfPreferenciasListNewPreferencias);
-                    }
-                }
-            }
             for (Producto productoListNewProducto : productoListNew) {
                 if (!productoListOld.contains(productoListNewProducto)) {
                     Rubro oldRubroOfProductoListNewProducto = productoListNewProducto.getRubro();
@@ -179,6 +168,17 @@ public class RubroJpaController implements Serializable {
                     if (oldRubroOfProductoListNewProducto != null && !oldRubroOfProductoListNewProducto.equals(rubro)) {
                         oldRubroOfProductoListNewProducto.getProductoList().remove(productoListNewProducto);
                         oldRubroOfProductoListNewProducto = em.merge(oldRubroOfProductoListNewProducto);
+                    }
+                }
+            }
+            for (PrefRubroUsuario prefRubroUsuarioListNewPrefRubroUsuario : prefRubroUsuarioListNew) {
+                if (!prefRubroUsuarioListOld.contains(prefRubroUsuarioListNewPrefRubroUsuario)) {
+                    Rubro oldRubroIdOfPrefRubroUsuarioListNewPrefRubroUsuario = prefRubroUsuarioListNewPrefRubroUsuario.getRubroId();
+                    prefRubroUsuarioListNewPrefRubroUsuario.setRubroId(rubro);
+                    prefRubroUsuarioListNewPrefRubroUsuario = em.merge(prefRubroUsuarioListNewPrefRubroUsuario);
+                    if (oldRubroIdOfPrefRubroUsuarioListNewPrefRubroUsuario != null && !oldRubroIdOfPrefRubroUsuarioListNewPrefRubroUsuario.equals(rubro)) {
+                        oldRubroIdOfPrefRubroUsuarioListNewPrefRubroUsuario.getPrefRubroUsuarioList().remove(prefRubroUsuarioListNewPrefRubroUsuario);
+                        oldRubroIdOfPrefRubroUsuarioListNewPrefRubroUsuario = em.merge(oldRubroIdOfPrefRubroUsuarioListNewPrefRubroUsuario);
                     }
                 }
             }
@@ -212,19 +212,19 @@ public class RubroJpaController implements Serializable {
                 throw new NonexistentEntityException("The rubro with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Preferencias> preferenciasListOrphanCheck = rubro.getPreferenciasList();
-            for (Preferencias preferenciasListOrphanCheckPreferencias : preferenciasListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Rubro (" + rubro + ") cannot be destroyed since the Preferencias " + preferenciasListOrphanCheckPreferencias + " in its preferenciasList field has a non-nullable rubroId field.");
-            }
             List<Producto> productoListOrphanCheck = rubro.getProductoList();
             for (Producto productoListOrphanCheckProducto : productoListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Rubro (" + rubro + ") cannot be destroyed since the Producto " + productoListOrphanCheckProducto + " in its productoList field has a non-nullable rubro field.");
+            }
+            List<PrefRubroUsuario> prefRubroUsuarioListOrphanCheck = rubro.getPrefRubroUsuarioList();
+            for (PrefRubroUsuario prefRubroUsuarioListOrphanCheckPrefRubroUsuario : prefRubroUsuarioListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Rubro (" + rubro + ") cannot be destroyed since the PrefRubroUsuario " + prefRubroUsuarioListOrphanCheckPrefRubroUsuario + " in its prefRubroUsuarioList field has a non-nullable rubroId field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

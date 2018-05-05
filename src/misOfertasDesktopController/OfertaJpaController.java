@@ -5,12 +5,13 @@
  */
 package misOfertasDesktopController;
 
-import MisOfertasDesktopEntities.Oferta;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import MisOfertasDesktopEntities.ImagenOferta;
+import MisOfertasDesktopEntities.Oferta;
 import MisOfertasDesktopEntities.Producto;
 import MisOfertasDesktopEntities.Tienda;
 import MisOfertasDesktopEntities.OfertaConsultadaUsuario;
@@ -18,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -45,9 +46,14 @@ public class OfertaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            ImagenOferta imagenId = oferta.getImagenId();
+            if (imagenId != null) {
+                imagenId = em.getReference(imagenId.getClass(), imagenId.getIdImagen());
+                oferta.setImagenId(imagenId);
+            }
             Producto producto = oferta.getProducto();
             if (producto != null) {
-                producto = em.getReference(producto.getClass(), producto.getProductoId());
+                producto = em.getReference(producto.getClass(), producto.getIdProducto());
                 oferta.setProducto(producto);
             }
             Tienda tiendaId = oferta.getTiendaId();
@@ -62,6 +68,10 @@ public class OfertaJpaController implements Serializable {
             }
             oferta.setOfertaConsultadaUsuarioList(attachedOfertaConsultadaUsuarioList);
             em.persist(oferta);
+            if (imagenId != null) {
+                imagenId.getOfertaList().add(oferta);
+                imagenId = em.merge(imagenId);
+            }
             if (producto != null) {
                 producto.getOfertaList().add(oferta);
                 producto = em.merge(producto);
@@ -98,6 +108,8 @@ public class OfertaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Oferta persistentOferta = em.find(Oferta.class, oferta.getOfertaId());
+            ImagenOferta imagenIdOld = persistentOferta.getImagenId();
+            ImagenOferta imagenIdNew = oferta.getImagenId();
             Producto productoOld = persistentOferta.getProducto();
             Producto productoNew = oferta.getProducto();
             Tienda tiendaIdOld = persistentOferta.getTiendaId();
@@ -116,8 +128,12 @@ public class OfertaJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            if (imagenIdNew != null) {
+                imagenIdNew = em.getReference(imagenIdNew.getClass(), imagenIdNew.getIdImagen());
+                oferta.setImagenId(imagenIdNew);
+            }
             if (productoNew != null) {
-                productoNew = em.getReference(productoNew.getClass(), productoNew.getProductoId());
+                productoNew = em.getReference(productoNew.getClass(), productoNew.getIdProducto());
                 oferta.setProducto(productoNew);
             }
             if (tiendaIdNew != null) {
@@ -132,6 +148,14 @@ public class OfertaJpaController implements Serializable {
             ofertaConsultadaUsuarioListNew = attachedOfertaConsultadaUsuarioListNew;
             oferta.setOfertaConsultadaUsuarioList(ofertaConsultadaUsuarioListNew);
             oferta = em.merge(oferta);
+            if (imagenIdOld != null && !imagenIdOld.equals(imagenIdNew)) {
+                imagenIdOld.getOfertaList().remove(oferta);
+                imagenIdOld = em.merge(imagenIdOld);
+            }
+            if (imagenIdNew != null && !imagenIdNew.equals(imagenIdOld)) {
+                imagenIdNew.getOfertaList().add(oferta);
+                imagenIdNew = em.merge(imagenIdNew);
+            }
             if (productoOld != null && !productoOld.equals(productoNew)) {
                 productoOld.getOfertaList().remove(oferta);
                 productoOld = em.merge(productoOld);
@@ -198,6 +222,11 @@ public class OfertaJpaController implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            ImagenOferta imagenId = oferta.getImagenId();
+            if (imagenId != null) {
+                imagenId.getOfertaList().remove(oferta);
+                imagenId = em.merge(imagenId);
             }
             Producto producto = oferta.getProducto();
             if (producto != null) {

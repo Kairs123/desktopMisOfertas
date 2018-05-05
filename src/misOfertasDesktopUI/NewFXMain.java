@@ -40,11 +40,11 @@ public class NewFXMain extends Application {
             Rubro r = new Rubro();
             r = rDAO.getRubroById(1L);
             Long id = pDAO.getMaxId();
-            p.setProductoId(++id);
+            p.setIdProducto(++id);
             p.setEsPerecible(1);
             p.setFechaVencimiento("30/04/2018");
             p.setIsActive("1");
-            p.setNombreProducto("Test1.4");
+            p.setNombreProducto("TestPostCambios");
             p.setRubro(r);
             try {
                 pDAO.addProducto(p);

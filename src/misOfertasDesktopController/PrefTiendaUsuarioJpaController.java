@@ -5,6 +5,7 @@
  */
 package misOfertasDesktopController;
 
+import MisOfertasDesktopEntities.PrefTiendaUsuario;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -12,20 +13,19 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import MisOfertasDesktopEntities.Tienda;
 import MisOfertasDesktopEntities.Usuario;
-import MisOfertasDesktopEntities.UsuarioTienda;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
  * @author David
  */
-public class UsuarioTiendaJpaController implements Serializable {
+public class PrefTiendaUsuarioJpaController implements Serializable {
 
-    public UsuarioTiendaJpaController(EntityManagerFactory emf) {
+    public PrefTiendaUsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -34,34 +34,34 @@ public class UsuarioTiendaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(UsuarioTienda usuarioTienda) throws PreexistingEntityException, Exception {
+    public void create(PrefTiendaUsuario prefTiendaUsuario) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Tienda tiendaId = usuarioTienda.getTiendaId();
+            Tienda tiendaId = prefTiendaUsuario.getTiendaId();
             if (tiendaId != null) {
                 tiendaId = em.getReference(tiendaId.getClass(), tiendaId.getIdTienda());
-                usuarioTienda.setTiendaId(tiendaId);
+                prefTiendaUsuario.setTiendaId(tiendaId);
             }
-            Usuario usuarioId = usuarioTienda.getUsuarioId();
+            Usuario usuarioId = prefTiendaUsuario.getUsuarioId();
             if (usuarioId != null) {
                 usuarioId = em.getReference(usuarioId.getClass(), usuarioId.getIdUsuario());
-                usuarioTienda.setUsuarioId(usuarioId);
+                prefTiendaUsuario.setUsuarioId(usuarioId);
             }
-            em.persist(usuarioTienda);
+            em.persist(prefTiendaUsuario);
             if (tiendaId != null) {
-                tiendaId.getUsuarioTiendaList().add(usuarioTienda);
+                tiendaId.getPrefTiendaUsuarioList().add(prefTiendaUsuario);
                 tiendaId = em.merge(tiendaId);
             }
             if (usuarioId != null) {
-                usuarioId.getUsuarioTiendaList().add(usuarioTienda);
+                usuarioId.getPrefTiendaUsuarioList().add(prefTiendaUsuario);
                 usuarioId = em.merge(usuarioId);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findUsuarioTienda(usuarioTienda.getUsuarioTiendaId()) != null) {
-                throw new PreexistingEntityException("UsuarioTienda " + usuarioTienda + " already exists.", ex);
+            if (findPrefTiendaUsuario(prefTiendaUsuario.getIdPrefTienda()) != null) {
+                throw new PreexistingEntityException("PrefTiendaUsuario " + prefTiendaUsuario + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -71,48 +71,48 @@ public class UsuarioTiendaJpaController implements Serializable {
         }
     }
 
-    public void edit(UsuarioTienda usuarioTienda) throws NonexistentEntityException, Exception {
+    public void edit(PrefTiendaUsuario prefTiendaUsuario) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            UsuarioTienda persistentUsuarioTienda = em.find(UsuarioTienda.class, usuarioTienda.getUsuarioTiendaId());
-            Tienda tiendaIdOld = persistentUsuarioTienda.getTiendaId();
-            Tienda tiendaIdNew = usuarioTienda.getTiendaId();
-            Usuario usuarioIdOld = persistentUsuarioTienda.getUsuarioId();
-            Usuario usuarioIdNew = usuarioTienda.getUsuarioId();
+            PrefTiendaUsuario persistentPrefTiendaUsuario = em.find(PrefTiendaUsuario.class, prefTiendaUsuario.getIdPrefTienda());
+            Tienda tiendaIdOld = persistentPrefTiendaUsuario.getTiendaId();
+            Tienda tiendaIdNew = prefTiendaUsuario.getTiendaId();
+            Usuario usuarioIdOld = persistentPrefTiendaUsuario.getUsuarioId();
+            Usuario usuarioIdNew = prefTiendaUsuario.getUsuarioId();
             if (tiendaIdNew != null) {
                 tiendaIdNew = em.getReference(tiendaIdNew.getClass(), tiendaIdNew.getIdTienda());
-                usuarioTienda.setTiendaId(tiendaIdNew);
+                prefTiendaUsuario.setTiendaId(tiendaIdNew);
             }
             if (usuarioIdNew != null) {
                 usuarioIdNew = em.getReference(usuarioIdNew.getClass(), usuarioIdNew.getIdUsuario());
-                usuarioTienda.setUsuarioId(usuarioIdNew);
+                prefTiendaUsuario.setUsuarioId(usuarioIdNew);
             }
-            usuarioTienda = em.merge(usuarioTienda);
+            prefTiendaUsuario = em.merge(prefTiendaUsuario);
             if (tiendaIdOld != null && !tiendaIdOld.equals(tiendaIdNew)) {
-                tiendaIdOld.getUsuarioTiendaList().remove(usuarioTienda);
+                tiendaIdOld.getPrefTiendaUsuarioList().remove(prefTiendaUsuario);
                 tiendaIdOld = em.merge(tiendaIdOld);
             }
             if (tiendaIdNew != null && !tiendaIdNew.equals(tiendaIdOld)) {
-                tiendaIdNew.getUsuarioTiendaList().add(usuarioTienda);
+                tiendaIdNew.getPrefTiendaUsuarioList().add(prefTiendaUsuario);
                 tiendaIdNew = em.merge(tiendaIdNew);
             }
             if (usuarioIdOld != null && !usuarioIdOld.equals(usuarioIdNew)) {
-                usuarioIdOld.getUsuarioTiendaList().remove(usuarioTienda);
+                usuarioIdOld.getPrefTiendaUsuarioList().remove(prefTiendaUsuario);
                 usuarioIdOld = em.merge(usuarioIdOld);
             }
             if (usuarioIdNew != null && !usuarioIdNew.equals(usuarioIdOld)) {
-                usuarioIdNew.getUsuarioTiendaList().add(usuarioTienda);
+                usuarioIdNew.getPrefTiendaUsuarioList().add(prefTiendaUsuario);
                 usuarioIdNew = em.merge(usuarioIdNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = usuarioTienda.getUsuarioTiendaId();
-                if (findUsuarioTienda(id) == null) {
-                    throw new NonexistentEntityException("The usuarioTienda with id " + id + " no longer exists.");
+                Long id = prefTiendaUsuario.getIdPrefTienda();
+                if (findPrefTiendaUsuario(id) == null) {
+                    throw new NonexistentEntityException("The prefTiendaUsuario with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -128,24 +128,24 @@ public class UsuarioTiendaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            UsuarioTienda usuarioTienda;
+            PrefTiendaUsuario prefTiendaUsuario;
             try {
-                usuarioTienda = em.getReference(UsuarioTienda.class, id);
-                usuarioTienda.getUsuarioTiendaId();
+                prefTiendaUsuario = em.getReference(PrefTiendaUsuario.class, id);
+                prefTiendaUsuario.getIdPrefTienda();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The usuarioTienda with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The prefTiendaUsuario with id " + id + " no longer exists.", enfe);
             }
-            Tienda tiendaId = usuarioTienda.getTiendaId();
+            Tienda tiendaId = prefTiendaUsuario.getTiendaId();
             if (tiendaId != null) {
-                tiendaId.getUsuarioTiendaList().remove(usuarioTienda);
+                tiendaId.getPrefTiendaUsuarioList().remove(prefTiendaUsuario);
                 tiendaId = em.merge(tiendaId);
             }
-            Usuario usuarioId = usuarioTienda.getUsuarioId();
+            Usuario usuarioId = prefTiendaUsuario.getUsuarioId();
             if (usuarioId != null) {
-                usuarioId.getUsuarioTiendaList().remove(usuarioTienda);
+                usuarioId.getPrefTiendaUsuarioList().remove(prefTiendaUsuario);
                 usuarioId = em.merge(usuarioId);
             }
-            em.remove(usuarioTienda);
+            em.remove(prefTiendaUsuario);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -154,19 +154,19 @@ public class UsuarioTiendaJpaController implements Serializable {
         }
     }
 
-    public List<UsuarioTienda> findUsuarioTiendaEntities() {
-        return findUsuarioTiendaEntities(true, -1, -1);
+    public List<PrefTiendaUsuario> findPrefTiendaUsuarioEntities() {
+        return findPrefTiendaUsuarioEntities(true, -1, -1);
     }
 
-    public List<UsuarioTienda> findUsuarioTiendaEntities(int maxResults, int firstResult) {
-        return findUsuarioTiendaEntities(false, maxResults, firstResult);
+    public List<PrefTiendaUsuario> findPrefTiendaUsuarioEntities(int maxResults, int firstResult) {
+        return findPrefTiendaUsuarioEntities(false, maxResults, firstResult);
     }
 
-    private List<UsuarioTienda> findUsuarioTiendaEntities(boolean all, int maxResults, int firstResult) {
+    private List<PrefTiendaUsuario> findPrefTiendaUsuarioEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(UsuarioTienda.class));
+            cq.select(cq.from(PrefTiendaUsuario.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -178,20 +178,20 @@ public class UsuarioTiendaJpaController implements Serializable {
         }
     }
 
-    public UsuarioTienda findUsuarioTienda(Long id) {
+    public PrefTiendaUsuario findPrefTiendaUsuario(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(UsuarioTienda.class, id);
+            return em.find(PrefTiendaUsuario.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getUsuarioTiendaCount() {
+    public int getPrefTiendaUsuarioCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<UsuarioTienda> rt = cq.from(UsuarioTienda.class);
+            Root<PrefTiendaUsuario> rt = cq.from(PrefTiendaUsuario.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

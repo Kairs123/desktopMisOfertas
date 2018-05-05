@@ -22,46 +22,35 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author David
  */
 @Entity
-@Table(name = "DESCUENTO_EMITIDO")
+@Table(name = "USUARIO_PUNTOS_ACUMULADOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DescuentoEmitido.findAll", query = "SELECT d FROM DescuentoEmitido d")
-    , @NamedQuery(name = "DescuentoEmitido.findByDescuentoId", query = "SELECT d FROM DescuentoEmitido d WHERE d.descuentoId = :descuentoId")})
-public class DescuentoEmitido implements Serializable {
+    @NamedQuery(name = "UsuarioPuntosAcumulados.findAll", query = "SELECT u FROM UsuarioPuntosAcumulados u")
+    , @NamedQuery(name = "UsuarioPuntosAcumulados.findByIdPuntaje", query = "SELECT u FROM UsuarioPuntosAcumulados u WHERE u.idPuntaje = :idPuntaje")})
+public class UsuarioPuntosAcumulados implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "DESCUENTO_ID")
-    private Long descuentoId;
-    @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "ID_PRODUCTO")
-    @ManyToOne(optional = false)
-    private Producto productoId;
+    @Column(name = "ID_PUNTAJE")
+    private Long idPuntaje;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 
-    public DescuentoEmitido() {
+    public UsuarioPuntosAcumulados() {
     }
 
-    public DescuentoEmitido(Long descuentoId) {
-        this.descuentoId = descuentoId;
+    public UsuarioPuntosAcumulados(Long idPuntaje) {
+        this.idPuntaje = idPuntaje;
     }
 
-    public Long getDescuentoId() {
-        return descuentoId;
+    public Long getIdPuntaje() {
+        return idPuntaje;
     }
 
-    public void setDescuentoId(Long descuentoId) {
-        this.descuentoId = descuentoId;
-    }
-
-    public Producto getProductoId() {
-        return productoId;
-    }
-
-    public void setProductoId(Producto productoId) {
-        this.productoId = productoId;
+    public void setIdPuntaje(Long idPuntaje) {
+        this.idPuntaje = idPuntaje;
     }
 
     public Usuario getUsuarioId() {
@@ -75,18 +64,18 @@ public class DescuentoEmitido implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (descuentoId != null ? descuentoId.hashCode() : 0);
+        hash += (idPuntaje != null ? idPuntaje.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DescuentoEmitido)) {
+        if (!(object instanceof UsuarioPuntosAcumulados)) {
             return false;
         }
-        DescuentoEmitido other = (DescuentoEmitido) object;
-        if ((this.descuentoId == null && other.descuentoId != null) || (this.descuentoId != null && !this.descuentoId.equals(other.descuentoId))) {
+        UsuarioPuntosAcumulados other = (UsuarioPuntosAcumulados) object;
+        if ((this.idPuntaje == null && other.idPuntaje != null) || (this.idPuntaje != null && !this.idPuntaje.equals(other.idPuntaje))) {
             return false;
         }
         return true;
@@ -94,7 +83,7 @@ public class DescuentoEmitido implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.DescuentoEmitido[ descuentoId=" + descuentoId + " ]";
+        return "MisOfertasDesktopEntities.UsuarioPuntosAcumulados[ idPuntaje=" + idPuntaje + " ]";
     }
     
 }

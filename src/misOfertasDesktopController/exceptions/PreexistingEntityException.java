@@ -1,4 +1,4 @@
-package misOfertasDesktopController.exceptions.exceptions;
+package misOfertasDesktopController.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

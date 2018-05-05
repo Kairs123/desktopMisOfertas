@@ -16,8 +16,8 @@ import MisOfertasDesktopEntities.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -41,7 +41,7 @@ public class DescuentoEmitidoJpaController implements Serializable {
             em.getTransaction().begin();
             Producto productoId = descuentoEmitido.getProductoId();
             if (productoId != null) {
-                productoId = em.getReference(productoId.getClass(), productoId.getProductoId());
+                productoId = em.getReference(productoId.getClass(), productoId.getIdProducto());
                 descuentoEmitido.setProductoId(productoId);
             }
             Usuario usuarioId = descuentoEmitido.getUsuarioId();
@@ -82,7 +82,7 @@ public class DescuentoEmitidoJpaController implements Serializable {
             Usuario usuarioIdOld = persistentDescuentoEmitido.getUsuarioId();
             Usuario usuarioIdNew = descuentoEmitido.getUsuarioId();
             if (productoIdNew != null) {
-                productoIdNew = em.getReference(productoIdNew.getClass(), productoIdNew.getProductoId());
+                productoIdNew = em.getReference(productoIdNew.getClass(), productoIdNew.getIdProducto());
                 descuentoEmitido.setProductoId(productoIdNew);
             }
             if (usuarioIdNew != null) {

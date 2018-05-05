@@ -53,8 +53,8 @@ public class Tienda implements Serializable {
     @JoinColumn(name = "COMUNA", referencedColumnName = "ID_COMUNA")
     @ManyToOne(optional = false)
     private Comuna comuna;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiendaId")
-    private List<UsuarioTienda> usuarioTiendaList;
+    @OneToMany(mappedBy = "tiendaId")
+    private List<PrefTiendaUsuario> prefTiendaUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiendaId")
     private List<Rubro> rubroList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tiendaId")
@@ -115,12 +115,12 @@ public class Tienda implements Serializable {
     }
 
     @XmlTransient
-    public List<UsuarioTienda> getUsuarioTiendaList() {
-        return usuarioTiendaList;
+    public List<PrefTiendaUsuario> getPrefTiendaUsuarioList() {
+        return prefTiendaUsuarioList;
     }
 
-    public void setUsuarioTiendaList(List<UsuarioTienda> usuarioTiendaList) {
-        this.usuarioTiendaList = usuarioTiendaList;
+    public void setPrefTiendaUsuarioList(List<PrefTiendaUsuario> prefTiendaUsuarioList) {
+        this.prefTiendaUsuarioList = prefTiendaUsuarioList;
     }
 
     @XmlTransient

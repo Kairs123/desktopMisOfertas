@@ -11,8 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,7 +20,6 @@ import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.ParameterMode;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -36,10 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")
-    , @NamedQuery(name = "Producto.findByProductoId", query = "SELECT p FROM Producto p WHERE p.productoId = :productoId")
+    , @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto")
     , @NamedQuery(name = "Producto.findByNombreProducto", query = "SELECT p FROM Producto p WHERE p.nombreProducto = :nombreProducto")
+    , @NamedQuery(name = "Producto.getMaxId", query = "SELECT MAX(p.idProducto) FROM Producto p")
     , @NamedQuery(name = "Producto.findByEsPerecible", query = "SELECT p FROM Producto p WHERE p.esPerecible = :esPerecible")
-    , @NamedQuery(name = "Producto.getMaxId", query = "SELECT MAX(p.productoId) FROM Producto p")
     , @NamedQuery(name = "Producto.findByFechaVencimiento", query = "SELECT p FROM Producto p WHERE p.fechaVencimiento = :fechaVencimiento")
     , @NamedQuery(name = "Producto.findByIsActive", query = "SELECT p FROM Producto p WHERE p.isActive = :isActive")})
 @NamedStoredProcedureQueries ({
@@ -85,8 +82,8 @@ public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "PRODUCTO_ID")
-    private Long productoId;
+    @Column(name = "ID_PRODUCTO")
+    private Long idProducto;
     @Basic(optional = false)
     @Column(name = "NOMBRE_PRODUCTO")
     private String nombreProducto;
@@ -98,8 +95,6 @@ public class Producto implements Serializable {
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
     private String isActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
-    private List<ImagenProducto> imagenProductoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private List<Valoracion> valoracionList;
     @JoinColumn(name = "RUBRO", referencedColumnName = "ID_RUBRO")
@@ -113,23 +108,23 @@ public class Producto implements Serializable {
     public Producto() {
     }
 
-    public Producto(Long productoId) {
-        this.productoId = productoId;
+    public Producto(Long idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public Producto(Long productoId, String nombreProducto, long esPerecible, String isActive) {
-        this.productoId = productoId;
+    public Producto(Long idProducto, String nombreProducto, long esPerecible, String isActive) {
+        this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.esPerecible = esPerecible;
         this.isActive = isActive;
     }
 
-    public Long getProductoId() {
-        return productoId;
+    public Long getIdProducto() {
+        return idProducto;
     }
 
-    public void setProductoId(Long productoId) {
-        this.productoId = productoId;
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
     }
 
     public String getNombreProducto() {
@@ -162,15 +157,6 @@ public class Producto implements Serializable {
 
     public void setIsActive(String isActive) {
         this.isActive = isActive;
-    }
-
-    @XmlTransient
-    public List<ImagenProducto> getImagenProductoList() {
-        return imagenProductoList;
-    }
-
-    public void setImagenProductoList(List<ImagenProducto> imagenProductoList) {
-        this.imagenProductoList = imagenProductoList;
     }
 
     @XmlTransient
@@ -211,7 +197,7 @@ public class Producto implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (productoId != null ? productoId.hashCode() : 0);
+        hash += (idProducto != null ? idProducto.hashCode() : 0);
         return hash;
     }
 
@@ -222,7 +208,7 @@ public class Producto implements Serializable {
             return false;
         }
         Producto other = (Producto) object;
-        if ((this.productoId == null && other.productoId != null) || (this.productoId != null && !this.productoId.equals(other.productoId))) {
+        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
             return false;
         }
         return true;
@@ -230,7 +216,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.Producto[ productoId=" + productoId + " ]";
+        return "MisOfertasDesktopEntities.Producto[ idProducto=" + idProducto + " ]";
     }
     
 }

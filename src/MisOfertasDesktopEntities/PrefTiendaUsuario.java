@@ -22,38 +22,38 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author David
  */
 @Entity
-@Table(name = "USUARIO_TIENDA")
+@Table(name = "PREF_TIENDA_USUARIO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UsuarioTienda.findAll", query = "SELECT u FROM UsuarioTienda u")
-    , @NamedQuery(name = "UsuarioTienda.findByUsuarioTiendaId", query = "SELECT u FROM UsuarioTienda u WHERE u.usuarioTiendaId = :usuarioTiendaId")})
-public class UsuarioTienda implements Serializable {
+    @NamedQuery(name = "PrefTiendaUsuario.findAll", query = "SELECT p FROM PrefTiendaUsuario p")
+    , @NamedQuery(name = "PrefTiendaUsuario.findByIdPrefTienda", query = "SELECT p FROM PrefTiendaUsuario p WHERE p.idPrefTienda = :idPrefTienda")})
+public class PrefTiendaUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "USUARIO_TIENDA_ID")
-    private Long usuarioTiendaId;
+    @Column(name = "ID_PREF_TIENDA")
+    private Long idPrefTienda;
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Tienda tiendaId;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Usuario usuarioId;
 
-    public UsuarioTienda() {
+    public PrefTiendaUsuario() {
     }
 
-    public UsuarioTienda(Long usuarioTiendaId) {
-        this.usuarioTiendaId = usuarioTiendaId;
+    public PrefTiendaUsuario(Long idPrefTienda) {
+        this.idPrefTienda = idPrefTienda;
     }
 
-    public Long getUsuarioTiendaId() {
-        return usuarioTiendaId;
+    public Long getIdPrefTienda() {
+        return idPrefTienda;
     }
 
-    public void setUsuarioTiendaId(Long usuarioTiendaId) {
-        this.usuarioTiendaId = usuarioTiendaId;
+    public void setIdPrefTienda(Long idPrefTienda) {
+        this.idPrefTienda = idPrefTienda;
     }
 
     public Tienda getTiendaId() {
@@ -75,18 +75,18 @@ public class UsuarioTienda implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usuarioTiendaId != null ? usuarioTiendaId.hashCode() : 0);
+        hash += (idPrefTienda != null ? idPrefTienda.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsuarioTienda)) {
+        if (!(object instanceof PrefTiendaUsuario)) {
             return false;
         }
-        UsuarioTienda other = (UsuarioTienda) object;
-        if ((this.usuarioTiendaId == null && other.usuarioTiendaId != null) || (this.usuarioTiendaId != null && !this.usuarioTiendaId.equals(other.usuarioTiendaId))) {
+        PrefTiendaUsuario other = (PrefTiendaUsuario) object;
+        if ((this.idPrefTienda == null && other.idPrefTienda != null) || (this.idPrefTienda != null && !this.idPrefTienda.equals(other.idPrefTienda))) {
             return false;
         }
         return true;
@@ -94,7 +94,7 @@ public class UsuarioTienda implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.UsuarioTienda[ usuarioTiendaId=" + usuarioTiendaId + " ]";
+        return "MisOfertasDesktopEntities.PrefTiendaUsuario[ idPrefTienda=" + idPrefTienda + " ]";
     }
     
 }

@@ -16,8 +16,8 @@ import MisOfertasDesktopEntities.Valoracion;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -41,7 +41,7 @@ public class ValoracionJpaController implements Serializable {
             em.getTransaction().begin();
             Producto productoId = valoracion.getProductoId();
             if (productoId != null) {
-                productoId = em.getReference(productoId.getClass(), productoId.getProductoId());
+                productoId = em.getReference(productoId.getClass(), productoId.getIdProducto());
                 valoracion.setProductoId(productoId);
             }
             Usuario usuarioId = valoracion.getUsuarioId();
@@ -82,7 +82,7 @@ public class ValoracionJpaController implements Serializable {
             Usuario usuarioIdOld = persistentValoracion.getUsuarioId();
             Usuario usuarioIdNew = valoracion.getUsuarioId();
             if (productoIdNew != null) {
-                productoIdNew = em.getReference(productoIdNew.getClass(), productoIdNew.getProductoId());
+                productoIdNew = em.getReference(productoIdNew.getClass(), productoIdNew.getIdProducto());
                 valoracion.setProductoId(productoIdNew);
             }
             if (usuarioIdNew != null) {

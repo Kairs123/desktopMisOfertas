@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import MisOfertasDesktopEntities.Comuna;
-import MisOfertasDesktopEntities.UsuarioTienda;
+import MisOfertasDesktopEntities.PrefTiendaUsuario;
 import java.util.ArrayList;
 import java.util.List;
 import MisOfertasDesktopEntities.Rubro;
@@ -19,9 +19,9 @@ import MisOfertasDesktopEntities.Oferta;
 import MisOfertasDesktopEntities.Tienda;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -39,8 +39,8 @@ public class TiendaJpaController implements Serializable {
     }
 
     public void create(Tienda tienda) throws PreexistingEntityException, Exception {
-        if (tienda.getUsuarioTiendaList() == null) {
-            tienda.setUsuarioTiendaList(new ArrayList<UsuarioTienda>());
+        if (tienda.getPrefTiendaUsuarioList() == null) {
+            tienda.setPrefTiendaUsuarioList(new ArrayList<PrefTiendaUsuario>());
         }
         if (tienda.getRubroList() == null) {
             tienda.setRubroList(new ArrayList<Rubro>());
@@ -57,12 +57,12 @@ public class TiendaJpaController implements Serializable {
                 comuna = em.getReference(comuna.getClass(), comuna.getIdComuna());
                 tienda.setComuna(comuna);
             }
-            List<UsuarioTienda> attachedUsuarioTiendaList = new ArrayList<UsuarioTienda>();
-            for (UsuarioTienda usuarioTiendaListUsuarioTiendaToAttach : tienda.getUsuarioTiendaList()) {
-                usuarioTiendaListUsuarioTiendaToAttach = em.getReference(usuarioTiendaListUsuarioTiendaToAttach.getClass(), usuarioTiendaListUsuarioTiendaToAttach.getUsuarioTiendaId());
-                attachedUsuarioTiendaList.add(usuarioTiendaListUsuarioTiendaToAttach);
+            List<PrefTiendaUsuario> attachedPrefTiendaUsuarioList = new ArrayList<PrefTiendaUsuario>();
+            for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuarioToAttach : tienda.getPrefTiendaUsuarioList()) {
+                prefTiendaUsuarioListPrefTiendaUsuarioToAttach = em.getReference(prefTiendaUsuarioListPrefTiendaUsuarioToAttach.getClass(), prefTiendaUsuarioListPrefTiendaUsuarioToAttach.getIdPrefTienda());
+                attachedPrefTiendaUsuarioList.add(prefTiendaUsuarioListPrefTiendaUsuarioToAttach);
             }
-            tienda.setUsuarioTiendaList(attachedUsuarioTiendaList);
+            tienda.setPrefTiendaUsuarioList(attachedPrefTiendaUsuarioList);
             List<Rubro> attachedRubroList = new ArrayList<Rubro>();
             for (Rubro rubroListRubroToAttach : tienda.getRubroList()) {
                 rubroListRubroToAttach = em.getReference(rubroListRubroToAttach.getClass(), rubroListRubroToAttach.getIdRubro());
@@ -80,13 +80,13 @@ public class TiendaJpaController implements Serializable {
                 comuna.getTiendaList().add(tienda);
                 comuna = em.merge(comuna);
             }
-            for (UsuarioTienda usuarioTiendaListUsuarioTienda : tienda.getUsuarioTiendaList()) {
-                Tienda oldTiendaIdOfUsuarioTiendaListUsuarioTienda = usuarioTiendaListUsuarioTienda.getTiendaId();
-                usuarioTiendaListUsuarioTienda.setTiendaId(tienda);
-                usuarioTiendaListUsuarioTienda = em.merge(usuarioTiendaListUsuarioTienda);
-                if (oldTiendaIdOfUsuarioTiendaListUsuarioTienda != null) {
-                    oldTiendaIdOfUsuarioTiendaListUsuarioTienda.getUsuarioTiendaList().remove(usuarioTiendaListUsuarioTienda);
-                    oldTiendaIdOfUsuarioTiendaListUsuarioTienda = em.merge(oldTiendaIdOfUsuarioTiendaListUsuarioTienda);
+            for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuario : tienda.getPrefTiendaUsuarioList()) {
+                Tienda oldTiendaIdOfPrefTiendaUsuarioListPrefTiendaUsuario = prefTiendaUsuarioListPrefTiendaUsuario.getTiendaId();
+                prefTiendaUsuarioListPrefTiendaUsuario.setTiendaId(tienda);
+                prefTiendaUsuarioListPrefTiendaUsuario = em.merge(prefTiendaUsuarioListPrefTiendaUsuario);
+                if (oldTiendaIdOfPrefTiendaUsuarioListPrefTiendaUsuario != null) {
+                    oldTiendaIdOfPrefTiendaUsuarioListPrefTiendaUsuario.getPrefTiendaUsuarioList().remove(prefTiendaUsuarioListPrefTiendaUsuario);
+                    oldTiendaIdOfPrefTiendaUsuarioListPrefTiendaUsuario = em.merge(oldTiendaIdOfPrefTiendaUsuarioListPrefTiendaUsuario);
                 }
             }
             for (Rubro rubroListRubro : tienda.getRubroList()) {
@@ -128,21 +128,13 @@ public class TiendaJpaController implements Serializable {
             Tienda persistentTienda = em.find(Tienda.class, tienda.getIdTienda());
             Comuna comunaOld = persistentTienda.getComuna();
             Comuna comunaNew = tienda.getComuna();
-            List<UsuarioTienda> usuarioTiendaListOld = persistentTienda.getUsuarioTiendaList();
-            List<UsuarioTienda> usuarioTiendaListNew = tienda.getUsuarioTiendaList();
+            List<PrefTiendaUsuario> prefTiendaUsuarioListOld = persistentTienda.getPrefTiendaUsuarioList();
+            List<PrefTiendaUsuario> prefTiendaUsuarioListNew = tienda.getPrefTiendaUsuarioList();
             List<Rubro> rubroListOld = persistentTienda.getRubroList();
             List<Rubro> rubroListNew = tienda.getRubroList();
             List<Oferta> ofertaListOld = persistentTienda.getOfertaList();
             List<Oferta> ofertaListNew = tienda.getOfertaList();
             List<String> illegalOrphanMessages = null;
-            for (UsuarioTienda usuarioTiendaListOldUsuarioTienda : usuarioTiendaListOld) {
-                if (!usuarioTiendaListNew.contains(usuarioTiendaListOldUsuarioTienda)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain UsuarioTienda " + usuarioTiendaListOldUsuarioTienda + " since its tiendaId field is not nullable.");
-                }
-            }
             for (Rubro rubroListOldRubro : rubroListOld) {
                 if (!rubroListNew.contains(rubroListOldRubro)) {
                     if (illegalOrphanMessages == null) {
@@ -166,13 +158,13 @@ public class TiendaJpaController implements Serializable {
                 comunaNew = em.getReference(comunaNew.getClass(), comunaNew.getIdComuna());
                 tienda.setComuna(comunaNew);
             }
-            List<UsuarioTienda> attachedUsuarioTiendaListNew = new ArrayList<UsuarioTienda>();
-            for (UsuarioTienda usuarioTiendaListNewUsuarioTiendaToAttach : usuarioTiendaListNew) {
-                usuarioTiendaListNewUsuarioTiendaToAttach = em.getReference(usuarioTiendaListNewUsuarioTiendaToAttach.getClass(), usuarioTiendaListNewUsuarioTiendaToAttach.getUsuarioTiendaId());
-                attachedUsuarioTiendaListNew.add(usuarioTiendaListNewUsuarioTiendaToAttach);
+            List<PrefTiendaUsuario> attachedPrefTiendaUsuarioListNew = new ArrayList<PrefTiendaUsuario>();
+            for (PrefTiendaUsuario prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach : prefTiendaUsuarioListNew) {
+                prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach = em.getReference(prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach.getClass(), prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach.getIdPrefTienda());
+                attachedPrefTiendaUsuarioListNew.add(prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach);
             }
-            usuarioTiendaListNew = attachedUsuarioTiendaListNew;
-            tienda.setUsuarioTiendaList(usuarioTiendaListNew);
+            prefTiendaUsuarioListNew = attachedPrefTiendaUsuarioListNew;
+            tienda.setPrefTiendaUsuarioList(prefTiendaUsuarioListNew);
             List<Rubro> attachedRubroListNew = new ArrayList<Rubro>();
             for (Rubro rubroListNewRubroToAttach : rubroListNew) {
                 rubroListNewRubroToAttach = em.getReference(rubroListNewRubroToAttach.getClass(), rubroListNewRubroToAttach.getIdRubro());
@@ -196,14 +188,20 @@ public class TiendaJpaController implements Serializable {
                 comunaNew.getTiendaList().add(tienda);
                 comunaNew = em.merge(comunaNew);
             }
-            for (UsuarioTienda usuarioTiendaListNewUsuarioTienda : usuarioTiendaListNew) {
-                if (!usuarioTiendaListOld.contains(usuarioTiendaListNewUsuarioTienda)) {
-                    Tienda oldTiendaIdOfUsuarioTiendaListNewUsuarioTienda = usuarioTiendaListNewUsuarioTienda.getTiendaId();
-                    usuarioTiendaListNewUsuarioTienda.setTiendaId(tienda);
-                    usuarioTiendaListNewUsuarioTienda = em.merge(usuarioTiendaListNewUsuarioTienda);
-                    if (oldTiendaIdOfUsuarioTiendaListNewUsuarioTienda != null && !oldTiendaIdOfUsuarioTiendaListNewUsuarioTienda.equals(tienda)) {
-                        oldTiendaIdOfUsuarioTiendaListNewUsuarioTienda.getUsuarioTiendaList().remove(usuarioTiendaListNewUsuarioTienda);
-                        oldTiendaIdOfUsuarioTiendaListNewUsuarioTienda = em.merge(oldTiendaIdOfUsuarioTiendaListNewUsuarioTienda);
+            for (PrefTiendaUsuario prefTiendaUsuarioListOldPrefTiendaUsuario : prefTiendaUsuarioListOld) {
+                if (!prefTiendaUsuarioListNew.contains(prefTiendaUsuarioListOldPrefTiendaUsuario)) {
+                    prefTiendaUsuarioListOldPrefTiendaUsuario.setTiendaId(null);
+                    prefTiendaUsuarioListOldPrefTiendaUsuario = em.merge(prefTiendaUsuarioListOldPrefTiendaUsuario);
+                }
+            }
+            for (PrefTiendaUsuario prefTiendaUsuarioListNewPrefTiendaUsuario : prefTiendaUsuarioListNew) {
+                if (!prefTiendaUsuarioListOld.contains(prefTiendaUsuarioListNewPrefTiendaUsuario)) {
+                    Tienda oldTiendaIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario = prefTiendaUsuarioListNewPrefTiendaUsuario.getTiendaId();
+                    prefTiendaUsuarioListNewPrefTiendaUsuario.setTiendaId(tienda);
+                    prefTiendaUsuarioListNewPrefTiendaUsuario = em.merge(prefTiendaUsuarioListNewPrefTiendaUsuario);
+                    if (oldTiendaIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario != null && !oldTiendaIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario.equals(tienda)) {
+                        oldTiendaIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario.getPrefTiendaUsuarioList().remove(prefTiendaUsuarioListNewPrefTiendaUsuario);
+                        oldTiendaIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario = em.merge(oldTiendaIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario);
                     }
                 }
             }
@@ -259,13 +257,6 @@ public class TiendaJpaController implements Serializable {
                 throw new NonexistentEntityException("The tienda with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<UsuarioTienda> usuarioTiendaListOrphanCheck = tienda.getUsuarioTiendaList();
-            for (UsuarioTienda usuarioTiendaListOrphanCheckUsuarioTienda : usuarioTiendaListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Tienda (" + tienda + ") cannot be destroyed since the UsuarioTienda " + usuarioTiendaListOrphanCheckUsuarioTienda + " in its usuarioTiendaList field has a non-nullable tiendaId field.");
-            }
             List<Rubro> rubroListOrphanCheck = tienda.getRubroList();
             for (Rubro rubroListOrphanCheckRubro : rubroListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
@@ -287,6 +278,11 @@ public class TiendaJpaController implements Serializable {
             if (comuna != null) {
                 comuna.getTiendaList().remove(tienda);
                 comuna = em.merge(comuna);
+            }
+            List<PrefTiendaUsuario> prefTiendaUsuarioList = tienda.getPrefTiendaUsuarioList();
+            for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuario : prefTiendaUsuarioList) {
+                prefTiendaUsuarioListPrefTiendaUsuario.setTiendaId(null);
+                prefTiendaUsuarioListPrefTiendaUsuario = em.merge(prefTiendaUsuarioListPrefTiendaUsuario);
             }
             em.remove(tienda);
             em.getTransaction().commit();

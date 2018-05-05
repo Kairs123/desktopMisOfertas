@@ -22,18 +22,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author David
  */
 @Entity
-@Table(name = "PREFERENCIAS")
+@Table(name = "PREF_RUBRO_USUARIO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Preferencias.findAll", query = "SELECT p FROM Preferencias p")
-    , @NamedQuery(name = "Preferencias.findByPreferenciaId", query = "SELECT p FROM Preferencias p WHERE p.preferenciaId = :preferenciaId")})
-public class Preferencias implements Serializable {
+    @NamedQuery(name = "PrefRubroUsuario.findAll", query = "SELECT p FROM PrefRubroUsuario p")
+    , @NamedQuery(name = "PrefRubroUsuario.findByIdPrefRubro", query = "SELECT p FROM PrefRubroUsuario p WHERE p.idPrefRubro = :idPrefRubro")})
+public class PrefRubroUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "PREFERENCIA_ID")
-    private Long preferenciaId;
+    @Column(name = "ID_PREF_RUBRO")
+    private Long idPrefRubro;
     @JoinColumn(name = "RUBRO_ID", referencedColumnName = "ID_RUBRO")
     @ManyToOne(optional = false)
     private Rubro rubroId;
@@ -41,19 +41,19 @@ public class Preferencias implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 
-    public Preferencias() {
+    public PrefRubroUsuario() {
     }
 
-    public Preferencias(Long preferenciaId) {
-        this.preferenciaId = preferenciaId;
+    public PrefRubroUsuario(Long idPrefRubro) {
+        this.idPrefRubro = idPrefRubro;
     }
 
-    public Long getPreferenciaId() {
-        return preferenciaId;
+    public Long getIdPrefRubro() {
+        return idPrefRubro;
     }
 
-    public void setPreferenciaId(Long preferenciaId) {
-        this.preferenciaId = preferenciaId;
+    public void setIdPrefRubro(Long idPrefRubro) {
+        this.idPrefRubro = idPrefRubro;
     }
 
     public Rubro getRubroId() {
@@ -75,18 +75,18 @@ public class Preferencias implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (preferenciaId != null ? preferenciaId.hashCode() : 0);
+        hash += (idPrefRubro != null ? idPrefRubro.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Preferencias)) {
+        if (!(object instanceof PrefRubroUsuario)) {
             return false;
         }
-        Preferencias other = (Preferencias) object;
-        if ((this.preferenciaId == null && other.preferenciaId != null) || (this.preferenciaId != null && !this.preferenciaId.equals(other.preferenciaId))) {
+        PrefRubroUsuario other = (PrefRubroUsuario) object;
+        if ((this.idPrefRubro == null && other.idPrefRubro != null) || (this.idPrefRubro != null && !this.idPrefRubro.equals(other.idPrefRubro))) {
             return false;
         }
         return true;
@@ -94,7 +94,7 @@ public class Preferencias implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.Preferencias[ preferenciaId=" + preferenciaId + " ]";
+        return "MisOfertasDesktopEntities.PrefRubroUsuario[ idPrefRubro=" + idPrefRubro + " ]";
     }
     
 }

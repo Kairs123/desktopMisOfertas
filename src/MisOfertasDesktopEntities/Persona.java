@@ -62,15 +62,12 @@ public class Persona implements Serializable {
     @Basic(optional = false)
     @Column(name = "APELLIDO_PATERNO")
     private String apellidoPaterno;
-    @Basic(optional = false)
     @Column(name = "APELLIDO_MATERNO")
     private String apellidoMaterno;
-    @Basic(optional = false)
     @Column(name = "DIRECCION")
     private String direccion;
-    @Basic(optional = false)
     @Column(name = "TELEFONO")
-    private long telefono;
+    private Long telefono;
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
     private String isActive;
@@ -89,15 +86,12 @@ public class Persona implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public Persona(Long idPersona, long rut, Character dvRut, String primerNombre, String apellidoPaterno, String apellidoMaterno, String direccion, long telefono, String isActive) {
+    public Persona(Long idPersona, long rut, Character dvRut, String primerNombre, String apellidoPaterno, String isActive) {
         this.idPersona = idPersona;
         this.rut = rut;
         this.dvRut = dvRut;
         this.primerNombre = primerNombre;
         this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.direccion = direccion;
-        this.telefono = telefono;
         this.isActive = isActive;
     }
 
@@ -165,11 +159,11 @@ public class Persona implements Serializable {
         this.direccion = direccion;
     }
 
-    public long getTelefono() {
+    public Long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(long telefono) {
+    public void setTelefono(Long telefono) {
         this.telefono = telefono;
     }
 

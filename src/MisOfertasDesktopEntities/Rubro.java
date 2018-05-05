@@ -46,10 +46,10 @@ public class Rubro implements Serializable {
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
     private String isActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rubroId")
-    private List<Preferencias> preferenciasList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rubro")
     private List<Producto> productoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rubroId")
+    private List<PrefRubroUsuario> prefRubroUsuarioList;
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
     @ManyToOne(optional = false)
     private Tienda tiendaId;
@@ -92,21 +92,21 @@ public class Rubro implements Serializable {
     }
 
     @XmlTransient
-    public List<Preferencias> getPreferenciasList() {
-        return preferenciasList;
-    }
-
-    public void setPreferenciasList(List<Preferencias> preferenciasList) {
-        this.preferenciasList = preferenciasList;
-    }
-
-    @XmlTransient
     public List<Producto> getProductoList() {
         return productoList;
     }
 
     public void setProductoList(List<Producto> productoList) {
         this.productoList = productoList;
+    }
+
+    @XmlTransient
+    public List<PrefRubroUsuario> getPrefRubroUsuarioList() {
+        return prefRubroUsuarioList;
+    }
+
+    public void setPrefRubroUsuarioList(List<PrefRubroUsuario> prefRubroUsuarioList) {
+        this.prefRubroUsuarioList = prefRubroUsuarioList;
     }
 
     public Tienda getTiendaId() {

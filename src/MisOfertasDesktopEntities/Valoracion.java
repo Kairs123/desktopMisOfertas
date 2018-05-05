@@ -38,7 +38,7 @@ public class Valoracion implements Serializable {
     @Basic(optional = false)
     @Column(name = "VALORACION_ID")
     private Long valoracionId;
-    @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "PRODUCTO_ID")
+    @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "ID_PRODUCTO")
     @ManyToOne(optional = false)
     private Producto productoId;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")

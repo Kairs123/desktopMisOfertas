@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByPassw", query = "SELECT u FROM Usuario u WHERE u.passw = :passw")
     , @NamedQuery(name = "Usuario.findByPuntosAcumulados", query = "SELECT u FROM Usuario u WHERE u.puntosAcumulados = :puntosAcumulados")
     , @NamedQuery(name = "Usuario.findByTiendaId", query = "SELECT u FROM Usuario u WHERE u.tiendaId = :tiendaId")
-    , @NamedQuery(name = "Usuario.findByUserIsActive", query = "SELECT u FROM Usuario u WHERE u.userIsActive = :userIsActive")})
+    , @NamedQuery(name = "Usuario.findByUserIsActive", query = "SELECT u FROM Usuario u WHERE u.userIsActive = :userIsActive")
+    , @NamedQuery(name = "Usuario.findByRecibirInformacion", query = "SELECT u FROM Usuario u WHERE u.recibirInformacion = :recibirInformacion")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,33 +50,33 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "PASSW")
     private String passw;
-    @Basic(optional = false)
     @Column(name = "PUNTOS_ACUMULADOS")
-    private long puntosAcumulados;
-    @Basic(optional = false)
+    private Long puntosAcumulados;
     @Column(name = "TIENDA_ID")
-    private long tiendaId;
+    private Long tiendaId;
     @Basic(optional = false)
     @Column(name = "USER_IS_ACTIVE")
     private String userIsActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "encargado")
-    private List<ImagenProducto> imagenProductoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private List<Preferencias> preferenciasList;
+    @Column(name = "RECIBIR_INFORMACION")
+    private Short recibirInformacion;
     @JoinColumn(name = "PERSONA_ID", referencedColumnName = "ID_PERSONA")
     @ManyToOne(optional = false)
     private Persona personaId;
     @JoinColumn(name = "TIPO_USUARIO_ID", referencedColumnName = "ID_TIPO_USUARIO")
     @ManyToOne(optional = false)
     private TipoUsuario tipoUsuarioId;
+    @OneToMany(mappedBy = "usuarioId")
+    private List<PrefTiendaUsuario> prefTiendaUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<Valoracion> valoracionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
-    private List<UsuarioTienda> usuarioTiendaList;
+    private List<PrefRubroUsuario> prefRubroUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<DescuentoEmitido> descuentoEmitidoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<UsuarioPuntosAcumulados> usuarioPuntosAcumuladosList;
 
     public Usuario() {
     }
@@ -84,12 +85,10 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Long idUsuario, String username, String passw, long puntosAcumulados, long tiendaId, String userIsActive) {
+    public Usuario(Long idUsuario, String username, String passw, String userIsActive) {
         this.idUsuario = idUsuario;
         this.username = username;
         this.passw = passw;
-        this.puntosAcumulados = puntosAcumulados;
-        this.tiendaId = tiendaId;
         this.userIsActive = userIsActive;
     }
 
@@ -117,19 +116,19 @@ public class Usuario implements Serializable {
         this.passw = passw;
     }
 
-    public long getPuntosAcumulados() {
+    public Long getPuntosAcumulados() {
         return puntosAcumulados;
     }
 
-    public void setPuntosAcumulados(long puntosAcumulados) {
+    public void setPuntosAcumulados(Long puntosAcumulados) {
         this.puntosAcumulados = puntosAcumulados;
     }
 
-    public long getTiendaId() {
+    public Long getTiendaId() {
         return tiendaId;
     }
 
-    public void setTiendaId(long tiendaId) {
+    public void setTiendaId(Long tiendaId) {
         this.tiendaId = tiendaId;
     }
 
@@ -141,22 +140,12 @@ public class Usuario implements Serializable {
         this.userIsActive = userIsActive;
     }
 
-    @XmlTransient
-    public List<ImagenProducto> getImagenProductoList() {
-        return imagenProductoList;
+    public Short getRecibirInformacion() {
+        return recibirInformacion;
     }
 
-    public void setImagenProductoList(List<ImagenProducto> imagenProductoList) {
-        this.imagenProductoList = imagenProductoList;
-    }
-
-    @XmlTransient
-    public List<Preferencias> getPreferenciasList() {
-        return preferenciasList;
-    }
-
-    public void setPreferenciasList(List<Preferencias> preferenciasList) {
-        this.preferenciasList = preferenciasList;
+    public void setRecibirInformacion(Short recibirInformacion) {
+        this.recibirInformacion = recibirInformacion;
     }
 
     public Persona getPersonaId() {
@@ -176,6 +165,15 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
+    public List<PrefTiendaUsuario> getPrefTiendaUsuarioList() {
+        return prefTiendaUsuarioList;
+    }
+
+    public void setPrefTiendaUsuarioList(List<PrefTiendaUsuario> prefTiendaUsuarioList) {
+        this.prefTiendaUsuarioList = prefTiendaUsuarioList;
+    }
+
+    @XmlTransient
     public List<Valoracion> getValoracionList() {
         return valoracionList;
     }
@@ -185,12 +183,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<UsuarioTienda> getUsuarioTiendaList() {
-        return usuarioTiendaList;
+    public List<PrefRubroUsuario> getPrefRubroUsuarioList() {
+        return prefRubroUsuarioList;
     }
 
-    public void setUsuarioTiendaList(List<UsuarioTienda> usuarioTiendaList) {
-        this.usuarioTiendaList = usuarioTiendaList;
+    public void setPrefRubroUsuarioList(List<PrefRubroUsuario> prefRubroUsuarioList) {
+        this.prefRubroUsuarioList = prefRubroUsuarioList;
     }
 
     @XmlTransient
@@ -209,6 +207,15 @@ public class Usuario implements Serializable {
 
     public void setOfertaConsultadaUsuarioList(List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioList) {
         this.ofertaConsultadaUsuarioList = ofertaConsultadaUsuarioList;
+    }
+
+    @XmlTransient
+    public List<UsuarioPuntosAcumulados> getUsuarioPuntosAcumuladosList() {
+        return usuarioPuntosAcumuladosList;
+    }
+
+    public void setUsuarioPuntosAcumuladosList(List<UsuarioPuntosAcumulados> usuarioPuntosAcumuladosList) {
+        this.usuarioPuntosAcumuladosList = usuarioPuntosAcumuladosList;
     }
 
     @Override

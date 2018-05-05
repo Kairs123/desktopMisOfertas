@@ -57,7 +57,10 @@ public class Oferta implements Serializable {
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
     private String isActive;
-    @JoinColumn(name = "PRODUCTO", referencedColumnName = "PRODUCTO_ID")
+    @JoinColumn(name = "IMAGEN_ID", referencedColumnName = "ID_IMAGEN")
+    @ManyToOne(optional = false)
+    private ImagenOferta imagenId;
+    @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")
     @ManyToOne(optional = false)
     private Producto producto;
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
@@ -127,6 +130,14 @@ public class Oferta implements Serializable {
 
     public void setIsActive(String isActive) {
         this.isActive = isActive;
+    }
+
+    public ImagenOferta getImagenId() {
+        return imagenId;
+    }
+
+    public void setImagenId(ImagenOferta imagenId) {
+        this.imagenId = imagenId;
     }
 
     public Producto getProducto() {

@@ -12,20 +12,20 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import MisOfertasDesktopEntities.Persona;
 import MisOfertasDesktopEntities.TipoUsuario;
-import MisOfertasDesktopEntities.ImagenProducto;
+import MisOfertasDesktopEntities.PrefTiendaUsuario;
 import java.util.ArrayList;
 import java.util.List;
-import MisOfertasDesktopEntities.Preferencias;
 import MisOfertasDesktopEntities.Valoracion;
-import MisOfertasDesktopEntities.UsuarioTienda;
+import MisOfertasDesktopEntities.PrefRubroUsuario;
 import MisOfertasDesktopEntities.DescuentoEmitido;
 import MisOfertasDesktopEntities.OfertaConsultadaUsuario;
 import MisOfertasDesktopEntities.Usuario;
+import MisOfertasDesktopEntities.UsuarioPuntosAcumulados;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import misOfertasDesktopController.exceptions.exceptions.IllegalOrphanException;
-import misOfertasDesktopController.exceptions.exceptions.NonexistentEntityException;
-import misOfertasDesktopController.exceptions.exceptions.PreexistingEntityException;
+import misOfertasDesktopController.exceptions.IllegalOrphanException;
+import misOfertasDesktopController.exceptions.NonexistentEntityException;
+import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -43,23 +43,23 @@ public class UsuarioJpaController implements Serializable {
     }
 
     public void create(Usuario usuario) throws PreexistingEntityException, Exception {
-        if (usuario.getImagenProductoList() == null) {
-            usuario.setImagenProductoList(new ArrayList<ImagenProducto>());
-        }
-        if (usuario.getPreferenciasList() == null) {
-            usuario.setPreferenciasList(new ArrayList<Preferencias>());
+        if (usuario.getPrefTiendaUsuarioList() == null) {
+            usuario.setPrefTiendaUsuarioList(new ArrayList<PrefTiendaUsuario>());
         }
         if (usuario.getValoracionList() == null) {
             usuario.setValoracionList(new ArrayList<Valoracion>());
         }
-        if (usuario.getUsuarioTiendaList() == null) {
-            usuario.setUsuarioTiendaList(new ArrayList<UsuarioTienda>());
+        if (usuario.getPrefRubroUsuarioList() == null) {
+            usuario.setPrefRubroUsuarioList(new ArrayList<PrefRubroUsuario>());
         }
         if (usuario.getDescuentoEmitidoList() == null) {
             usuario.setDescuentoEmitidoList(new ArrayList<DescuentoEmitido>());
         }
         if (usuario.getOfertaConsultadaUsuarioList() == null) {
             usuario.setOfertaConsultadaUsuarioList(new ArrayList<OfertaConsultadaUsuario>());
+        }
+        if (usuario.getUsuarioPuntosAcumuladosList() == null) {
+            usuario.setUsuarioPuntosAcumuladosList(new ArrayList<UsuarioPuntosAcumulados>());
         }
         EntityManager em = null;
         try {
@@ -75,30 +75,24 @@ public class UsuarioJpaController implements Serializable {
                 tipoUsuarioId = em.getReference(tipoUsuarioId.getClass(), tipoUsuarioId.getIdTipoUsuario());
                 usuario.setTipoUsuarioId(tipoUsuarioId);
             }
-            List<ImagenProducto> attachedImagenProductoList = new ArrayList<ImagenProducto>();
-            for (ImagenProducto imagenProductoListImagenProductoToAttach : usuario.getImagenProductoList()) {
-                imagenProductoListImagenProductoToAttach = em.getReference(imagenProductoListImagenProductoToAttach.getClass(), imagenProductoListImagenProductoToAttach.getImagenId());
-                attachedImagenProductoList.add(imagenProductoListImagenProductoToAttach);
+            List<PrefTiendaUsuario> attachedPrefTiendaUsuarioList = new ArrayList<PrefTiendaUsuario>();
+            for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuarioToAttach : usuario.getPrefTiendaUsuarioList()) {
+                prefTiendaUsuarioListPrefTiendaUsuarioToAttach = em.getReference(prefTiendaUsuarioListPrefTiendaUsuarioToAttach.getClass(), prefTiendaUsuarioListPrefTiendaUsuarioToAttach.getIdPrefTienda());
+                attachedPrefTiendaUsuarioList.add(prefTiendaUsuarioListPrefTiendaUsuarioToAttach);
             }
-            usuario.setImagenProductoList(attachedImagenProductoList);
-            List<Preferencias> attachedPreferenciasList = new ArrayList<Preferencias>();
-            for (Preferencias preferenciasListPreferenciasToAttach : usuario.getPreferenciasList()) {
-                preferenciasListPreferenciasToAttach = em.getReference(preferenciasListPreferenciasToAttach.getClass(), preferenciasListPreferenciasToAttach.getPreferenciaId());
-                attachedPreferenciasList.add(preferenciasListPreferenciasToAttach);
-            }
-            usuario.setPreferenciasList(attachedPreferenciasList);
+            usuario.setPrefTiendaUsuarioList(attachedPrefTiendaUsuarioList);
             List<Valoracion> attachedValoracionList = new ArrayList<Valoracion>();
             for (Valoracion valoracionListValoracionToAttach : usuario.getValoracionList()) {
                 valoracionListValoracionToAttach = em.getReference(valoracionListValoracionToAttach.getClass(), valoracionListValoracionToAttach.getValoracionId());
                 attachedValoracionList.add(valoracionListValoracionToAttach);
             }
             usuario.setValoracionList(attachedValoracionList);
-            List<UsuarioTienda> attachedUsuarioTiendaList = new ArrayList<UsuarioTienda>();
-            for (UsuarioTienda usuarioTiendaListUsuarioTiendaToAttach : usuario.getUsuarioTiendaList()) {
-                usuarioTiendaListUsuarioTiendaToAttach = em.getReference(usuarioTiendaListUsuarioTiendaToAttach.getClass(), usuarioTiendaListUsuarioTiendaToAttach.getUsuarioTiendaId());
-                attachedUsuarioTiendaList.add(usuarioTiendaListUsuarioTiendaToAttach);
+            List<PrefRubroUsuario> attachedPrefRubroUsuarioList = new ArrayList<PrefRubroUsuario>();
+            for (PrefRubroUsuario prefRubroUsuarioListPrefRubroUsuarioToAttach : usuario.getPrefRubroUsuarioList()) {
+                prefRubroUsuarioListPrefRubroUsuarioToAttach = em.getReference(prefRubroUsuarioListPrefRubroUsuarioToAttach.getClass(), prefRubroUsuarioListPrefRubroUsuarioToAttach.getIdPrefRubro());
+                attachedPrefRubroUsuarioList.add(prefRubroUsuarioListPrefRubroUsuarioToAttach);
             }
-            usuario.setUsuarioTiendaList(attachedUsuarioTiendaList);
+            usuario.setPrefRubroUsuarioList(attachedPrefRubroUsuarioList);
             List<DescuentoEmitido> attachedDescuentoEmitidoList = new ArrayList<DescuentoEmitido>();
             for (DescuentoEmitido descuentoEmitidoListDescuentoEmitidoToAttach : usuario.getDescuentoEmitidoList()) {
                 descuentoEmitidoListDescuentoEmitidoToAttach = em.getReference(descuentoEmitidoListDescuentoEmitidoToAttach.getClass(), descuentoEmitidoListDescuentoEmitidoToAttach.getDescuentoId());
@@ -111,6 +105,12 @@ public class UsuarioJpaController implements Serializable {
                 attachedOfertaConsultadaUsuarioList.add(ofertaConsultadaUsuarioListOfertaConsultadaUsuarioToAttach);
             }
             usuario.setOfertaConsultadaUsuarioList(attachedOfertaConsultadaUsuarioList);
+            List<UsuarioPuntosAcumulados> attachedUsuarioPuntosAcumuladosList = new ArrayList<UsuarioPuntosAcumulados>();
+            for (UsuarioPuntosAcumulados usuarioPuntosAcumuladosListUsuarioPuntosAcumuladosToAttach : usuario.getUsuarioPuntosAcumuladosList()) {
+                usuarioPuntosAcumuladosListUsuarioPuntosAcumuladosToAttach = em.getReference(usuarioPuntosAcumuladosListUsuarioPuntosAcumuladosToAttach.getClass(), usuarioPuntosAcumuladosListUsuarioPuntosAcumuladosToAttach.getIdPuntaje());
+                attachedUsuarioPuntosAcumuladosList.add(usuarioPuntosAcumuladosListUsuarioPuntosAcumuladosToAttach);
+            }
+            usuario.setUsuarioPuntosAcumuladosList(attachedUsuarioPuntosAcumuladosList);
             em.persist(usuario);
             if (personaId != null) {
                 personaId.getUsuarioList().add(usuario);
@@ -120,22 +120,13 @@ public class UsuarioJpaController implements Serializable {
                 tipoUsuarioId.getUsuarioList().add(usuario);
                 tipoUsuarioId = em.merge(tipoUsuarioId);
             }
-            for (ImagenProducto imagenProductoListImagenProducto : usuario.getImagenProductoList()) {
-                Usuario oldEncargadoOfImagenProductoListImagenProducto = imagenProductoListImagenProducto.getEncargado();
-                imagenProductoListImagenProducto.setEncargado(usuario);
-                imagenProductoListImagenProducto = em.merge(imagenProductoListImagenProducto);
-                if (oldEncargadoOfImagenProductoListImagenProducto != null) {
-                    oldEncargadoOfImagenProductoListImagenProducto.getImagenProductoList().remove(imagenProductoListImagenProducto);
-                    oldEncargadoOfImagenProductoListImagenProducto = em.merge(oldEncargadoOfImagenProductoListImagenProducto);
-                }
-            }
-            for (Preferencias preferenciasListPreferencias : usuario.getPreferenciasList()) {
-                Usuario oldUsuarioIdOfPreferenciasListPreferencias = preferenciasListPreferencias.getUsuarioId();
-                preferenciasListPreferencias.setUsuarioId(usuario);
-                preferenciasListPreferencias = em.merge(preferenciasListPreferencias);
-                if (oldUsuarioIdOfPreferenciasListPreferencias != null) {
-                    oldUsuarioIdOfPreferenciasListPreferencias.getPreferenciasList().remove(preferenciasListPreferencias);
-                    oldUsuarioIdOfPreferenciasListPreferencias = em.merge(oldUsuarioIdOfPreferenciasListPreferencias);
+            for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuario : usuario.getPrefTiendaUsuarioList()) {
+                Usuario oldUsuarioIdOfPrefTiendaUsuarioListPrefTiendaUsuario = prefTiendaUsuarioListPrefTiendaUsuario.getUsuarioId();
+                prefTiendaUsuarioListPrefTiendaUsuario.setUsuarioId(usuario);
+                prefTiendaUsuarioListPrefTiendaUsuario = em.merge(prefTiendaUsuarioListPrefTiendaUsuario);
+                if (oldUsuarioIdOfPrefTiendaUsuarioListPrefTiendaUsuario != null) {
+                    oldUsuarioIdOfPrefTiendaUsuarioListPrefTiendaUsuario.getPrefTiendaUsuarioList().remove(prefTiendaUsuarioListPrefTiendaUsuario);
+                    oldUsuarioIdOfPrefTiendaUsuarioListPrefTiendaUsuario = em.merge(oldUsuarioIdOfPrefTiendaUsuarioListPrefTiendaUsuario);
                 }
             }
             for (Valoracion valoracionListValoracion : usuario.getValoracionList()) {
@@ -147,13 +138,13 @@ public class UsuarioJpaController implements Serializable {
                     oldUsuarioIdOfValoracionListValoracion = em.merge(oldUsuarioIdOfValoracionListValoracion);
                 }
             }
-            for (UsuarioTienda usuarioTiendaListUsuarioTienda : usuario.getUsuarioTiendaList()) {
-                Usuario oldUsuarioIdOfUsuarioTiendaListUsuarioTienda = usuarioTiendaListUsuarioTienda.getUsuarioId();
-                usuarioTiendaListUsuarioTienda.setUsuarioId(usuario);
-                usuarioTiendaListUsuarioTienda = em.merge(usuarioTiendaListUsuarioTienda);
-                if (oldUsuarioIdOfUsuarioTiendaListUsuarioTienda != null) {
-                    oldUsuarioIdOfUsuarioTiendaListUsuarioTienda.getUsuarioTiendaList().remove(usuarioTiendaListUsuarioTienda);
-                    oldUsuarioIdOfUsuarioTiendaListUsuarioTienda = em.merge(oldUsuarioIdOfUsuarioTiendaListUsuarioTienda);
+            for (PrefRubroUsuario prefRubroUsuarioListPrefRubroUsuario : usuario.getPrefRubroUsuarioList()) {
+                Usuario oldUsuarioIdOfPrefRubroUsuarioListPrefRubroUsuario = prefRubroUsuarioListPrefRubroUsuario.getUsuarioId();
+                prefRubroUsuarioListPrefRubroUsuario.setUsuarioId(usuario);
+                prefRubroUsuarioListPrefRubroUsuario = em.merge(prefRubroUsuarioListPrefRubroUsuario);
+                if (oldUsuarioIdOfPrefRubroUsuarioListPrefRubroUsuario != null) {
+                    oldUsuarioIdOfPrefRubroUsuarioListPrefRubroUsuario.getPrefRubroUsuarioList().remove(prefRubroUsuarioListPrefRubroUsuario);
+                    oldUsuarioIdOfPrefRubroUsuarioListPrefRubroUsuario = em.merge(oldUsuarioIdOfPrefRubroUsuarioListPrefRubroUsuario);
                 }
             }
             for (DescuentoEmitido descuentoEmitidoListDescuentoEmitido : usuario.getDescuentoEmitidoList()) {
@@ -172,6 +163,15 @@ public class UsuarioJpaController implements Serializable {
                 if (oldUsuarioIdOfOfertaConsultadaUsuarioListOfertaConsultadaUsuario != null) {
                     oldUsuarioIdOfOfertaConsultadaUsuarioListOfertaConsultadaUsuario.getOfertaConsultadaUsuarioList().remove(ofertaConsultadaUsuarioListOfertaConsultadaUsuario);
                     oldUsuarioIdOfOfertaConsultadaUsuarioListOfertaConsultadaUsuario = em.merge(oldUsuarioIdOfOfertaConsultadaUsuarioListOfertaConsultadaUsuario);
+                }
+            }
+            for (UsuarioPuntosAcumulados usuarioPuntosAcumuladosListUsuarioPuntosAcumulados : usuario.getUsuarioPuntosAcumuladosList()) {
+                Usuario oldUsuarioIdOfUsuarioPuntosAcumuladosListUsuarioPuntosAcumulados = usuarioPuntosAcumuladosListUsuarioPuntosAcumulados.getUsuarioId();
+                usuarioPuntosAcumuladosListUsuarioPuntosAcumulados.setUsuarioId(usuario);
+                usuarioPuntosAcumuladosListUsuarioPuntosAcumulados = em.merge(usuarioPuntosAcumuladosListUsuarioPuntosAcumulados);
+                if (oldUsuarioIdOfUsuarioPuntosAcumuladosListUsuarioPuntosAcumulados != null) {
+                    oldUsuarioIdOfUsuarioPuntosAcumuladosListUsuarioPuntosAcumulados.getUsuarioPuntosAcumuladosList().remove(usuarioPuntosAcumuladosListUsuarioPuntosAcumulados);
+                    oldUsuarioIdOfUsuarioPuntosAcumuladosListUsuarioPuntosAcumulados = em.merge(oldUsuarioIdOfUsuarioPuntosAcumuladosListUsuarioPuntosAcumulados);
                 }
             }
             em.getTransaction().commit();
@@ -197,35 +197,19 @@ public class UsuarioJpaController implements Serializable {
             Persona personaIdNew = usuario.getPersonaId();
             TipoUsuario tipoUsuarioIdOld = persistentUsuario.getTipoUsuarioId();
             TipoUsuario tipoUsuarioIdNew = usuario.getTipoUsuarioId();
-            List<ImagenProducto> imagenProductoListOld = persistentUsuario.getImagenProductoList();
-            List<ImagenProducto> imagenProductoListNew = usuario.getImagenProductoList();
-            List<Preferencias> preferenciasListOld = persistentUsuario.getPreferenciasList();
-            List<Preferencias> preferenciasListNew = usuario.getPreferenciasList();
+            List<PrefTiendaUsuario> prefTiendaUsuarioListOld = persistentUsuario.getPrefTiendaUsuarioList();
+            List<PrefTiendaUsuario> prefTiendaUsuarioListNew = usuario.getPrefTiendaUsuarioList();
             List<Valoracion> valoracionListOld = persistentUsuario.getValoracionList();
             List<Valoracion> valoracionListNew = usuario.getValoracionList();
-            List<UsuarioTienda> usuarioTiendaListOld = persistentUsuario.getUsuarioTiendaList();
-            List<UsuarioTienda> usuarioTiendaListNew = usuario.getUsuarioTiendaList();
+            List<PrefRubroUsuario> prefRubroUsuarioListOld = persistentUsuario.getPrefRubroUsuarioList();
+            List<PrefRubroUsuario> prefRubroUsuarioListNew = usuario.getPrefRubroUsuarioList();
             List<DescuentoEmitido> descuentoEmitidoListOld = persistentUsuario.getDescuentoEmitidoList();
             List<DescuentoEmitido> descuentoEmitidoListNew = usuario.getDescuentoEmitidoList();
             List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioListOld = persistentUsuario.getOfertaConsultadaUsuarioList();
             List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioListNew = usuario.getOfertaConsultadaUsuarioList();
+            List<UsuarioPuntosAcumulados> usuarioPuntosAcumuladosListOld = persistentUsuario.getUsuarioPuntosAcumuladosList();
+            List<UsuarioPuntosAcumulados> usuarioPuntosAcumuladosListNew = usuario.getUsuarioPuntosAcumuladosList();
             List<String> illegalOrphanMessages = null;
-            for (ImagenProducto imagenProductoListOldImagenProducto : imagenProductoListOld) {
-                if (!imagenProductoListNew.contains(imagenProductoListOldImagenProducto)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain ImagenProducto " + imagenProductoListOldImagenProducto + " since its encargado field is not nullable.");
-                }
-            }
-            for (Preferencias preferenciasListOldPreferencias : preferenciasListOld) {
-                if (!preferenciasListNew.contains(preferenciasListOldPreferencias)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Preferencias " + preferenciasListOldPreferencias + " since its usuarioId field is not nullable.");
-                }
-            }
             for (Valoracion valoracionListOldValoracion : valoracionListOld) {
                 if (!valoracionListNew.contains(valoracionListOldValoracion)) {
                     if (illegalOrphanMessages == null) {
@@ -234,12 +218,12 @@ public class UsuarioJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain Valoracion " + valoracionListOldValoracion + " since its usuarioId field is not nullable.");
                 }
             }
-            for (UsuarioTienda usuarioTiendaListOldUsuarioTienda : usuarioTiendaListOld) {
-                if (!usuarioTiendaListNew.contains(usuarioTiendaListOldUsuarioTienda)) {
+            for (PrefRubroUsuario prefRubroUsuarioListOldPrefRubroUsuario : prefRubroUsuarioListOld) {
+                if (!prefRubroUsuarioListNew.contains(prefRubroUsuarioListOldPrefRubroUsuario)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain UsuarioTienda " + usuarioTiendaListOldUsuarioTienda + " since its usuarioId field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PrefRubroUsuario " + prefRubroUsuarioListOldPrefRubroUsuario + " since its usuarioId field is not nullable.");
                 }
             }
             for (DescuentoEmitido descuentoEmitidoListOldDescuentoEmitido : descuentoEmitidoListOld) {
@@ -258,6 +242,14 @@ public class UsuarioJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain OfertaConsultadaUsuario " + ofertaConsultadaUsuarioListOldOfertaConsultadaUsuario + " since its usuarioId field is not nullable.");
                 }
             }
+            for (UsuarioPuntosAcumulados usuarioPuntosAcumuladosListOldUsuarioPuntosAcumulados : usuarioPuntosAcumuladosListOld) {
+                if (!usuarioPuntosAcumuladosListNew.contains(usuarioPuntosAcumuladosListOldUsuarioPuntosAcumulados)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain UsuarioPuntosAcumulados " + usuarioPuntosAcumuladosListOldUsuarioPuntosAcumulados + " since its usuarioId field is not nullable.");
+                }
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -269,20 +261,13 @@ public class UsuarioJpaController implements Serializable {
                 tipoUsuarioIdNew = em.getReference(tipoUsuarioIdNew.getClass(), tipoUsuarioIdNew.getIdTipoUsuario());
                 usuario.setTipoUsuarioId(tipoUsuarioIdNew);
             }
-            List<ImagenProducto> attachedImagenProductoListNew = new ArrayList<ImagenProducto>();
-            for (ImagenProducto imagenProductoListNewImagenProductoToAttach : imagenProductoListNew) {
-                imagenProductoListNewImagenProductoToAttach = em.getReference(imagenProductoListNewImagenProductoToAttach.getClass(), imagenProductoListNewImagenProductoToAttach.getImagenId());
-                attachedImagenProductoListNew.add(imagenProductoListNewImagenProductoToAttach);
+            List<PrefTiendaUsuario> attachedPrefTiendaUsuarioListNew = new ArrayList<PrefTiendaUsuario>();
+            for (PrefTiendaUsuario prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach : prefTiendaUsuarioListNew) {
+                prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach = em.getReference(prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach.getClass(), prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach.getIdPrefTienda());
+                attachedPrefTiendaUsuarioListNew.add(prefTiendaUsuarioListNewPrefTiendaUsuarioToAttach);
             }
-            imagenProductoListNew = attachedImagenProductoListNew;
-            usuario.setImagenProductoList(imagenProductoListNew);
-            List<Preferencias> attachedPreferenciasListNew = new ArrayList<Preferencias>();
-            for (Preferencias preferenciasListNewPreferenciasToAttach : preferenciasListNew) {
-                preferenciasListNewPreferenciasToAttach = em.getReference(preferenciasListNewPreferenciasToAttach.getClass(), preferenciasListNewPreferenciasToAttach.getPreferenciaId());
-                attachedPreferenciasListNew.add(preferenciasListNewPreferenciasToAttach);
-            }
-            preferenciasListNew = attachedPreferenciasListNew;
-            usuario.setPreferenciasList(preferenciasListNew);
+            prefTiendaUsuarioListNew = attachedPrefTiendaUsuarioListNew;
+            usuario.setPrefTiendaUsuarioList(prefTiendaUsuarioListNew);
             List<Valoracion> attachedValoracionListNew = new ArrayList<Valoracion>();
             for (Valoracion valoracionListNewValoracionToAttach : valoracionListNew) {
                 valoracionListNewValoracionToAttach = em.getReference(valoracionListNewValoracionToAttach.getClass(), valoracionListNewValoracionToAttach.getValoracionId());
@@ -290,13 +275,13 @@ public class UsuarioJpaController implements Serializable {
             }
             valoracionListNew = attachedValoracionListNew;
             usuario.setValoracionList(valoracionListNew);
-            List<UsuarioTienda> attachedUsuarioTiendaListNew = new ArrayList<UsuarioTienda>();
-            for (UsuarioTienda usuarioTiendaListNewUsuarioTiendaToAttach : usuarioTiendaListNew) {
-                usuarioTiendaListNewUsuarioTiendaToAttach = em.getReference(usuarioTiendaListNewUsuarioTiendaToAttach.getClass(), usuarioTiendaListNewUsuarioTiendaToAttach.getUsuarioTiendaId());
-                attachedUsuarioTiendaListNew.add(usuarioTiendaListNewUsuarioTiendaToAttach);
+            List<PrefRubroUsuario> attachedPrefRubroUsuarioListNew = new ArrayList<PrefRubroUsuario>();
+            for (PrefRubroUsuario prefRubroUsuarioListNewPrefRubroUsuarioToAttach : prefRubroUsuarioListNew) {
+                prefRubroUsuarioListNewPrefRubroUsuarioToAttach = em.getReference(prefRubroUsuarioListNewPrefRubroUsuarioToAttach.getClass(), prefRubroUsuarioListNewPrefRubroUsuarioToAttach.getIdPrefRubro());
+                attachedPrefRubroUsuarioListNew.add(prefRubroUsuarioListNewPrefRubroUsuarioToAttach);
             }
-            usuarioTiendaListNew = attachedUsuarioTiendaListNew;
-            usuario.setUsuarioTiendaList(usuarioTiendaListNew);
+            prefRubroUsuarioListNew = attachedPrefRubroUsuarioListNew;
+            usuario.setPrefRubroUsuarioList(prefRubroUsuarioListNew);
             List<DescuentoEmitido> attachedDescuentoEmitidoListNew = new ArrayList<DescuentoEmitido>();
             for (DescuentoEmitido descuentoEmitidoListNewDescuentoEmitidoToAttach : descuentoEmitidoListNew) {
                 descuentoEmitidoListNewDescuentoEmitidoToAttach = em.getReference(descuentoEmitidoListNewDescuentoEmitidoToAttach.getClass(), descuentoEmitidoListNewDescuentoEmitidoToAttach.getDescuentoId());
@@ -311,6 +296,13 @@ public class UsuarioJpaController implements Serializable {
             }
             ofertaConsultadaUsuarioListNew = attachedOfertaConsultadaUsuarioListNew;
             usuario.setOfertaConsultadaUsuarioList(ofertaConsultadaUsuarioListNew);
+            List<UsuarioPuntosAcumulados> attachedUsuarioPuntosAcumuladosListNew = new ArrayList<UsuarioPuntosAcumulados>();
+            for (UsuarioPuntosAcumulados usuarioPuntosAcumuladosListNewUsuarioPuntosAcumuladosToAttach : usuarioPuntosAcumuladosListNew) {
+                usuarioPuntosAcumuladosListNewUsuarioPuntosAcumuladosToAttach = em.getReference(usuarioPuntosAcumuladosListNewUsuarioPuntosAcumuladosToAttach.getClass(), usuarioPuntosAcumuladosListNewUsuarioPuntosAcumuladosToAttach.getIdPuntaje());
+                attachedUsuarioPuntosAcumuladosListNew.add(usuarioPuntosAcumuladosListNewUsuarioPuntosAcumuladosToAttach);
+            }
+            usuarioPuntosAcumuladosListNew = attachedUsuarioPuntosAcumuladosListNew;
+            usuario.setUsuarioPuntosAcumuladosList(usuarioPuntosAcumuladosListNew);
             usuario = em.merge(usuario);
             if (personaIdOld != null && !personaIdOld.equals(personaIdNew)) {
                 personaIdOld.getUsuarioList().remove(usuario);
@@ -328,25 +320,20 @@ public class UsuarioJpaController implements Serializable {
                 tipoUsuarioIdNew.getUsuarioList().add(usuario);
                 tipoUsuarioIdNew = em.merge(tipoUsuarioIdNew);
             }
-            for (ImagenProducto imagenProductoListNewImagenProducto : imagenProductoListNew) {
-                if (!imagenProductoListOld.contains(imagenProductoListNewImagenProducto)) {
-                    Usuario oldEncargadoOfImagenProductoListNewImagenProducto = imagenProductoListNewImagenProducto.getEncargado();
-                    imagenProductoListNewImagenProducto.setEncargado(usuario);
-                    imagenProductoListNewImagenProducto = em.merge(imagenProductoListNewImagenProducto);
-                    if (oldEncargadoOfImagenProductoListNewImagenProducto != null && !oldEncargadoOfImagenProductoListNewImagenProducto.equals(usuario)) {
-                        oldEncargadoOfImagenProductoListNewImagenProducto.getImagenProductoList().remove(imagenProductoListNewImagenProducto);
-                        oldEncargadoOfImagenProductoListNewImagenProducto = em.merge(oldEncargadoOfImagenProductoListNewImagenProducto);
-                    }
+            for (PrefTiendaUsuario prefTiendaUsuarioListOldPrefTiendaUsuario : prefTiendaUsuarioListOld) {
+                if (!prefTiendaUsuarioListNew.contains(prefTiendaUsuarioListOldPrefTiendaUsuario)) {
+                    prefTiendaUsuarioListOldPrefTiendaUsuario.setUsuarioId(null);
+                    prefTiendaUsuarioListOldPrefTiendaUsuario = em.merge(prefTiendaUsuarioListOldPrefTiendaUsuario);
                 }
             }
-            for (Preferencias preferenciasListNewPreferencias : preferenciasListNew) {
-                if (!preferenciasListOld.contains(preferenciasListNewPreferencias)) {
-                    Usuario oldUsuarioIdOfPreferenciasListNewPreferencias = preferenciasListNewPreferencias.getUsuarioId();
-                    preferenciasListNewPreferencias.setUsuarioId(usuario);
-                    preferenciasListNewPreferencias = em.merge(preferenciasListNewPreferencias);
-                    if (oldUsuarioIdOfPreferenciasListNewPreferencias != null && !oldUsuarioIdOfPreferenciasListNewPreferencias.equals(usuario)) {
-                        oldUsuarioIdOfPreferenciasListNewPreferencias.getPreferenciasList().remove(preferenciasListNewPreferencias);
-                        oldUsuarioIdOfPreferenciasListNewPreferencias = em.merge(oldUsuarioIdOfPreferenciasListNewPreferencias);
+            for (PrefTiendaUsuario prefTiendaUsuarioListNewPrefTiendaUsuario : prefTiendaUsuarioListNew) {
+                if (!prefTiendaUsuarioListOld.contains(prefTiendaUsuarioListNewPrefTiendaUsuario)) {
+                    Usuario oldUsuarioIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario = prefTiendaUsuarioListNewPrefTiendaUsuario.getUsuarioId();
+                    prefTiendaUsuarioListNewPrefTiendaUsuario.setUsuarioId(usuario);
+                    prefTiendaUsuarioListNewPrefTiendaUsuario = em.merge(prefTiendaUsuarioListNewPrefTiendaUsuario);
+                    if (oldUsuarioIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario != null && !oldUsuarioIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario.equals(usuario)) {
+                        oldUsuarioIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario.getPrefTiendaUsuarioList().remove(prefTiendaUsuarioListNewPrefTiendaUsuario);
+                        oldUsuarioIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario = em.merge(oldUsuarioIdOfPrefTiendaUsuarioListNewPrefTiendaUsuario);
                     }
                 }
             }
@@ -361,14 +348,14 @@ public class UsuarioJpaController implements Serializable {
                     }
                 }
             }
-            for (UsuarioTienda usuarioTiendaListNewUsuarioTienda : usuarioTiendaListNew) {
-                if (!usuarioTiendaListOld.contains(usuarioTiendaListNewUsuarioTienda)) {
-                    Usuario oldUsuarioIdOfUsuarioTiendaListNewUsuarioTienda = usuarioTiendaListNewUsuarioTienda.getUsuarioId();
-                    usuarioTiendaListNewUsuarioTienda.setUsuarioId(usuario);
-                    usuarioTiendaListNewUsuarioTienda = em.merge(usuarioTiendaListNewUsuarioTienda);
-                    if (oldUsuarioIdOfUsuarioTiendaListNewUsuarioTienda != null && !oldUsuarioIdOfUsuarioTiendaListNewUsuarioTienda.equals(usuario)) {
-                        oldUsuarioIdOfUsuarioTiendaListNewUsuarioTienda.getUsuarioTiendaList().remove(usuarioTiendaListNewUsuarioTienda);
-                        oldUsuarioIdOfUsuarioTiendaListNewUsuarioTienda = em.merge(oldUsuarioIdOfUsuarioTiendaListNewUsuarioTienda);
+            for (PrefRubroUsuario prefRubroUsuarioListNewPrefRubroUsuario : prefRubroUsuarioListNew) {
+                if (!prefRubroUsuarioListOld.contains(prefRubroUsuarioListNewPrefRubroUsuario)) {
+                    Usuario oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario = prefRubroUsuarioListNewPrefRubroUsuario.getUsuarioId();
+                    prefRubroUsuarioListNewPrefRubroUsuario.setUsuarioId(usuario);
+                    prefRubroUsuarioListNewPrefRubroUsuario = em.merge(prefRubroUsuarioListNewPrefRubroUsuario);
+                    if (oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario != null && !oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario.equals(usuario)) {
+                        oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario.getPrefRubroUsuarioList().remove(prefRubroUsuarioListNewPrefRubroUsuario);
+                        oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario = em.merge(oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario);
                     }
                 }
             }
@@ -391,6 +378,17 @@ public class UsuarioJpaController implements Serializable {
                     if (oldUsuarioIdOfOfertaConsultadaUsuarioListNewOfertaConsultadaUsuario != null && !oldUsuarioIdOfOfertaConsultadaUsuarioListNewOfertaConsultadaUsuario.equals(usuario)) {
                         oldUsuarioIdOfOfertaConsultadaUsuarioListNewOfertaConsultadaUsuario.getOfertaConsultadaUsuarioList().remove(ofertaConsultadaUsuarioListNewOfertaConsultadaUsuario);
                         oldUsuarioIdOfOfertaConsultadaUsuarioListNewOfertaConsultadaUsuario = em.merge(oldUsuarioIdOfOfertaConsultadaUsuarioListNewOfertaConsultadaUsuario);
+                    }
+                }
+            }
+            for (UsuarioPuntosAcumulados usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados : usuarioPuntosAcumuladosListNew) {
+                if (!usuarioPuntosAcumuladosListOld.contains(usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados)) {
+                    Usuario oldUsuarioIdOfUsuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados = usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados.getUsuarioId();
+                    usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados.setUsuarioId(usuario);
+                    usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados = em.merge(usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados);
+                    if (oldUsuarioIdOfUsuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados != null && !oldUsuarioIdOfUsuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados.equals(usuario)) {
+                        oldUsuarioIdOfUsuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados.getUsuarioPuntosAcumuladosList().remove(usuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados);
+                        oldUsuarioIdOfUsuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados = em.merge(oldUsuarioIdOfUsuarioPuntosAcumuladosListNewUsuarioPuntosAcumulados);
                     }
                 }
             }
@@ -424,20 +422,6 @@ public class UsuarioJpaController implements Serializable {
                 throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<ImagenProducto> imagenProductoListOrphanCheck = usuario.getImagenProductoList();
-            for (ImagenProducto imagenProductoListOrphanCheckImagenProducto : imagenProductoListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the ImagenProducto " + imagenProductoListOrphanCheckImagenProducto + " in its imagenProductoList field has a non-nullable encargado field.");
-            }
-            List<Preferencias> preferenciasListOrphanCheck = usuario.getPreferenciasList();
-            for (Preferencias preferenciasListOrphanCheckPreferencias : preferenciasListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Preferencias " + preferenciasListOrphanCheckPreferencias + " in its preferenciasList field has a non-nullable usuarioId field.");
-            }
             List<Valoracion> valoracionListOrphanCheck = usuario.getValoracionList();
             for (Valoracion valoracionListOrphanCheckValoracion : valoracionListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
@@ -445,12 +429,12 @@ public class UsuarioJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Valoracion " + valoracionListOrphanCheckValoracion + " in its valoracionList field has a non-nullable usuarioId field.");
             }
-            List<UsuarioTienda> usuarioTiendaListOrphanCheck = usuario.getUsuarioTiendaList();
-            for (UsuarioTienda usuarioTiendaListOrphanCheckUsuarioTienda : usuarioTiendaListOrphanCheck) {
+            List<PrefRubroUsuario> prefRubroUsuarioListOrphanCheck = usuario.getPrefRubroUsuarioList();
+            for (PrefRubroUsuario prefRubroUsuarioListOrphanCheckPrefRubroUsuario : prefRubroUsuarioListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the UsuarioTienda " + usuarioTiendaListOrphanCheckUsuarioTienda + " in its usuarioTiendaList field has a non-nullable usuarioId field.");
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the PrefRubroUsuario " + prefRubroUsuarioListOrphanCheckPrefRubroUsuario + " in its prefRubroUsuarioList field has a non-nullable usuarioId field.");
             }
             List<DescuentoEmitido> descuentoEmitidoListOrphanCheck = usuario.getDescuentoEmitidoList();
             for (DescuentoEmitido descuentoEmitidoListOrphanCheckDescuentoEmitido : descuentoEmitidoListOrphanCheck) {
@@ -466,6 +450,13 @@ public class UsuarioJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the OfertaConsultadaUsuario " + ofertaConsultadaUsuarioListOrphanCheckOfertaConsultadaUsuario + " in its ofertaConsultadaUsuarioList field has a non-nullable usuarioId field.");
             }
+            List<UsuarioPuntosAcumulados> usuarioPuntosAcumuladosListOrphanCheck = usuario.getUsuarioPuntosAcumuladosList();
+            for (UsuarioPuntosAcumulados usuarioPuntosAcumuladosListOrphanCheckUsuarioPuntosAcumulados : usuarioPuntosAcumuladosListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the UsuarioPuntosAcumulados " + usuarioPuntosAcumuladosListOrphanCheckUsuarioPuntosAcumulados + " in its usuarioPuntosAcumuladosList field has a non-nullable usuarioId field.");
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -478,6 +469,11 @@ public class UsuarioJpaController implements Serializable {
             if (tipoUsuarioId != null) {
                 tipoUsuarioId.getUsuarioList().remove(usuario);
                 tipoUsuarioId = em.merge(tipoUsuarioId);
+            }
+            List<PrefTiendaUsuario> prefTiendaUsuarioList = usuario.getPrefTiendaUsuarioList();
+            for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuario : prefTiendaUsuarioList) {
+                prefTiendaUsuarioListPrefTiendaUsuario.setUsuarioId(null);
+                prefTiendaUsuarioListPrefTiendaUsuario = em.merge(prefTiendaUsuarioListPrefTiendaUsuario);
             }
             em.remove(usuario);
             em.getTransaction().commit();
