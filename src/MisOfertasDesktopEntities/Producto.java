@@ -105,6 +105,18 @@ import javax.xml.bind.annotation.XmlTransient;
                 )
             }
     )
+    ,
+    @NamedStoredProcedureQuery(
+            name = "listAll",
+            procedureName = "PKG_CRUD_PRODUCTO.PRC_LISTAR_TODOS",
+            parameters = {
+                @javax.persistence.StoredProcedureParameter(
+                        name = "v_cursor",
+                        type = Class.class,
+                        mode = ParameterMode.REF_CURSOR
+                )
+            }
+    )
 
 })
 public class Producto implements Serializable {
