@@ -20,6 +20,7 @@
     <class>misofertasdesktop.Menu</class>
     <class>misofertasdesktop.Producto</class>
     <class>misofertasdesktop.DescuentoEmitido</class>
+<<<<<<< HEAD
     <class>cl.duoc.misofertas.domain.Comuna</class>
     <class>cl.duoc.misofertas.domain.Pais</class>
     <class>cl.duoc.misofertas.domain.Tienda</class>
@@ -39,6 +40,31 @@
     <class>cl.duoc.misofertas.domain.UsuarioTienda</class>
     <class>cl.duoc.misofertas.domain.WsDetalleVentas</class>
     <class>cl.duoc.misofertas.domain.Valoracion</class>
+=======
+    <class>MisOfertasDesktopEntities.Valoracion</class>
+    <class>MisOfertasDesktopEntities.Persona</class>
+    <class>MisOfertasDesktopEntities.TipoUsuario</class>
+    <class>MisOfertasDesktopEntities.Region</class>
+    <class>MisOfertasDesktopEntities.UsuarioTienda</class>
+    <class>MisOfertasDesktopEntities.Usuario</class>
+    <class>MisOfertasDesktopEntities.OfertaConsultadaUsuario</class>
+    <class>MisOfertasDesktopEntities.Tienda</class>
+    <class>MisOfertasDesktopEntities.Preferencias</class>
+    <class>MisOfertasDesktopEntities.Comuna</class>
+    <class>MisOfertasDesktopEntities.Rubro</class>
+    <class>MisOfertasDesktopEntities.WsDetalleVentas</class>
+    <class>MisOfertasDesktopEntities.WsVentasRealizadas</class>
+    <class>MisOfertasDesktopEntities.Menu</class>
+    <class>MisOfertasDesktopEntities.Oferta</class>
+    <class>MisOfertasDesktopEntities.Pais</class>
+    <class>MisOfertasDesktopEntities.DescuentoEmitido</class>
+    <class>MisOfertasDesktopEntities.ImagenProducto</class>
+    <class>MisOfertasDesktopEntities.Producto</class>
+    <class>MisOfertasDesktopEntities.ImagenOferta</class>
+    <class>MisOfertasDesktopEntities.PrefTiendaUsuario</class>
+    <class>MisOfertasDesktopEntities.UsuarioPuntosAcumulados</class>
+    <class>MisOfertasDesktopEntities.PrefRubroUsuario</class>
+>>>>>>> b3f4f50fe70fd4e5ecab788315cae76eb2b7706c
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@knowix.southcentralus.cloudapp.azure.com:1521:orcl"/>
       <property name="javax.persistence.jdbc.user" value="USR_OFERTAS_DEV"/>
