@@ -156,15 +156,13 @@ public class mantenedorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1KeyPressed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        JTable source = (JTable)evt.getSource();
-        int row = source.rowAtPoint( evt.getPoint() );// TODO add your handling code here:
+        JTable source = (JTable) evt.getSource();
+        int row = source.rowAtPoint(evt.getPoint());// TODO add your handling code here:
         int column = 1;
         String id = source.getModel().getValueAt(row, column).toString();
-        
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         dispose();
-        
-        new editarProducto(id).setVisible(true); 
+        new editarProducto(id).setVisible(true);
     }//GEN-LAST:event_jTable1MouseClicked
 
     /**
@@ -230,7 +228,7 @@ public class mantenedorProductos extends javax.swing.JFrame {
     private java.awt.Panel panel1;
     // End of variables declaration//GEN-END:variables
 
-    private void populateTable() {        
+    private void populateTable() {
         ProductoDAO pDAO = new ProductoDAO();
         RubroDAO rDAO = new RubroDAO();
         Producto p = new Producto();

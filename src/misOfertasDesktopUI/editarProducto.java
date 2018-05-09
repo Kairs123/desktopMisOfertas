@@ -24,14 +24,16 @@ public class editarProducto extends javax.swing.JFrame {
      */
     public editarProducto(String id) {
         initComponents();
-        
-        if(id == null){
+        if (id == null) {
             //objeto nuevo
         } else {
             //obtener de la tabla con el id y llenar los input de la nueva vista
         }
+
+    }
+
+    private editarProducto() {
         
-        populateTable();
     }
 
     /**
@@ -231,19 +233,4 @@ public class editarProducto extends javax.swing.JFrame {
     private java.awt.Panel panel1;
     // End of variables declaration//GEN-END:variables
 
-    private void populateTable() {        
-        ProductoDAO pDAO = new ProductoDAO();
-        RubroDAO rDAO = new RubroDAO();
-        Producto p = new Producto();
-        Rubro r = new Rubro();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        List<Producto> lista = pDAO.listAll();
-        Object rowData[] = new Object[3];
-        for (Producto prod : lista) {
-            rowData[0] = prod.getNombreProducto();
-            rowData[1] = prod.getRubro().getNombreRubro();
-            rowData[2] = prod.getEsPerecible();
-            model.addRow(rowData);
-        }
-    }
 }
