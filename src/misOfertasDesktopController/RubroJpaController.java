@@ -122,14 +122,6 @@ public class RubroJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain Producto " + productoListOldProducto + " since its rubro field is not nullable.");
                 }
             }
-            for (PrefRubroUsuario prefRubroUsuarioListOldPrefRubroUsuario : prefRubroUsuarioListOld) {
-                if (!prefRubroUsuarioListNew.contains(prefRubroUsuarioListOldPrefRubroUsuario)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain PrefRubroUsuario " + prefRubroUsuarioListOldPrefRubroUsuario + " since its rubroId field is not nullable.");
-                }
-            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -169,6 +161,12 @@ public class RubroJpaController implements Serializable {
                         oldRubroOfProductoListNewProducto.getProductoList().remove(productoListNewProducto);
                         oldRubroOfProductoListNewProducto = em.merge(oldRubroOfProductoListNewProducto);
                     }
+                }
+            }
+            for (PrefRubroUsuario prefRubroUsuarioListOldPrefRubroUsuario : prefRubroUsuarioListOld) {
+                if (!prefRubroUsuarioListNew.contains(prefRubroUsuarioListOldPrefRubroUsuario)) {
+                    prefRubroUsuarioListOldPrefRubroUsuario.setRubroId(null);
+                    prefRubroUsuarioListOldPrefRubroUsuario = em.merge(prefRubroUsuarioListOldPrefRubroUsuario);
                 }
             }
             for (PrefRubroUsuario prefRubroUsuarioListNewPrefRubroUsuario : prefRubroUsuarioListNew) {
@@ -219,13 +217,6 @@ public class RubroJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Rubro (" + rubro + ") cannot be destroyed since the Producto " + productoListOrphanCheckProducto + " in its productoList field has a non-nullable rubro field.");
             }
-            List<PrefRubroUsuario> prefRubroUsuarioListOrphanCheck = rubro.getPrefRubroUsuarioList();
-            for (PrefRubroUsuario prefRubroUsuarioListOrphanCheckPrefRubroUsuario : prefRubroUsuarioListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Rubro (" + rubro + ") cannot be destroyed since the PrefRubroUsuario " + prefRubroUsuarioListOrphanCheckPrefRubroUsuario + " in its prefRubroUsuarioList field has a non-nullable rubroId field.");
-            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -233,6 +224,11 @@ public class RubroJpaController implements Serializable {
             if (tiendaId != null) {
                 tiendaId.getRubroList().remove(rubro);
                 tiendaId = em.merge(tiendaId);
+            }
+            List<PrefRubroUsuario> prefRubroUsuarioList = rubro.getPrefRubroUsuarioList();
+            for (PrefRubroUsuario prefRubroUsuarioListPrefRubroUsuario : prefRubroUsuarioList) {
+                prefRubroUsuarioListPrefRubroUsuario.setRubroId(null);
+                prefRubroUsuarioListPrefRubroUsuario = em.merge(prefRubroUsuarioListPrefRubroUsuario);
             }
             em.remove(rubro);
             em.getTransaction().commit();

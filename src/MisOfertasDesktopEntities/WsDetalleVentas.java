@@ -6,18 +6,16 @@
 package MisOfertasDesktopEntities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,51 +31,35 @@ import javax.xml.bind.annotation.XmlTransient;
 public class WsDetalleVentas implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "DETALLE_ID")
-    private Long detalleId;
-    @Basic(optional = false)
+    private BigDecimal detalleId;
     @Column(name = "OFERTA_ID")
-    private long ofertaId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "detalleVenta")
-    private List<WsVentasRealizadas> wsVentasRealizadasList;
+    private BigInteger ofertaId;
 
     public WsDetalleVentas() {
     }
 
-    public WsDetalleVentas(Long detalleId) {
+    public WsDetalleVentas(BigDecimal detalleId) {
         this.detalleId = detalleId;
     }
 
-    public WsDetalleVentas(Long detalleId, long ofertaId) {
-        this.detalleId = detalleId;
-        this.ofertaId = ofertaId;
-    }
-
-    public Long getDetalleId() {
+    public BigDecimal getDetalleId() {
         return detalleId;
     }
 
-    public void setDetalleId(Long detalleId) {
+    public void setDetalleId(BigDecimal detalleId) {
         this.detalleId = detalleId;
     }
 
-    public long getOfertaId() {
+    public BigInteger getOfertaId() {
         return ofertaId;
     }
 
-    public void setOfertaId(long ofertaId) {
+    public void setOfertaId(BigInteger ofertaId) {
         this.ofertaId = ofertaId;
-    }
-
-    @XmlTransient
-    public List<WsVentasRealizadas> getWsVentasRealizadasList() {
-        return wsVentasRealizadasList;
-    }
-
-    public void setWsVentasRealizadasList(List<WsVentasRealizadas> wsVentasRealizadasList) {
-        this.wsVentasRealizadasList = wsVentasRealizadasList;
     }
 
     @Override

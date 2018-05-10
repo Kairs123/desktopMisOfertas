@@ -45,7 +45,7 @@ public class ImagenOfertaJpaController implements Serializable {
             em.getTransaction().begin();
             List<Oferta> attachedOfertaList = new ArrayList<Oferta>();
             for (Oferta ofertaListOfertaToAttach : imagenOferta.getOfertaList()) {
-                ofertaListOfertaToAttach = em.getReference(ofertaListOfertaToAttach.getClass(), ofertaListOfertaToAttach.getOfertaId());
+                ofertaListOfertaToAttach = em.getReference(ofertaListOfertaToAttach.getClass(), ofertaListOfertaToAttach.getIdOferta());
                 attachedOfertaList.add(ofertaListOfertaToAttach);
             }
             imagenOferta.setOfertaList(attachedOfertaList);
@@ -94,7 +94,7 @@ public class ImagenOfertaJpaController implements Serializable {
             }
             List<Oferta> attachedOfertaListNew = new ArrayList<Oferta>();
             for (Oferta ofertaListNewOfertaToAttach : ofertaListNew) {
-                ofertaListNewOfertaToAttach = em.getReference(ofertaListNewOfertaToAttach.getClass(), ofertaListNewOfertaToAttach.getOfertaId());
+                ofertaListNewOfertaToAttach = em.getReference(ofertaListNewOfertaToAttach.getClass(), ofertaListNewOfertaToAttach.getIdOferta());
                 attachedOfertaListNew.add(ofertaListNewOfertaToAttach);
             }
             ofertaListNew = attachedOfertaListNew;

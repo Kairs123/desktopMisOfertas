@@ -41,7 +41,7 @@ public class OfertaConsultadaUsuarioJpaController implements Serializable {
             em.getTransaction().begin();
             Oferta ofertaId = ofertaConsultadaUsuario.getOfertaId();
             if (ofertaId != null) {
-                ofertaId = em.getReference(ofertaId.getClass(), ofertaId.getOfertaId());
+                ofertaId = em.getReference(ofertaId.getClass(), ofertaId.getIdOferta());
                 ofertaConsultadaUsuario.setOfertaId(ofertaId);
             }
             Usuario usuarioId = ofertaConsultadaUsuario.getUsuarioId();
@@ -82,7 +82,7 @@ public class OfertaConsultadaUsuarioJpaController implements Serializable {
             Usuario usuarioIdOld = persistentOfertaConsultadaUsuario.getUsuarioId();
             Usuario usuarioIdNew = ofertaConsultadaUsuario.getUsuarioId();
             if (ofertaIdNew != null) {
-                ofertaIdNew = em.getReference(ofertaIdNew.getClass(), ofertaIdNew.getOfertaId());
+                ofertaIdNew = em.getReference(ofertaIdNew.getClass(), ofertaIdNew.getIdOferta());
                 ofertaConsultadaUsuario.setOfertaId(ofertaIdNew);
             }
             if (usuarioIdNew != null) {

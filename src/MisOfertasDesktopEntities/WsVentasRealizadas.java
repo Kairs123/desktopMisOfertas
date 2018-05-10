@@ -10,8 +10,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -27,8 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "WsVentasRealizadas.findAll", query = "SELECT w FROM WsVentasRealizadas w")
     , @NamedQuery(name = "WsVentasRealizadas.findByVentasWsId", query = "SELECT w FROM WsVentasRealizadas w WHERE w.ventasWsId = :ventasWsId")
-    , @NamedQuery(name = "WsVentasRealizadas.findByUsuario", query = "SELECT w FROM WsVentasRealizadas w WHERE w.usuario = :usuario")
-    , @NamedQuery(name = "WsVentasRealizadas.findByTotal", query = "SELECT w FROM WsVentasRealizadas w WHERE w.total = :total")})
+    , @NamedQuery(name = "WsVentasRealizadas.findByUsuarioRut", query = "SELECT w FROM WsVentasRealizadas w WHERE w.usuarioRut = :usuarioRut")})
 public class WsVentasRealizadas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,27 +33,14 @@ public class WsVentasRealizadas implements Serializable {
     @Basic(optional = false)
     @Column(name = "VENTAS_WS_ID")
     private Long ventasWsId;
-    @Basic(optional = false)
-    @Column(name = "USUARIO")
-    private long usuario;
-    @Basic(optional = false)
-    @Column(name = "TOTAL")
-    private long total;
-    @JoinColumn(name = "DETALLE_VENTA", referencedColumnName = "DETALLE_ID")
-    @ManyToOne(optional = false)
-    private WsDetalleVentas detalleVenta;
+    @Column(name = "USUARIO_RUT")
+    private Long usuarioRut;
 
     public WsVentasRealizadas() {
     }
 
     public WsVentasRealizadas(Long ventasWsId) {
         this.ventasWsId = ventasWsId;
-    }
-
-    public WsVentasRealizadas(Long ventasWsId, long usuario, long total) {
-        this.ventasWsId = ventasWsId;
-        this.usuario = usuario;
-        this.total = total;
     }
 
     public Long getVentasWsId() {
@@ -67,28 +51,12 @@ public class WsVentasRealizadas implements Serializable {
         this.ventasWsId = ventasWsId;
     }
 
-    public long getUsuario() {
-        return usuario;
+    public Long getUsuarioRut() {
+        return usuarioRut;
     }
 
-    public void setUsuario(long usuario) {
-        this.usuario = usuario;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
-    public WsDetalleVentas getDetalleVenta() {
-        return detalleVenta;
-    }
-
-    public void setDetalleVenta(WsDetalleVentas detalleVenta) {
-        this.detalleVenta = detalleVenta;
+    public void setUsuarioRut(Long usuarioRut) {
+        this.usuarioRut = usuarioRut;
     }
 
     @Override

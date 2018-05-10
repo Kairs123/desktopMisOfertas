@@ -112,8 +112,7 @@ public class initFrame extends javax.swing.JFrame {
 
     private void jMenuItemProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProductoActionPerformed
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        dispose();
-        
+        dispose(); 
         new mantenedorProductos().setVisible(true); 
     }//GEN-LAST:event_jMenuItemProductoActionPerformed
 

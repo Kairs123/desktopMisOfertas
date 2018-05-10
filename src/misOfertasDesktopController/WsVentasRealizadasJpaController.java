@@ -5,16 +5,15 @@
  */
 package misOfertasDesktopController;
 
+import MisOfertasDesktopEntities.WsVentasRealizadas;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import MisOfertasDesktopEntities.WsDetalleVentas;
-import MisOfertasDesktopEntities.WsVentasRealizadas;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import misOfertasDesktopController.exceptions.NonexistentEntityException;
 import misOfertasDesktopController.exceptions.PreexistingEntityException;
 
@@ -38,16 +37,7 @@ public class WsVentasRealizadasJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            WsDetalleVentas detalleVenta = wsVentasRealizadas.getDetalleVenta();
-            if (detalleVenta != null) {
-                detalleVenta = em.getReference(detalleVenta.getClass(), detalleVenta.getDetalleId());
-                wsVentasRealizadas.setDetalleVenta(detalleVenta);
-            }
             em.persist(wsVentasRealizadas);
-            if (detalleVenta != null) {
-                detalleVenta.getWsVentasRealizadasList().add(wsVentasRealizadas);
-                detalleVenta = em.merge(detalleVenta);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findWsVentasRealizadas(wsVentasRealizadas.getVentasWsId()) != null) {
@@ -66,22 +56,7 @@ public class WsVentasRealizadasJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            WsVentasRealizadas persistentWsVentasRealizadas = em.find(WsVentasRealizadas.class, wsVentasRealizadas.getVentasWsId());
-            WsDetalleVentas detalleVentaOld = persistentWsVentasRealizadas.getDetalleVenta();
-            WsDetalleVentas detalleVentaNew = wsVentasRealizadas.getDetalleVenta();
-            if (detalleVentaNew != null) {
-                detalleVentaNew = em.getReference(detalleVentaNew.getClass(), detalleVentaNew.getDetalleId());
-                wsVentasRealizadas.setDetalleVenta(detalleVentaNew);
-            }
             wsVentasRealizadas = em.merge(wsVentasRealizadas);
-            if (detalleVentaOld != null && !detalleVentaOld.equals(detalleVentaNew)) {
-                detalleVentaOld.getWsVentasRealizadasList().remove(wsVentasRealizadas);
-                detalleVentaOld = em.merge(detalleVentaOld);
-            }
-            if (detalleVentaNew != null && !detalleVentaNew.equals(detalleVentaOld)) {
-                detalleVentaNew.getWsVentasRealizadasList().add(wsVentasRealizadas);
-                detalleVentaNew = em.merge(detalleVentaNew);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -110,11 +85,6 @@ public class WsVentasRealizadasJpaController implements Serializable {
                 wsVentasRealizadas.getVentasWsId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The wsVentasRealizadas with id " + id + " no longer exists.", enfe);
-            }
-            WsDetalleVentas detalleVenta = wsVentasRealizadas.getDetalleVenta();
-            if (detalleVenta != null) {
-                detalleVenta.getWsVentasRealizadasList().remove(wsVentasRealizadas);
-                detalleVenta = em.merge(detalleVenta);
             }
             em.remove(wsVentasRealizadas);
             em.getTransaction().commit();

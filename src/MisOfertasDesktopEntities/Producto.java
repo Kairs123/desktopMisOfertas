@@ -16,10 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.ParameterMode;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,90 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")
     , @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto")
     , @NamedQuery(name = "Producto.findByNombreProducto", query = "SELECT p FROM Producto p WHERE p.nombreProducto = :nombreProducto")
-    , @NamedQuery(name = "Producto.getMaxId", query = "SELECT MAX(p.idProducto) FROM Producto p")
     , @NamedQuery(name = "Producto.findByEsPerecible", query = "SELECT p FROM Producto p WHERE p.esPerecible = :esPerecible")
     , @NamedQuery(name = "Producto.findByFechaVencimiento", query = "SELECT p FROM Producto p WHERE p.fechaVencimiento = :fechaVencimiento")
     , @NamedQuery(name = "Producto.findByIsActive", query = "SELECT p FROM Producto p WHERE p.isActive = :isActive")})
-@NamedStoredProcedureQueries({
-    @NamedStoredProcedureQuery(
-            name = "createProducto",
-            procedureName = "PKG_CRUD_PRODUCTO.PRC_CREATE_PRODUCTO",
-            parameters = {
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_producto_id",
-                        type = Long.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_nombre_producto",
-                        type = String.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_rubro_id",
-                        type = Long.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_es_perecible",
-                        type = Integer.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_fecha_venc",
-                        type = String.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_activo",
-                        type = String.class,
-                        mode = ParameterMode.IN
-                )
-            }
-    )
-    ,
-    @NamedStoredProcedureQuery(
-            name = "editProducto",
-            procedureName = "PKG_CRUD_PRODUCTO.PRC_UPDATE_PRODUCTO",
-            parameters = {
-                @javax.persistence.StoredProcedureParameter(
-                        name = "p_id_prod",
-                        type = Long.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                 @javax.persistence.StoredProcedureParameter(
-                        name = "p_nombre_producto",
-                        type = String.class,
-                        mode = ParameterMode.IN
-                )
-                ,
-                  @javax.persistence.StoredProcedureParameter(
-                        name = "p_fecha_venc",
-                        type = String.class,
-                        mode = ParameterMode.IN
-                )
-            }
-    )
-    ,
-    @NamedStoredProcedureQuery(
-            name = "listAll",
-            procedureName = "PKG_CRUD_PRODUCTO.PRC_LISTAR_TODOS",
-            parameters = {
-                @javax.persistence.StoredProcedureParameter(
-                        name = "v_cursor",
-                        type = Class.class,
-                        mode = ParameterMode.REF_CURSOR
-                )
-            }
-    )
-
-})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -142,7 +58,7 @@ public class Producto implements Serializable {
     @JoinColumn(name = "RUBRO", referencedColumnName = "ID_RUBRO")
     @ManyToOne(optional = false)
     private Rubro rubro;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private List<Oferta> ofertaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productoId")
     private List<DescuentoEmitido> descuentoEmitidoList;
@@ -260,5 +176,5 @@ public class Producto implements Serializable {
     public String toString() {
         return "MisOfertasDesktopEntities.Producto[ idProducto=" + idProducto + " ]";
     }
-
+    
 }

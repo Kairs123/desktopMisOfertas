@@ -19,7 +19,6 @@ import MisOfertasDesktopEntities.DescuentoEmitido;
 import MisOfertasDesktopEntities.Producto;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.StoredProcedureQuery;
 import misOfertasDesktopController.exceptions.IllegalOrphanException;
 import misOfertasDesktopController.exceptions.NonexistentEntityException;
 import misOfertasDesktopController.exceptions.PreexistingEntityException;
@@ -66,7 +65,7 @@ public class ProductoJpaController implements Serializable {
             producto.setValoracionList(attachedValoracionList);
             List<Oferta> attachedOfertaList = new ArrayList<Oferta>();
             for (Oferta ofertaListOfertaToAttach : producto.getOfertaList()) {
-                ofertaListOfertaToAttach = em.getReference(ofertaListOfertaToAttach.getClass(), ofertaListOfertaToAttach.getOfertaId());
+                ofertaListOfertaToAttach = em.getReference(ofertaListOfertaToAttach.getClass(), ofertaListOfertaToAttach.getIdOferta());
                 attachedOfertaList.add(ofertaListOfertaToAttach);
             }
             producto.setOfertaList(attachedOfertaList);
@@ -76,14 +75,7 @@ public class ProductoJpaController implements Serializable {
                 attachedDescuentoEmitidoList.add(descuentoEmitidoListDescuentoEmitidoToAttach);
             }
             producto.setDescuentoEmitidoList(attachedDescuentoEmitidoList);
-            StoredProcedureQuery createProducto = em.createNamedStoredProcedureQuery("createProducto");
-            createProducto.setParameter("p_producto_id", producto.getIdProducto());
-            createProducto.setParameter("p_nombre_producto", producto.getNombreProducto());
-            createProducto.setParameter("p_rubro_id", producto.getRubro().getIdRubro());
-            createProducto.setParameter("p_es_perecible", producto.getEsPerecible());
-            createProducto.setParameter("p_fecha_venc", producto.getFechaVencimiento());
-            createProducto.setParameter("p_activo", producto.getIsActive());
-            createProducto.execute();
+            em.persist(producto);
             if (rubro != null) {
                 rubro.getProductoList().add(producto);
                 rubro = em.merge(rubro);
@@ -98,12 +90,12 @@ public class ProductoJpaController implements Serializable {
                 }
             }
             for (Oferta ofertaListOferta : producto.getOfertaList()) {
-                Producto oldProductoOfOfertaListOferta = ofertaListOferta.getProducto();
-                ofertaListOferta.setProducto(producto);
+                Producto oldProductoIdOfOfertaListOferta = ofertaListOferta.getProductoId();
+                ofertaListOferta.setProductoId(producto);
                 ofertaListOferta = em.merge(ofertaListOferta);
-                if (oldProductoOfOfertaListOferta != null) {
-                    oldProductoOfOfertaListOferta.getOfertaList().remove(ofertaListOferta);
-                    oldProductoOfOfertaListOferta = em.merge(oldProductoOfOfertaListOferta);
+                if (oldProductoIdOfOfertaListOferta != null) {
+                    oldProductoIdOfOfertaListOferta.getOfertaList().remove(ofertaListOferta);
+                    oldProductoIdOfOfertaListOferta = em.merge(oldProductoIdOfOfertaListOferta);
                 }
             }
             for (DescuentoEmitido descuentoEmitidoListDescuentoEmitido : producto.getDescuentoEmitidoList()) {
@@ -156,7 +148,7 @@ public class ProductoJpaController implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain Oferta " + ofertaListOldOferta + " since its producto field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Oferta " + ofertaListOldOferta + " since its productoId field is not nullable.");
                 }
             }
             for (DescuentoEmitido descuentoEmitidoListOldDescuentoEmitido : descuentoEmitidoListOld) {
@@ -183,7 +175,7 @@ public class ProductoJpaController implements Serializable {
             producto.setValoracionList(valoracionListNew);
             List<Oferta> attachedOfertaListNew = new ArrayList<Oferta>();
             for (Oferta ofertaListNewOfertaToAttach : ofertaListNew) {
-                ofertaListNewOfertaToAttach = em.getReference(ofertaListNewOfertaToAttach.getClass(), ofertaListNewOfertaToAttach.getOfertaId());
+                ofertaListNewOfertaToAttach = em.getReference(ofertaListNewOfertaToAttach.getClass(), ofertaListNewOfertaToAttach.getIdOferta());
                 attachedOfertaListNew.add(ofertaListNewOfertaToAttach);
             }
             ofertaListNew = attachedOfertaListNew;
@@ -195,13 +187,7 @@ public class ProductoJpaController implements Serializable {
             }
             descuentoEmitidoListNew = attachedDescuentoEmitidoListNew;
             producto.setDescuentoEmitidoList(descuentoEmitidoListNew);
-            /*producto = em.merge(producto);*/
-            StoredProcedureQuery editProducto = em.createNamedStoredProcedureQuery("editProducto");
-            editProducto.setParameter("p_id_prod", producto.getIdProducto());
-            editProducto.setParameter("p_nombre_producto", producto.getNombreProducto());
-            editProducto.setParameter("p_fecha_venc", producto.getFechaVencimiento());
-            editProducto.executeUpdate();
-            
+            producto = em.merge(producto);
             if (rubroOld != null && !rubroOld.equals(rubroNew)) {
                 rubroOld.getProductoList().remove(producto);
                 rubroOld = em.merge(rubroOld);
@@ -223,12 +209,12 @@ public class ProductoJpaController implements Serializable {
             }
             for (Oferta ofertaListNewOferta : ofertaListNew) {
                 if (!ofertaListOld.contains(ofertaListNewOferta)) {
-                    Producto oldProductoOfOfertaListNewOferta = ofertaListNewOferta.getProducto();
-                    ofertaListNewOferta.setProducto(producto);
+                    Producto oldProductoIdOfOfertaListNewOferta = ofertaListNewOferta.getProductoId();
+                    ofertaListNewOferta.setProductoId(producto);
                     ofertaListNewOferta = em.merge(ofertaListNewOferta);
-                    if (oldProductoOfOfertaListNewOferta != null && !oldProductoOfOfertaListNewOferta.equals(producto)) {
-                        oldProductoOfOfertaListNewOferta.getOfertaList().remove(ofertaListNewOferta);
-                        oldProductoOfOfertaListNewOferta = em.merge(oldProductoOfOfertaListNewOferta);
+                    if (oldProductoIdOfOfertaListNewOferta != null && !oldProductoIdOfOfertaListNewOferta.equals(producto)) {
+                        oldProductoIdOfOfertaListNewOferta.getOfertaList().remove(ofertaListNewOferta);
+                        oldProductoIdOfOfertaListNewOferta = em.merge(oldProductoIdOfOfertaListNewOferta);
                     }
                 }
             }
@@ -285,7 +271,7 @@ public class ProductoJpaController implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Producto (" + producto + ") cannot be destroyed since the Oferta " + ofertaListOrphanCheckOferta + " in its ofertaList field has a non-nullable producto field.");
+                illegalOrphanMessages.add("This Producto (" + producto + ") cannot be destroyed since the Oferta " + ofertaListOrphanCheckOferta + " in its ofertaList field has a non-nullable productoId field.");
             }
             List<DescuentoEmitido> descuentoEmitidoListOrphanCheck = producto.getDescuentoEmitidoList();
             for (DescuentoEmitido descuentoEmitidoListOrphanCheckDescuentoEmitido : descuentoEmitidoListOrphanCheck) {

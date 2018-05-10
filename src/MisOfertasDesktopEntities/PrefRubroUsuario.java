@@ -35,10 +35,10 @@ public class PrefRubroUsuario implements Serializable {
     @Column(name = "ID_PREF_RUBRO")
     private Long idPrefRubro;
     @JoinColumn(name = "RUBRO_ID", referencedColumnName = "ID_RUBRO")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Rubro rubroId;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Usuario usuarioId;
 
     public PrefRubroUsuario() {

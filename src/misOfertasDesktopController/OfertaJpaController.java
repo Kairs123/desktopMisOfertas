@@ -51,10 +51,10 @@ public class OfertaJpaController implements Serializable {
                 imagenId = em.getReference(imagenId.getClass(), imagenId.getIdImagen());
                 oferta.setImagenId(imagenId);
             }
-            Producto producto = oferta.getProducto();
-            if (producto != null) {
-                producto = em.getReference(producto.getClass(), producto.getIdProducto());
-                oferta.setProducto(producto);
+            Producto productoId = oferta.getProductoId();
+            if (productoId != null) {
+                productoId = em.getReference(productoId.getClass(), productoId.getIdProducto());
+                oferta.setProductoId(productoId);
             }
             Tienda tiendaId = oferta.getTiendaId();
             if (tiendaId != null) {
@@ -72,9 +72,9 @@ public class OfertaJpaController implements Serializable {
                 imagenId.getOfertaList().add(oferta);
                 imagenId = em.merge(imagenId);
             }
-            if (producto != null) {
-                producto.getOfertaList().add(oferta);
-                producto = em.merge(producto);
+            if (productoId != null) {
+                productoId.getOfertaList().add(oferta);
+                productoId = em.merge(productoId);
             }
             if (tiendaId != null) {
                 tiendaId.getOfertaList().add(oferta);
@@ -91,7 +91,7 @@ public class OfertaJpaController implements Serializable {
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findOferta(oferta.getOfertaId()) != null) {
+            if (findOferta(oferta.getIdOferta()) != null) {
                 throw new PreexistingEntityException("Oferta " + oferta + " already exists.", ex);
             }
             throw ex;
@@ -107,11 +107,11 @@ public class OfertaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Oferta persistentOferta = em.find(Oferta.class, oferta.getOfertaId());
+            Oferta persistentOferta = em.find(Oferta.class, oferta.getIdOferta());
             ImagenOferta imagenIdOld = persistentOferta.getImagenId();
             ImagenOferta imagenIdNew = oferta.getImagenId();
-            Producto productoOld = persistentOferta.getProducto();
-            Producto productoNew = oferta.getProducto();
+            Producto productoIdOld = persistentOferta.getProductoId();
+            Producto productoIdNew = oferta.getProductoId();
             Tienda tiendaIdOld = persistentOferta.getTiendaId();
             Tienda tiendaIdNew = oferta.getTiendaId();
             List<OfertaConsultadaUsuario> ofertaConsultadaUsuarioListOld = persistentOferta.getOfertaConsultadaUsuarioList();
@@ -132,9 +132,9 @@ public class OfertaJpaController implements Serializable {
                 imagenIdNew = em.getReference(imagenIdNew.getClass(), imagenIdNew.getIdImagen());
                 oferta.setImagenId(imagenIdNew);
             }
-            if (productoNew != null) {
-                productoNew = em.getReference(productoNew.getClass(), productoNew.getIdProducto());
-                oferta.setProducto(productoNew);
+            if (productoIdNew != null) {
+                productoIdNew = em.getReference(productoIdNew.getClass(), productoIdNew.getIdProducto());
+                oferta.setProductoId(productoIdNew);
             }
             if (tiendaIdNew != null) {
                 tiendaIdNew = em.getReference(tiendaIdNew.getClass(), tiendaIdNew.getIdTienda());
@@ -156,13 +156,13 @@ public class OfertaJpaController implements Serializable {
                 imagenIdNew.getOfertaList().add(oferta);
                 imagenIdNew = em.merge(imagenIdNew);
             }
-            if (productoOld != null && !productoOld.equals(productoNew)) {
-                productoOld.getOfertaList().remove(oferta);
-                productoOld = em.merge(productoOld);
+            if (productoIdOld != null && !productoIdOld.equals(productoIdNew)) {
+                productoIdOld.getOfertaList().remove(oferta);
+                productoIdOld = em.merge(productoIdOld);
             }
-            if (productoNew != null && !productoNew.equals(productoOld)) {
-                productoNew.getOfertaList().add(oferta);
-                productoNew = em.merge(productoNew);
+            if (productoIdNew != null && !productoIdNew.equals(productoIdOld)) {
+                productoIdNew.getOfertaList().add(oferta);
+                productoIdNew = em.merge(productoIdNew);
             }
             if (tiendaIdOld != null && !tiendaIdOld.equals(tiendaIdNew)) {
                 tiendaIdOld.getOfertaList().remove(oferta);
@@ -187,7 +187,7 @@ public class OfertaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = oferta.getOfertaId();
+                Long id = oferta.getIdOferta();
                 if (findOferta(id) == null) {
                     throw new NonexistentEntityException("The oferta with id " + id + " no longer exists.");
                 }
@@ -208,7 +208,7 @@ public class OfertaJpaController implements Serializable {
             Oferta oferta;
             try {
                 oferta = em.getReference(Oferta.class, id);
-                oferta.getOfertaId();
+                oferta.getIdOferta();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The oferta with id " + id + " no longer exists.", enfe);
             }
@@ -228,10 +228,10 @@ public class OfertaJpaController implements Serializable {
                 imagenId.getOfertaList().remove(oferta);
                 imagenId = em.merge(imagenId);
             }
-            Producto producto = oferta.getProducto();
-            if (producto != null) {
-                producto.getOfertaList().remove(oferta);
-                producto = em.merge(producto);
+            Producto productoId = oferta.getProductoId();
+            if (productoId != null) {
+                productoId.getOfertaList().remove(oferta);
+                productoId = em.merge(productoId);
             }
             Tienda tiendaId = oferta.getTiendaId();
             if (tiendaId != null) {

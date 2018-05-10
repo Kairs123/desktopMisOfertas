@@ -69,7 +69,7 @@ public class Usuario implements Serializable {
     private List<PrefTiendaUsuario> prefTiendaUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<Valoracion> valoracionList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    @OneToMany(mappedBy = "usuarioId")
     private List<PrefRubroUsuario> prefRubroUsuarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<DescuentoEmitido> descuentoEmitidoList;

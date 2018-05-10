@@ -48,7 +48,7 @@ public class Rubro implements Serializable {
     private String isActive;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rubro")
     private List<Producto> productoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rubroId")
+    @OneToMany(mappedBy = "rubroId")
     private List<PrefRubroUsuario> prefRubroUsuarioList;
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
     @ManyToOne(optional = false)

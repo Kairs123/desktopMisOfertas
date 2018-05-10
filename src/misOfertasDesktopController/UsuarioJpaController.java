@@ -218,14 +218,6 @@ public class UsuarioJpaController implements Serializable {
                     illegalOrphanMessages.add("You must retain Valoracion " + valoracionListOldValoracion + " since its usuarioId field is not nullable.");
                 }
             }
-            for (PrefRubroUsuario prefRubroUsuarioListOldPrefRubroUsuario : prefRubroUsuarioListOld) {
-                if (!prefRubroUsuarioListNew.contains(prefRubroUsuarioListOldPrefRubroUsuario)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain PrefRubroUsuario " + prefRubroUsuarioListOldPrefRubroUsuario + " since its usuarioId field is not nullable.");
-                }
-            }
             for (DescuentoEmitido descuentoEmitidoListOldDescuentoEmitido : descuentoEmitidoListOld) {
                 if (!descuentoEmitidoListNew.contains(descuentoEmitidoListOldDescuentoEmitido)) {
                     if (illegalOrphanMessages == null) {
@@ -348,6 +340,12 @@ public class UsuarioJpaController implements Serializable {
                     }
                 }
             }
+            for (PrefRubroUsuario prefRubroUsuarioListOldPrefRubroUsuario : prefRubroUsuarioListOld) {
+                if (!prefRubroUsuarioListNew.contains(prefRubroUsuarioListOldPrefRubroUsuario)) {
+                    prefRubroUsuarioListOldPrefRubroUsuario.setUsuarioId(null);
+                    prefRubroUsuarioListOldPrefRubroUsuario = em.merge(prefRubroUsuarioListOldPrefRubroUsuario);
+                }
+            }
             for (PrefRubroUsuario prefRubroUsuarioListNewPrefRubroUsuario : prefRubroUsuarioListNew) {
                 if (!prefRubroUsuarioListOld.contains(prefRubroUsuarioListNewPrefRubroUsuario)) {
                     Usuario oldUsuarioIdOfPrefRubroUsuarioListNewPrefRubroUsuario = prefRubroUsuarioListNewPrefRubroUsuario.getUsuarioId();
@@ -429,13 +427,6 @@ public class UsuarioJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Valoracion " + valoracionListOrphanCheckValoracion + " in its valoracionList field has a non-nullable usuarioId field.");
             }
-            List<PrefRubroUsuario> prefRubroUsuarioListOrphanCheck = usuario.getPrefRubroUsuarioList();
-            for (PrefRubroUsuario prefRubroUsuarioListOrphanCheckPrefRubroUsuario : prefRubroUsuarioListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the PrefRubroUsuario " + prefRubroUsuarioListOrphanCheckPrefRubroUsuario + " in its prefRubroUsuarioList field has a non-nullable usuarioId field.");
-            }
             List<DescuentoEmitido> descuentoEmitidoListOrphanCheck = usuario.getDescuentoEmitidoList();
             for (DescuentoEmitido descuentoEmitidoListOrphanCheckDescuentoEmitido : descuentoEmitidoListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
@@ -474,6 +465,11 @@ public class UsuarioJpaController implements Serializable {
             for (PrefTiendaUsuario prefTiendaUsuarioListPrefTiendaUsuario : prefTiendaUsuarioList) {
                 prefTiendaUsuarioListPrefTiendaUsuario.setUsuarioId(null);
                 prefTiendaUsuarioListPrefTiendaUsuario = em.merge(prefTiendaUsuarioListPrefTiendaUsuario);
+            }
+            List<PrefRubroUsuario> prefRubroUsuarioList = usuario.getPrefRubroUsuarioList();
+            for (PrefRubroUsuario prefRubroUsuarioListPrefRubroUsuario : prefRubroUsuarioList) {
+                prefRubroUsuarioListPrefRubroUsuario.setUsuarioId(null);
+                prefRubroUsuarioListPrefRubroUsuario = em.merge(prefRubroUsuarioListPrefRubroUsuario);
             }
             em.remove(usuario);
             em.getTransaction().commit();

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Oferta.findAll", query = "SELECT o FROM Oferta o")
-    , @NamedQuery(name = "Oferta.findByOfertaId", query = "SELECT o FROM Oferta o WHERE o.ofertaId = :ofertaId")
+    , @NamedQuery(name = "Oferta.findByIdOferta", query = "SELECT o FROM Oferta o WHERE o.idOferta = :idOferta")
     , @NamedQuery(name = "Oferta.findByPctDescuento", query = "SELECT o FROM Oferta o WHERE o.pctDescuento = :pctDescuento")
     , @NamedQuery(name = "Oferta.findByStock", query = "SELECT o FROM Oferta o WHERE o.stock = :stock")
     , @NamedQuery(name = "Oferta.findByPrecio", query = "SELECT o FROM Oferta o WHERE o.precio = :precio")
@@ -41,8 +41,8 @@ public class Oferta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "OFERTA_ID")
-    private Long ofertaId;
+    @Column(name = "ID_OFERTA")
+    private Long idOferta;
     @Basic(optional = false)
     @Column(name = "PCT_DESCUENTO")
     private long pctDescuento;
@@ -60,9 +60,9 @@ public class Oferta implements Serializable {
     @JoinColumn(name = "IMAGEN_ID", referencedColumnName = "ID_IMAGEN")
     @ManyToOne(optional = false)
     private ImagenOferta imagenId;
-    @JoinColumn(name = "PRODUCTO", referencedColumnName = "ID_PRODUCTO")
+    @JoinColumn(name = "PRODUCTO_ID", referencedColumnName = "ID_PRODUCTO")
     @ManyToOne(optional = false)
-    private Producto producto;
+    private Producto productoId;
     @JoinColumn(name = "TIENDA_ID", referencedColumnName = "ID_TIENDA")
     @ManyToOne(optional = false)
     private Tienda tiendaId;
@@ -72,24 +72,24 @@ public class Oferta implements Serializable {
     public Oferta() {
     }
 
-    public Oferta(Long ofertaId) {
-        this.ofertaId = ofertaId;
+    public Oferta(Long idOferta) {
+        this.idOferta = idOferta;
     }
 
-    public Oferta(Long ofertaId, long pctDescuento, long stock, long precio, String isActive) {
-        this.ofertaId = ofertaId;
+    public Oferta(Long idOferta, long pctDescuento, long stock, long precio, String isActive) {
+        this.idOferta = idOferta;
         this.pctDescuento = pctDescuento;
         this.stock = stock;
         this.precio = precio;
         this.isActive = isActive;
     }
 
-    public Long getOfertaId() {
-        return ofertaId;
+    public Long getIdOferta() {
+        return idOferta;
     }
 
-    public void setOfertaId(Long ofertaId) {
-        this.ofertaId = ofertaId;
+    public void setIdOferta(Long idOferta) {
+        this.idOferta = idOferta;
     }
 
     public long getPctDescuento() {
@@ -140,12 +140,12 @@ public class Oferta implements Serializable {
         this.imagenId = imagenId;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public Producto getProductoId() {
+        return productoId;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProductoId(Producto productoId) {
+        this.productoId = productoId;
     }
 
     public Tienda getTiendaId() {
@@ -168,7 +168,7 @@ public class Oferta implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ofertaId != null ? ofertaId.hashCode() : 0);
+        hash += (idOferta != null ? idOferta.hashCode() : 0);
         return hash;
     }
 
@@ -179,7 +179,7 @@ public class Oferta implements Serializable {
             return false;
         }
         Oferta other = (Oferta) object;
-        if ((this.ofertaId == null && other.ofertaId != null) || (this.ofertaId != null && !this.ofertaId.equals(other.ofertaId))) {
+        if ((this.idOferta == null && other.idOferta != null) || (this.idOferta != null && !this.idOferta.equals(other.idOferta))) {
             return false;
         }
         return true;
@@ -187,7 +187,7 @@ public class Oferta implements Serializable {
 
     @Override
     public String toString() {
-        return "MisOfertasDesktopEntities.Oferta[ ofertaId=" + ofertaId + " ]";
+        return "MisOfertasDesktopEntities.Oferta[ idOferta=" + idOferta + " ]";
     }
     
 }

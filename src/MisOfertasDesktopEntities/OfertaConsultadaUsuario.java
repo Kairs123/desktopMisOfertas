@@ -42,7 +42,7 @@ public class OfertaConsultadaUsuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "CONSULTA_ID")
     private Long consultaId;
-    @JoinColumn(name = "OFERTA_ID", referencedColumnName = "OFERTA_ID")
+    @JoinColumn(name = "OFERTA_ID", referencedColumnName = "ID_OFERTA")
     @ManyToOne(optional = false)
     private Oferta ofertaId;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID_USUARIO")
