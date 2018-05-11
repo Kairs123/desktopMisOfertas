@@ -46,5 +46,9 @@ public class ProductoDAO {
     public List<Producto> listAll() {
         return productoController.findProductoEntities();
     }
+    public Producto findProducto(Long idProducto)
+    {
+        return productoController.findProducto(idProducto);
+    }
 
 }

@@ -39,6 +39,17 @@ public class mantenedorProductos extends javax.swing.JFrame {
         panel1 = new java.awt.Panel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButtonAddProducto = new javax.swing.JButton();
+        jButtonEditProducto = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextFieldIdProductoEdit = new javax.swing.JTextField();
+        jTextFieldNombreProdEdit = new javax.swing.JTextField();
+        jTextFieldNombreRubro = new javax.swing.JTextField();
+        jTextFieldPerecible = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuAdministrar = new javax.swing.JMenu();
         jMenuItemProducto = new javax.swing.JMenuItem();
@@ -51,10 +62,7 @@ public class mantenedorProductos extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -72,21 +80,98 @@ public class mantenedorProductos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButtonAddProducto.setText("Agregar");
+        jButtonAddProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddProductoActionPerformed(evt);
+            }
+        });
+
+        jButtonEditProducto.setText("Guardar");
+        jButtonEditProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditProductoActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Editar producto");
+
+        jLabel2.setText("ID Producto");
+
+        jLabel3.setText("Nombre Producto");
+
+        jLabel4.setText("Rubro");
+
+        jLabel5.setText("¿Producto perecible?");
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(156, 156, 156)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel5))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextFieldIdProductoEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldPerecible, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldNombreRubro, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldNombreProdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButtonAddProducto)
+                                            .addComponent(jButtonEditProducto))
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                        .addGap(93, 93, 93))))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1)
+                        .addGap(22, 22, 22)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextFieldIdProductoEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextFieldNombreProdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jTextFieldNombreRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jTextFieldPerecible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonEditProducto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonAddProducto)))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         jMenuAdministrar.setText("Administrar");
@@ -156,14 +241,35 @@ public class mantenedorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1KeyPressed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        ProductoDAO pDAO = new ProductoDAO();
+        Producto p = new Producto();
+        Rubro r = new Rubro();
         JTable source = (JTable) evt.getSource();
         int row = source.rowAtPoint(evt.getPoint());// TODO add your handling code here:
-        int column = 1;
+        int column = 0;
         String id = source.getModel().getValueAt(row, column).toString();
-        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        p = pDAO.findById(Long.valueOf(id));
+        jTextFieldIdProductoEdit.setText(String.valueOf(p.getIdProducto()));
+        jTextFieldNombreProdEdit.setText(String.valueOf(p.getNombreProducto()));
+        jTextFieldNombreRubro.setText(String.valueOf(p.getRubro().getNombreRubro()));
+        if (p.getEsPerecible() == 1) {
+            jTextFieldPerecible.setText("Si");
+        } else {
+            jTextFieldPerecible.setText("No");
+        }
+
+        /*this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         dispose();
-        new editarProducto(id).setVisible(true);
+        new editarProducto(id).setVisible(true);*/
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButtonAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAddProductoActionPerformed
+
+    private void jButtonEditProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonEditProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,6 +322,13 @@ public class mantenedorProductos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddProducto;
+    private javax.swing.JButton jButtonEditProducto;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenuAdministrar;
     private javax.swing.JMenuBar jMenuBar1;
@@ -225,6 +338,10 @@ public class mantenedorProductos extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemUsuario;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldIdProductoEdit;
+    private javax.swing.JTextField jTextFieldNombreProdEdit;
+    private javax.swing.JTextField jTextFieldNombreRubro;
+    private javax.swing.JTextField jTextFieldPerecible;
     private java.awt.Panel panel1;
     // End of variables declaration//GEN-END:variables
 
@@ -235,12 +352,17 @@ public class mantenedorProductos extends javax.swing.JFrame {
         Rubro r = new Rubro();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         List<Producto> lista = pDAO.listAll();
-        Object rowData[] = new Object[3];
+        Object rowData[] = new Object[4];
         for (Producto prod : lista) {
-            rowData[0] = prod.getNombreProducto();
-            rowData[1] = prod.getRubro().getNombreRubro();
-            rowData[2] = prod.getEsPerecible();
+            rowData[0] = prod.getIdProducto();
+            rowData[1] = prod.getNombreProducto();
+            rowData[2] = prod.getRubro().getNombreRubro();
+            rowData[3] = prod.getEsPerecible();
             model.addRow(rowData);
         }
+    }
+    private void cargarTextbox(String id)
+    {
+        
     }
 }
