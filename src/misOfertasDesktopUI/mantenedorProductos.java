@@ -8,6 +8,8 @@ package misOfertasDesktopUI;
 import MisOfertasDesktopEntities.Producto;
 import MisOfertasDesktopEntities.Rubro;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -18,6 +20,9 @@ import misOfertasDesktopDAO.*;
  * @author David
  */
 public class mantenedorProductos extends javax.swing.JFrame {
+    
+    private ProductoDAO pDAO = new ProductoDAO();
+    private Producto p = new Producto();
 
     /**
      * Creates new form initFrame
@@ -25,6 +30,8 @@ public class mantenedorProductos extends javax.swing.JFrame {
     public mantenedorProductos() {
         initComponents();
         populateTable();
+        jTextFieldIdProductoEdit.setEditable(false);
+        
     }
 
     /**
@@ -36,6 +43,7 @@ public class mantenedorProductos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButtonGroupProdPerecibleAdd = new javax.swing.ButtonGroup();
         panel1 = new java.awt.Panel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -50,6 +58,15 @@ public class mantenedorProductos extends javax.swing.JFrame {
         jTextFieldNombreProdEdit = new javax.swing.JTextField();
         jTextFieldNombreRubro = new javax.swing.JTextField();
         jTextFieldPerecible = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextFieldNombreAdd = new javax.swing.JTextField();
+        jCheckBoxProductoPerecible = new javax.swing.JCheckBox();
+        jFormattedTextFieldFechaVencimientoAdd = new javax.swing.JFormattedTextField();
+        jComboBoxRubro = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuAdministrar = new javax.swing.JMenu();
         jMenuItemProducto = new javax.swing.JMenuItem();
@@ -104,6 +121,22 @@ public class mantenedorProductos extends javax.swing.JFrame {
 
         jLabel5.setText("¿Producto perecible?");
 
+        jLabel6.setText("Agregar Producto");
+
+        jLabel7.setText("Nombre Producto");
+
+        jLabel8.setText("¿Producto Perecible?");
+
+        jLabel9.setText("Fecha Vencimiento");
+
+        jLabel10.setText("Rubro");
+
+        jCheckBoxProductoPerecible.setText("Si");
+
+        jFormattedTextFieldFechaVencimientoAdd.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+
+        jComboBoxRubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -111,21 +144,13 @@ public class mantenedorProductos extends javax.swing.JFrame {
             .addGroup(panel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel5))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextFieldIdProductoEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,9 +162,30 @@ public class mantenedorProductos extends javax.swing.JFrame {
                                     .addGroup(panel1Layout.createSequentialGroup()
                                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jButtonAddProducto)
-                                            .addComponent(jButtonEditProducto))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(93, 93, 93))))
+                                            .addComponent(jButtonEditProducto)
+                                            .addComponent(jLabel6))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jTextFieldIdProductoEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
+                        .addGap(33, 33, 33)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldNombreAdd)
+                            .addComponent(jFormattedTextFieldFechaVencimientoAdd)
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addComponent(jCheckBoxProductoPerecible)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jComboBoxRubro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(93, 93, 93))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +195,9 @@ public class mantenedorProductos extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(30, 30, 30)
                         .addComponent(jLabel1)
-                        .addGap(22, 22, 22)
+                        .addGap(18, 18, 18)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jTextFieldIdProductoEdit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -168,10 +214,32 @@ public class mantenedorProductos extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jTextFieldPerecible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonEditProducto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonAddProducto)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addComponent(jButtonEditProducto)
+                                .addGap(44, 44, 44)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldNombreAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                .addGap(0, 93, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jCheckBoxProductoPerecible))
+                                .addGap(18, 18, 18)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jFormattedTextFieldFechaVencimientoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jButtonAddProducto)
+                .addGap(70, 70, 70))
         );
 
         jMenuAdministrar.setText("Administrar");
@@ -241,9 +309,7 @@ public class mantenedorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1KeyPressed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        ProductoDAO pDAO = new ProductoDAO();
-        Producto p = new Producto();
-        Rubro r = new Rubro();
+        
         JTable source = (JTable) evt.getSource();
         int row = source.rowAtPoint(evt.getPoint());// TODO add your handling code here:
         int column = 0;
@@ -268,7 +334,13 @@ public class mantenedorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddProductoActionPerformed
 
     private void jButtonEditProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditProductoActionPerformed
-        // TODO add your handling code here:
+        try {
+            p = pDAO.findById(Long.valueOf(jTextFieldIdProductoEdit.getText()));
+            p.setNombreProducto(jTextFieldNombreProdEdit.getText());
+            pDAO.editProducto(p);
+        } catch (Exception ex) {
+            Logger.getLogger(mantenedorProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonEditProductoActionPerformed
 
     /**
@@ -324,11 +396,20 @@ public class mantenedorProductos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddProducto;
     private javax.swing.JButton jButtonEditProducto;
+    private javax.swing.ButtonGroup jButtonGroupProdPerecibleAdd;
+    private javax.swing.JCheckBox jCheckBoxProductoPerecible;
+    private javax.swing.JComboBox<String> jComboBoxRubro;
+    private javax.swing.JFormattedTextField jFormattedTextFieldFechaVencimientoAdd;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenuAdministrar;
     private javax.swing.JMenuBar jMenuBar1;
@@ -339,6 +420,7 @@ public class mantenedorProductos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldIdProductoEdit;
+    private javax.swing.JTextField jTextFieldNombreAdd;
     private javax.swing.JTextField jTextFieldNombreProdEdit;
     private javax.swing.JTextField jTextFieldNombreRubro;
     private javax.swing.JTextField jTextFieldPerecible;
@@ -361,8 +443,8 @@ public class mantenedorProductos extends javax.swing.JFrame {
             model.addRow(rowData);
         }
     }
-    private void cargarTextbox(String id)
-    {
+    
+    private void cargarTextbox(String id) {
         
     }
 }
