@@ -19,6 +19,7 @@ import MisOfertasDesktopEntities.DescuentoEmitido;
 import MisOfertasDesktopEntities.Producto;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.StoredProcedureQuery;
 import misOfertasDesktopController.exceptions.IllegalOrphanException;
 import misOfertasDesktopController.exceptions.NonexistentEntityException;
 import misOfertasDesktopController.exceptions.PreexistingEntityException;
@@ -75,7 +76,15 @@ public class ProductoJpaController implements Serializable {
                 attachedDescuentoEmitidoList.add(descuentoEmitidoListDescuentoEmitidoToAttach);
             }
             producto.setDescuentoEmitidoList(attachedDescuentoEmitidoList);
-            em.persist(producto);
+            /*StoredProcedureQuery createProducto = em.createNamedStoredProcedureQuery("createProducto");
+            createProducto.setParameter("p_producto_id", producto.getIdProducto());
+            createProducto.setParameter("p_nombre_producto", producto.getNombreProducto());
+            createProducto.setParameter("p_rubro_id", producto.getRubro().getIdRubro());
+            createProducto.setParameter("p_es_perecible", producto.getEsPerecible());
+            createProducto.setParameter("p_fecha_venc", producto.getFechaVencimiento());
+            createProducto.setParameter("p_activo", producto.getIsActive());
+            createProducto.execute();*/
+            persistProducto(producto, em);
             if (rubro != null) {
                 rubro.getProductoList().add(producto);
                 rubro = em.merge(rubro);
@@ -187,7 +196,7 @@ public class ProductoJpaController implements Serializable {
             }
             descuentoEmitidoListNew = attachedDescuentoEmitidoListNew;
             producto.setDescuentoEmitidoList(descuentoEmitidoListNew);
-            producto = em.merge(producto);
+            mergeProducto(producto, em);
             if (rubroOld != null && !rubroOld.equals(rubroNew)) {
                 rubroOld.getProductoList().remove(producto);
                 rubroOld = em.merge(rubroOld);
@@ -229,7 +238,6 @@ public class ProductoJpaController implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -241,9 +249,30 @@ public class ProductoJpaController implements Serializable {
             throw ex;
         } finally {
             if (em != null) {
-                em.close();
+
             }
         }
+    }
+
+    public void persistProducto(Producto p, EntityManager m) {
+        StoredProcedureQuery createProducto = m.createNamedStoredProcedureQuery("createProducto");
+        createProducto.setParameter("p_producto_id", p.getIdProducto());
+        createProducto.setParameter("p_nombre_producto", p.getNombreProducto());
+        createProducto.setParameter("p_rubro_id", p.getRubro().getIdRubro());
+        createProducto.setParameter("p_es_perecible", p.getEsPerecible());
+        createProducto.setParameter("p_fecha_venc", p.getFechaVencimiento());
+        createProducto.execute();
+        m.getTransaction().commit();
+    }
+
+    public void mergeProducto(Producto p, EntityManager m) {
+        m = getEntityManager();
+        m.getTransaction().begin();
+        StoredProcedureQuery editProducto = m.createNamedStoredProcedureQuery("editProducto");
+        editProducto.setParameter("p_id_prod", p.getIdProducto());
+        editProducto.setParameter("p_nombre_producto", p.getNombreProducto());
+        editProducto.executeUpdate();
+        m.getTransaction().commit();
     }
 
     public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
@@ -307,6 +336,7 @@ public class ProductoJpaController implements Serializable {
 
     private List<Producto> findProductoEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
+        em.getTransaction();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Producto.class));
@@ -342,5 +372,5 @@ public class ProductoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

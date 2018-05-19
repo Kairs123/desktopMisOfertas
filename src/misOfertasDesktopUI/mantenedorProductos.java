@@ -7,12 +7,20 @@ package misOfertasDesktopUI;
 
 import MisOfertasDesktopEntities.Producto;
 import MisOfertasDesktopEntities.Rubro;
+import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.DatePicker;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import misOfertasDesktopDAO.*;
 
 /**
@@ -20,9 +28,6 @@ import misOfertasDesktopDAO.*;
  * @author David
  */
 public class mantenedorProductos extends javax.swing.JFrame {
-    
-    private ProductoDAO pDAO = new ProductoDAO();
-    private Producto p = new Producto();
 
     /**
      * Creates new form initFrame
@@ -30,8 +35,9 @@ public class mantenedorProductos extends javax.swing.JFrame {
     public mantenedorProductos() {
         initComponents();
         populateTable();
+        populateComboBox();
         jTextFieldIdProductoEdit.setEditable(false);
-        
+        jDateChooserAddProducto.setEnabled(false);
     }
 
     /**
@@ -65,8 +71,8 @@ public class mantenedorProductos extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jTextFieldNombreAdd = new javax.swing.JTextField();
         jCheckBoxProductoPerecible = new javax.swing.JCheckBox();
-        jFormattedTextFieldFechaVencimientoAdd = new javax.swing.JFormattedTextField();
         jComboBoxRubro = new javax.swing.JComboBox<>();
+        jDateChooserAddProducto = new com.toedter.calendar.JDateChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuAdministrar = new javax.swing.JMenu();
         jMenuItemProducto = new javax.swing.JMenuItem();
@@ -82,9 +88,17 @@ public class mantenedorProductos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo", "Nombre", "Rubro", "¿Activo?"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -121,6 +135,12 @@ public class mantenedorProductos extends javax.swing.JFrame {
 
         jLabel5.setText("¿Producto perecible?");
 
+        jTextFieldIdProductoEdit.setEditable(false);
+
+        jTextFieldNombreRubro.setEditable(false);
+
+        jTextFieldPerecible.setEditable(false);
+
         jLabel6.setText("Agregar Producto");
 
         jLabel7.setText("Nombre Producto");
@@ -131,9 +151,23 @@ public class mantenedorProductos extends javax.swing.JFrame {
 
         jLabel10.setText("Rubro");
 
-        jCheckBoxProductoPerecible.setText("Si");
+        jTextFieldNombreAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNombreAddActionPerformed(evt);
+            }
+        });
 
-        jFormattedTextFieldFechaVencimientoAdd.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        jCheckBoxProductoPerecible.setText("Si");
+        jCheckBoxProductoPerecible.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxProductoPerecibleItemStateChanged(evt);
+            }
+        });
+        jCheckBoxProductoPerecible.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxProductoPerecibleActionPerformed(evt);
+            }
+        });
 
         jComboBoxRubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -154,22 +188,24 @@ public class mantenedorProductos extends javax.swing.JFrame {
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
                                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldPerecible, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextFieldNombreRubro, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jTextFieldNombreProdEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(panel1Layout.createSequentialGroup()
                                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButtonAddProducto)
-                                            .addComponent(jButtonEditProducto)
-                                            .addComponent(jLabel6))
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                            .addComponent(jLabel6)
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addGap(15, 15, 15)
+                                                .addComponent(jButtonEditProducto)))
+                                        .addGap(0, 99, Short.MAX_VALUE))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addGap(7, 7, 7)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldNombreProdEdit, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jTextFieldNombreRubro)
+                                            .addComponent(jTextFieldPerecible)
+                                            .addComponent(jTextFieldIdProductoEdit)))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jTextFieldIdProductoEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel1)
+                                .addGap(36, 36, 36))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -180,20 +216,22 @@ public class mantenedorProductos extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldNombreAdd)
-                            .addComponent(jFormattedTextFieldFechaVencimientoAdd)
+                            .addComponent(jComboBoxRubro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jCheckBoxProductoPerecible)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonAddProducto)
+                                    .addComponent(jCheckBoxProductoPerecible))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jComboBoxRubro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(93, 93, 93))
+                            .addComponent(jDateChooserAddProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(41, 41, 41))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jLabel1)
@@ -214,32 +252,33 @@ public class mantenedorProductos extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jTextFieldPerecible, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7))
                             .addGroup(panel1Layout.createSequentialGroup()
                                 .addComponent(jButtonEditProducto)
                                 .addGap(44, 44, 44)
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
                                 .addComponent(jTextFieldNombreAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                                .addGap(0, 93, Short.MAX_VALUE)
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jCheckBoxProductoPerecible))
-                                .addGap(18, 18, 18)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jFormattedTextFieldFechaVencimientoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxProductoPerecible)
+                            .addComponent(jLabel8))
+                        .addGap(17, 17, 17)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jDateChooserAddProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addGap(36, 36, 36)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
+                        .addGap(0, 34, Short.MAX_VALUE)))
+                .addGap(5, 5, 5)
                 .addComponent(jButtonAddProducto)
-                .addGap(70, 70, 70))
+                .addGap(33, 33, 33))
         );
 
         jMenuAdministrar.setText("Administrar");
@@ -309,7 +348,8 @@ public class mantenedorProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1KeyPressed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        
+        ProductoDAO pDAO = new ProductoDAO();
+        Producto p = new Producto();
         JTable source = (JTable) evt.getSource();
         int row = source.rowAtPoint(evt.getPoint());// TODO add your handling code here:
         int column = 0;
@@ -318,30 +358,69 @@ public class mantenedorProductos extends javax.swing.JFrame {
         jTextFieldIdProductoEdit.setText(String.valueOf(p.getIdProducto()));
         jTextFieldNombreProdEdit.setText(String.valueOf(p.getNombreProducto()));
         jTextFieldNombreRubro.setText(String.valueOf(p.getRubro().getNombreRubro()));
-        if (p.getEsPerecible() == 1) {
+        if (p.getEsPerecible() == 2) {
             jTextFieldPerecible.setText("Si");
         } else {
             jTextFieldPerecible.setText("No");
         }
-
-        /*this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        dispose();
-        new editarProducto(id).setVisible(true);*/
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButtonAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddProductoActionPerformed
-        // TODO add your handling code here:
+        ProductoDAO pDAO = new ProductoDAO();
+        RubroDAO rDAO = new RubroDAO();
+        Producto p = new Producto();
+        try {
+            Long idP = pDAO.getMaxId();
+            p.setIdProducto(++idP);
+            p.setNombreProducto(jTextFieldNombreAdd.getText());
+            if (!jCheckBoxProductoPerecible.isSelected()) {
+                p.setEsPerecible(1);
+                p.setFechaVencimiento("N/A");
+            } else {
+                p.setEsPerecible(2);
+                p.setFechaVencimiento(jDateChooserAddProducto.getDate().toString());
+            }
+            p.setRubro(rDAO.getRubroByName(jComboBoxRubro.getSelectedItem().toString()));
+            pDAO.addProducto(p);
+        } catch (Exception ex) {
+            Logger.getLogger(mantenedorProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonAddProductoActionPerformed
 
     private void jButtonEditProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditProductoActionPerformed
+        ProductoDAO pDAO = new ProductoDAO();
+        Producto p = new Producto();
+        Rubro r = new Rubro();
         try {
             p = pDAO.findById(Long.valueOf(jTextFieldIdProductoEdit.getText()));
             p.setNombreProducto(jTextFieldNombreProdEdit.getText());
             pDAO.editProducto(p);
+
         } catch (Exception ex) {
             Logger.getLogger(mantenedorProductos.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            JOptionPane.showMessageDialog(null, "Producto con ID" + p.getIdProducto() + " actualizado correctamente.");
+
         }
+        populateTable();
     }//GEN-LAST:event_jButtonEditProductoActionPerformed
+
+    private void jCheckBoxProductoPerecibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxProductoPerecibleActionPerformed
+
+
+    }//GEN-LAST:event_jCheckBoxProductoPerecibleActionPerformed
+
+    private void jCheckBoxProductoPerecibleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxProductoPerecibleItemStateChanged
+        if (!jCheckBoxProductoPerecible.isSelected()) {
+            jDateChooserAddProducto.setEnabled(false);
+        } else {
+            jDateChooserAddProducto.setEnabled(true);
+        }
+    }//GEN-LAST:event_jCheckBoxProductoPerecibleItemStateChanged
+
+    private void jTextFieldNombreAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldNombreAddActionPerformed
 
     /**
      * @param args the command line arguments
@@ -399,7 +478,7 @@ public class mantenedorProductos extends javax.swing.JFrame {
     private javax.swing.ButtonGroup jButtonGroupProdPerecibleAdd;
     private javax.swing.JCheckBox jCheckBoxProductoPerecible;
     private javax.swing.JComboBox<String> jComboBoxRubro;
-    private javax.swing.JFormattedTextField jFormattedTextFieldFechaVencimientoAdd;
+    private com.toedter.calendar.JDateChooser jDateChooserAddProducto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -429,9 +508,6 @@ public class mantenedorProductos extends javax.swing.JFrame {
 
     private void populateTable() {
         ProductoDAO pDAO = new ProductoDAO();
-        RubroDAO rDAO = new RubroDAO();
-        Producto p = new Producto();
-        Rubro r = new Rubro();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         List<Producto> lista = pDAO.listAll();
         Object rowData[] = new Object[4];
@@ -443,8 +519,23 @@ public class mantenedorProductos extends javax.swing.JFrame {
             model.addRow(rowData);
         }
     }
-    
+
+    private void populateComboBox() {
+        RubroDAO rDAO = new RubroDAO();
+        List<Rubro> lista = rDAO.listAll();
+        jComboBoxRubro.removeAllItems();
+        DefaultComboBoxModel defaultC = new DefaultComboBoxModel();
+        for (Rubro r : lista) {
+            defaultC.addElement(r.getNombreRubro());
+        }
+        jComboBoxRubro.setModel(defaultC);
+    }
+
+    private void refreshData() {
+        DefaultTableModel m = (DefaultTableModel) jTable1.getModel();
+        m.setRowCount(0);
+    }
+
     private void cargarTextbox(String id) {
-        
     }
 }

@@ -284,5 +284,5 @@ public class RubroJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }
